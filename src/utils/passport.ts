@@ -42,13 +42,11 @@ passport.use(
     },
     async (jwtPayload, cb) => {
       try {
-        console.log("jwtPayload", jwtPayload);
-
         const user = await User.findOne({
           where: { email_id: jwtPayload.email_id },
         })
           .then((user: User | null) => {
-            cb(null, (user ? user.dataValues : {}) as UserAttribute);
+            cb(null, (user ? user.dataValues : null) as UserAttribute);
           })
           .catch((err) => {
             cb(err);

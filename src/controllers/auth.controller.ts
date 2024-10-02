@@ -53,7 +53,7 @@ export const login = async (req: Request, res: Response) => {
 
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      data: { user, token },
+      data: { token },
     });
     return;
   } catch (err: any) {
@@ -69,7 +69,6 @@ export const login = async (req: Request, res: Response) => {
 export const me = async (req: RequestWithUser, res: any) => {
   try {
     const requestUser = req.user;
-    console.log("user", requestUser);
 
     if (!requestUser) {
       return res.status(constants.STATUS_CODES.UNAUTHORIZED).json({
@@ -80,6 +79,7 @@ export const me = async (req: RequestWithUser, res: any) => {
 
     const user: User | null = await User.findOne({
       where: { email_id: requestUser.email_id },
+      attributes: { exclude: ["userpass"] },
     });
 
     if (!user) {
@@ -93,7 +93,8 @@ export const me = async (req: RequestWithUser, res: any) => {
       success: true,
       data: {
         user,
-        // Add other properties if necessary
+        permissionBasedMenuTree: [{}],
+        permission: [],
       },
     });
   } catch (error: any) {
