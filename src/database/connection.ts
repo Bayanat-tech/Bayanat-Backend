@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import constants from "../helpers/constants";
 
-const sequelize = new Sequelize(
+export const sequelize = new Sequelize(
   constants.DATABASE.NAME,
   constants.DATABASE.USER,
   constants.DATABASE.PASSWORD,
@@ -15,8 +15,9 @@ export const databaseConnection = () => {
   return new Promise((resolve, reject) => {
     sequelize
       .authenticate()
-      .then(() => {
+      .then(async () => {
         console.log("✅ Database Connected");
+        await sequelize.sync({ alter: false });
 
         resolve(true);
       })

@@ -1,6 +1,7 @@
-import express from "express";
 import cors from "cors";
+import express from "express";
 import { databaseConnection } from "./src/database/connection";
+import "./src/utils/passport";
 
 // Create Express app
 const app = express();
@@ -10,13 +11,6 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-// MySQL configuration
-const dbConfig = {
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "BAYANAT",
-};
 //routes
 import authRoutes from "./src/routes/auth.routes";
 
@@ -31,5 +25,5 @@ databaseConnection()
     });
   })
   .catch((err) => {
-    console.log(err);
+    console.log("error in data base connection:", err);
   });
