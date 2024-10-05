@@ -13,8 +13,10 @@ app.use(express.urlencoded({ extended: true }));
 
 //routes
 import authRoutes from "./src/routes/auth.routes";
+import mastersRoutes from "./src/routes/masters.routes";
 
 app.use("/api/auth", authRoutes);
+app.use("/api/get-masters", mastersRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3500;
