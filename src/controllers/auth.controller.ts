@@ -1,12 +1,30 @@
 import { Request, Response } from "express";
-import { Op } from "sequelize";
+import { Op, QueryTypes } from "sequelize";
 import constants from "../helpers/constants";
-import { comparePassword, generateToken } from "../helpers/functions";
+import {
+  buildTree,
+  comparePassword,
+  generateToken,
+} from "../helpers/functions";
 import { loginSchema } from "../validation/auth.validation";
 
-import User from "../models/user";
+import { sequelize } from "../database/connection";
 import { RequestWithUser } from "../interfaces/request.interface";
+import User from "../models/user";
+interface Child {
+  serial_number: number;
+  app_code: string;
+}
 
+interface AppStructure {
+  serial_number: number;
+  app_code: string;
+  children: { [key: string]: Child };
+}
+
+export interface StructuredResult {
+  [key: string]: AppStructure;
+}
 export const login = async (req: Request, res: Response) => {
   try {
     const { error } = loginSchema(req.body);
@@ -66,184 +84,162 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-export const me = async (req: RequestWithUser, res: any) => {
+export const me = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser = req.user;
 
     if (!requestUser) {
-      return res.status(constants.STATUS_CODES.UNAUTHORIZED).json({
+      res.status(constants.STATUS_CODES.UNAUTHORIZED).json({
         success: false,
-        message: "User is not authenticated",
+        message: constants.MESSAGES.USER.USER_NOT_FOUND,
       });
+      return;
     }
 
-    const user: User | null = await User.findOne({
+    const user = await User.findOne({
       where: { email_id: requestUser.email_id },
       attributes: { exclude: ["userpass"] },
     });
 
     if (!user) {
-      return res.status(constants.STATUS_CODES.NOT_FOUND).json({
+      res.status(constants.STATUS_CODES.NOT_FOUND).json({
         success: false,
         message: constants.MESSAGES.USER.USER_NOT_FOUND,
       });
+      return;
     }
 
-    return res.status(constants.STATUS_CODES.OK).json({
+    //-----------list of all permissions that user have------output:[1,42,3,4,66]
+    let userSerialNumber: { serial_numbers: string }[] = await sequelize.query(
+      `SELECT GROUP_CONCAT(SERIAL_NO) AS serial_numbers
+       FROM SEC_MODULE_DATA 
+       WHERE SERIAL_NO IN (
+         SELECT a.SERIAL_NO
+         FROM SEC_ROLE_APP_ACCESS a
+         JOIN SEC_ROLE_FUNCTION_ACCESS_USER b 
+           ON a.role_id = b.SERIAL_NO_OR_ROLE_ID
+         WHERE b.loginid = :loginid
+         UNION
+         SELECT a.SERIAL_NO_OR_ROLE_ID
+         FROM SEC_ROLE_FUNCTION_ACCESS_USER a
+         WHERE a.loginid = :loginid
+           AND a.SERIAL_NO_OR_ROLE_ID < 90001
+       )`,
+      {
+        type: QueryTypes.SELECT,
+        replacements: { loginid: user.dataValues.loginid }, // Replace with the actual login ID
+      }
+    );
+
+    const user_permission =
+      userSerialNumber[0]?.serial_numbers
+        ?.split(",")
+        ?.filter(Boolean)
+        ?.map(Number) ?? [];
+
+    //----------------------list of all permission that  a application will have--------output:wms:{serial_no:1,app_code:"WMS",childer:{}}
+    const allPermissions: {
+      menu: string;
+      serial_no: string;
+      app_code: string;
+    }[] = await sequelize.query(
+      `SELECT DISTINCT 
+          app_code AS menu, 
+          '0' AS level, 
+          0 AS serial_no, 
+          app_code 
+      FROM SEC_MODULE_DATA 
+      WHERE LTRIM(RTRIM(level2)) = '' OR LTRIM(RTRIM(level1)) = ''
+      
+      UNION
+      
+      SELECT 
+          level1 AS menu, 
+          app_code AS level, 
+          serial_no, 
+          app_code AS app_code 
+      FROM SEC_MODULE_DATA 
+      WHERE LTRIM(RTRIM(level2)) = '' OR LTRIM(RTRIM(level1)) = ''
+      
+      UNION
+      
+      SELECT 
+          level2 AS menu, 
+          level1 AS level, 
+          serial_no, 
+          (SELECT app_code FROM SEC_MODULE_DATA WHERE LTRIM(RTRIM(level1)) != '' LIMIT 1) AS app_code 
+      FROM SEC_MODULE_DATA 
+      WHERE LTRIM(RTRIM(level3)) = '' AND LTRIM(RTRIM(level2)) != ''
+      
+      UNION
+      
+      SELECT 
+          level3 AS menu, 
+          level2 AS level, 
+          serial_no, 
+          (SELECT app_code FROM SEC_MODULE_DATA WHERE LTRIM(RTRIM(level2)) != '' LIMIT 1) AS app_code 
+      FROM SEC_MODULE_DATA 
+      WHERE LTRIM(RTRIM(level3)) != '' AND LTRIM(RTRIM(level2)) != ''`,
+      { type: QueryTypes.SELECT }
+    );
+
+    const permissions: StructuredResult =
+      allPermissions.reduce((acc, curr) => {
+        const { menu, serial_no, app_code } = curr;
+
+        const serialNumber = Number(serial_no);
+
+        if (serialNumber > 0) {
+          if (!acc[app_code]) {
+            acc[app_code] = {
+              serial_number: serialNumber,
+              app_code: app_code,
+              children: {},
+            };
+          }
+
+          if (menu !== app_code) {
+            acc[app_code].children[menu] = {
+              serial_number: serialNumber,
+              app_code,
+            };
+          }
+        }
+
+        return acc;
+      }, {} as StructuredResult) ?? {};
+
+    //--------------tree view -----------------
+    let permissionBasedMenuTree = {};
+    if (user_permission) {
+      const menuTreeQuery = `SELECT * FROM SEC_MODULE_DATA
+      WHERE SERIAL_NO IN (${user_permission
+        ?.map((sn) => `'${sn}'`)
+        .join(",")})`;
+
+      const menuTreeData = await sequelize.query<any>(menuTreeQuery, {
+        type: QueryTypes.SELECT,
+      });
+
+      if (menuTreeData)
+        permissionBasedMenuTree = buildTree(menuTreeData, permissions);
+    }
+
+    res.status(constants.STATUS_CODES.OK).json({
       success: true,
       data: {
         user,
-        permissionBasedMenuTree: [
-          {
-            id: "1",
-            title: "WMS",
-            type: "collapse",
-            icon: "AbcIcon",
-            url_path: "wms",
-            children: [
-              {
-                id: "2",
-                title: "MASTER",
-                type: "collapse",
-                icon: "AbcIcon",
-                children: [
-                  {
-                    id: "3",
-                    title: "GM",
-                    url_path: "wms/master/gm",
-                    type: "item",
-                    icon: "AbcIcon",
-                  },
-                ],
-              },
-              {
-                id: "9",
-                title: "TRANSACTION",
-                type: "collapse",
-                children: [
-                  {
-                    id: "10",
-                    title: "INBOUND",
-                    type: "item",
-                    url_path: "wms/transaction/inbound",
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            id: "17",
-            title: "Finance",
-            type: "collapse",
-            icon: "AbcIcon",
-            url_path: "finance",
-            children: [
-              {
-                id: "18",
-                title: "ACCOUNTS",
-                type: "collapse",
-                icon: "AbcIcon",
-                children: [
-                  {
-                    id: "20",
-                    title: "A/C TREE",
-                    type: "item",
-                    url_path: "/finance/accounts/ac_tree",
-                    icon: "AccountTreeIcon",
-                  },
-                  {
-                    id: "21",
-                    title: "BANK CODE SETTING",
-                    type: "item",
-                    url_path: "/finance/accounts/bank_code_setting",
-                    icon: "AccountBalanceIcon",
-                  },
-                  {
-                    id: "22",
-                    title: "EXPENSE TYPE",
-                    type: "item",
-                    url_path: "/finance/accounts/expense_type",
-                    icon: "MoneyOffIcon",
-                  },
-                ],
-              },
-              // {
-              //   id: "26",
-              //   title: "TRANSACTION",
-              //   type: "collapse",
-              //   icon: "AbcIcon",
-              //   children: [
-              //     {
-              //       id: "27",
-              //       title: "CHEQUE PAYMENT",
-              //       type: "item",
-              //       url_path: "/finance/transaction/cheque_payment",
-              //       icon: "PaymentIcon",
-              //     },
-              //     {
-              //       id: "28",
-              //       title: "CHEQUE RECEIPT",
-              //       type: "item",
-              //       url_path: "/finance/transaction/cheque_receipt",
-              //       icon: "ReceiptIcon",
-              //     },
-              //     {
-              //       id: "29",
-              //       title: "PETTY CASH PAYMENT",
-              //       type: "item",
-              //       url_path: "/finance/transaction/petty_cash_payment",
-              //       icon: "LocalAtmIcon",
-              //     },
-              //   ],
-              // },
-            ],
-          },
-        ],
-        permissions: {
-          wms: { level: 1, serial_number: 1 },
-          master: { level: 2, serial_number: 2 },
-          gm: { level: 3, serial_number: 3 },
-          company: { level: 4, serial_number: 5 },
-          country: { level: 4, serial_number: 100 },
-
-          city: { level: 4, serial_number: 6 },
-          currency: { level: 4, serial_number: 7 },
-          state: { level: 4, serial_number: 8 },
-          transaction: { level: 2, serial_number: 9 },
-          inbound: { level: 3, serial_number: 10 },
-          job_creation: { level: 4, serial_number: 11 },
-          container: { level: 4, serial_number: 12 },
-          packing_list: { level: 4, serial_number: 13 },
-          clearance: { level: 4, serial_number: 14 },
-          putaway: { level: 4, serial_number: 15 },
-          confirmation: { level: 4, serial_number: 16 },
-          finance: { level: 1, serial_number: 17 },
-          accounts: { level: 2, serial_number: 18 },
-          ac_tree: { level: 3, serial_number: 19 },
-          bank_code_setting: { level: 4, serial_number: 20 },
-          expense_type: { level: 4, serial_number: 21 },
-          budget_version: { level: 4, serial_number: 22 },
-          budget_ac_group: { level: 4, serial_number: 23 },
-          budget_ac_wise: { level: 4, serial_number: 24 },
-          cheque_payment: { level: 4, serial_number: 25 },
-          cheque_receipt: { level: 4, serial_number: 26 },
-          petty_cash_payment: { level: 4, serial_number: 27 },
-          cash_receipt: { level: 4, serial_number: 28 },
-          journal: { level: 4, serial_number: 29 },
-          lpo: { level: 4, serial_number: 30 },
-          cpo: { level: 4, serial_number: 31 },
-        },
-
-        user_permission: [
-          1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-          21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 91, 100,
-        ],
+        permissionBasedMenuTree,
+        permissions,
+        user_permission,
       },
     });
+    return;
   } catch (error: any) {
-    return res.status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+    res.status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: error.message,
     });
+    return;
   }
 };
