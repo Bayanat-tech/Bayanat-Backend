@@ -7,24 +7,12 @@ import {
   generateToken,
 } from "../helpers/functions";
 import { loginSchema } from "../validation/auth.validation";
-
 import { sequelize } from "../database/connection";
-import { RequestWithUser } from "../interfaces/request.interface";
 import User from "../models/user";
-interface Child {
-  serial_number: number;
-  app_code: string;
-}
+import { permissionsListQuery, userPermissionQuery } from "../utils/query";
+import { StructuredResult } from "../interfaces/auth.interface";
+import { RequestWithUser } from "../interfaces/cmmon.interfacte";
 
-interface AppStructure {
-  serial_number: number;
-  app_code: string;
-  children: { [key: string]: Child };
-}
-
-export interface StructuredResult {
-  [key: string]: AppStructure;
-}
 export const login = async (req: Request, res: Response) => {
   try {
     const { error } = loginSchema(req.body);
@@ -111,20 +99,7 @@ export const me = async (req: RequestWithUser, res: Response) => {
 
     //-----------list of all permissions that user have------output:[1,42,3,4,66]
     let userSerialNumber: { serial_numbers: string }[] = await sequelize.query(
-      `SELECT GROUP_CONCAT(SERIAL_NO) AS serial_numbers
-       FROM SEC_MODULE_DATA 
-       WHERE SERIAL_NO IN (
-         SELECT a.SERIAL_NO
-         FROM SEC_ROLE_APP_ACCESS a
-         JOIN SEC_ROLE_FUNCTION_ACCESS_USER b 
-           ON a.role_id = b.SERIAL_NO_OR_ROLE_ID
-         WHERE b.loginid = :loginid
-         UNION
-         SELECT a.SERIAL_NO_OR_ROLE_ID
-         FROM SEC_ROLE_FUNCTION_ACCESS_USER a
-         WHERE a.loginid = :loginid
-           AND a.SERIAL_NO_OR_ROLE_ID < 90001
-       )`,
+      userPermissionQuery,
       {
         type: QueryTypes.SELECT,
         replacements: { loginid: user.dataValues.loginid }, // Replace with the actual login ID
@@ -142,46 +117,9 @@ export const me = async (req: RequestWithUser, res: Response) => {
       menu: string;
       serial_no: string;
       app_code: string;
-    }[] = await sequelize.query(
-      `SELECT DISTINCT 
-          app_code AS menu, 
-          '0' AS level, 
-          0 AS serial_no, 
-          app_code 
-      FROM SEC_MODULE_DATA 
-      WHERE LTRIM(RTRIM(level2)) = '' OR LTRIM(RTRIM(level1)) = ''
-      
-      UNION
-      
-      SELECT 
-          level1 AS menu, 
-          app_code AS level, 
-          serial_no, 
-          app_code AS app_code 
-      FROM SEC_MODULE_DATA 
-      WHERE LTRIM(RTRIM(level2)) = '' OR LTRIM(RTRIM(level1)) = ''
-      
-      UNION
-      
-      SELECT 
-          level2 AS menu, 
-          level1 AS level, 
-          serial_no, 
-          (SELECT app_code FROM SEC_MODULE_DATA WHERE LTRIM(RTRIM(level1)) != '' LIMIT 1) AS app_code 
-      FROM SEC_MODULE_DATA 
-      WHERE LTRIM(RTRIM(level3)) = '' AND LTRIM(RTRIM(level2)) != ''
-      
-      UNION
-      
-      SELECT 
-          level3 AS menu, 
-          level2 AS level, 
-          serial_no, 
-          (SELECT app_code FROM SEC_MODULE_DATA WHERE LTRIM(RTRIM(level2)) != '' LIMIT 1) AS app_code 
-      FROM SEC_MODULE_DATA 
-      WHERE LTRIM(RTRIM(level3)) != '' AND LTRIM(RTRIM(level2)) != ''`,
-      { type: QueryTypes.SELECT }
-    );
+    }[] = await sequelize.query(permissionsListQuery, {
+      type: QueryTypes.SELECT,
+    });
 
     const permissions: StructuredResult =
       allPermissions.reduce((acc, curr) => {

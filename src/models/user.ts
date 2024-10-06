@@ -1,6 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../database/connection";
-import { UserAttribute } from "../interfaces/user.type";
+import { UserAttribute } from "../interfaces/user.interface";
 import constants from "../helpers/constants";
 
 class User extends Model<UserAttribute> {}
