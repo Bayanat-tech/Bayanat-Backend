@@ -43,10 +43,10 @@ export const buildTree = (
 
     if (!tree[APP_CODE]) {
       tree[APP_CODE] = {
-        id: permission[APP_CODE].serial_number.toString(),
+        id: (permission[APP_CODE]?.serial_number??0).toString(),
         title: APP_CODE,
         type: "collapse",
-        icon: "AbcIcon", // Default icon or map based on APP_CODE
+        icon: "AbcIcon", 
         url_path: APP_CODE.toLowerCase(),
         children: [],
       };
@@ -58,7 +58,7 @@ export const buildTree = (
     );
     if (!level1Node && LEVEL1) {
       level1Node = {
-        id: permission[APP_CODE].children[LEVEL1].serial_number.toString(), // Use SERIAL_NO for LEVEL1
+        id: permission[APP_CODE].children[LEVEL1]?.serial_number.toString(), // Use SERIAL_NO for LEVEL1
         url_path: APP_CODE.toLowerCase(),
         title: LEVEL1,
         type: "collapse",
@@ -66,6 +66,7 @@ export const buildTree = (
         children: [],
       };
       tree[APP_CODE].children!.push(level1Node);
+      tree[APP_CODE].id=permission[APP_CODE].children[LEVEL1]?.serial_number.toString()
     }
 
     // Find or create Level 2 (LEVEL2), using SERIAL_NO for LEVEL2
@@ -75,7 +76,7 @@ export const buildTree = (
       );
       if (!level2Node) {
         level2Node = {
-          id: permission[APP_CODE].children[LEVEL2].serial_number.toString(), // Use SERIAL_NO for LEVEL2
+          id: permission[APP_CODE].children[LEVEL2]?.serial_number.toString(), // Use SERIAL_NO for LEVEL2
           title: LEVEL2,
           type: "collapse",
           icon: "AbcIcon",
@@ -91,7 +92,7 @@ export const buildTree = (
         );
         if (!level3Node) {
           level3Node = {
-            id: permission[APP_CODE].children[LEVEL3].serial_number.toString(), // Use SERIAL_NO for LEVEL3
+            id: permission[APP_CODE].children[LEVEL3]?.serial_number.toString(), // Use SERIAL_NO for LEVEL3
             title: LEVEL3,
             url_path: URL_PATH,
             type: "item",
