@@ -6,7 +6,6 @@ export interface IUser {
   loginid: string;
   email_id: string;
   username: string;
-  status: string;
   contact_name?: string;
   contact_no?: string;
   contact_email?: string;

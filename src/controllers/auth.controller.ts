@@ -28,6 +28,7 @@ export const login = async (req: Request, res: Response) => {
     const user = await User.findOne({
       where: {
         [Op.or]: [{ email_id: email }, { loginid: email }],
+        [Op.and]: { active_flag: "Y" },
       },
     });
     if (!user) {
@@ -111,7 +112,6 @@ export const me = async (req: RequestWithUser, res: Response) => {
         ?.split(",")
         ?.filter(Boolean)
         ?.map(Number) ?? [];
-console.log("called1");
 
     //----------------------list of all permission that  a application will have--------output:wms:{serial_no:1,app_code:"WMS",childer:{}}
     const allPermissions: {
@@ -131,7 +131,7 @@ console.log("called1");
         if (serialNumber > 0) {
           if (!acc[app_code]) {
             acc[app_code] = {
-              serial_number: serialNumber??0,
+              serial_number: serialNumber ?? 0,
               app_code: app_code,
               children: {},
             };
@@ -139,7 +139,7 @@ console.log("called1");
 
           if (menu !== app_code) {
             acc[app_code].children[menu] = {
-              serial_number: serialNumber??0,
+              serial_number: serialNumber ?? 0,
               app_code,
             };
           }
@@ -147,7 +147,6 @@ console.log("called1");
 
         return acc;
       }, {} as StructuredResult) ?? {};
-console.log("called2");
 
     //--------------tree view -----------------
     let permissionBasedMenuTree = {};
@@ -163,7 +162,6 @@ console.log("called2");
 
       if (menuTreeData)
         permissionBasedMenuTree = buildTree(menuTreeData, permissions);
-      console.log("Called3");
     }
 
     res.status(constants.STATUS_CODES.OK).json({

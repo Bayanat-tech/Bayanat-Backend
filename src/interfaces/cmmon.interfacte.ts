@@ -37,3 +37,7 @@ export interface RequestWithUser extends Request {
   user?: any;
   query: any;
 }
+export interface TCreatedORUpdatedBy {
+  loginid: string;
+  username: string;
+}

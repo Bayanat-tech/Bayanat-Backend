@@ -23,10 +23,6 @@ User.init(
       type: DataTypes.STRING(400),
       allowNull: false,
     },
-    status: {
-      type: DataTypes.CHAR(1),
-      allowNull: false,
-    },
     contact_name: {
       type: DataTypes.STRING(100),
     },

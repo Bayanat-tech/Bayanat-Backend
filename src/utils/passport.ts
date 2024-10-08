@@ -15,7 +15,7 @@ passport.use(
     },
     async (jwtPayload, cb) => {
       try {
-        const user = await User.findOne({
+        await User.findOne({
           where: { email_id: jwtPayload.email_id },
         })
           .then((user: User | null) => {
