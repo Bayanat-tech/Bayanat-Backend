@@ -5,6 +5,7 @@ export default {
   TABLE: {
     SEC_LOGIN: "SEC_LOGIN",
     MS_COUNTRY: "MS_COUNTRY",
+    MS_DEPARTMENT: "MS_DEPARTMENT",
   },
 
   AUTHENTICATION: {
