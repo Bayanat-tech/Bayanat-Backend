@@ -1,7 +1,7 @@
 import * as express from "express";
 import passport from "passport";
 import { getWmsMaster } from "../controllers/wms.controller";
-import countryWmsRouter from "./wms/country_wms.routes";
+import gmWmsRouter from "./wms/gm_wms.routes";
 import { checkUserAuthorization } from "../middleware/checkUserAthorization";
 
 const router = express.Router();
@@ -17,7 +17,7 @@ router.use(
   "/gm",
   passport.authenticate("jwt", { session: false }),
   checkUserAuthorization,
-  countryWmsRouter
+  gmWmsRouter
 );
 
 router.delete(
