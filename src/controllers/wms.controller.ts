@@ -31,4 +31,20 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
     });
     return;
   } catch (err) {}
+  case "industry":
+    {
+      (fetchedData = await Country.findAll({
+        where: { sector_code: requestUser.sector_code },
+        offset: skip,
+        limit: limit,
+      })) as unknown[] as ICountry[];
+    }
+    break;
+}
+res.status(constants.STATUS_CODES.OK).json({
+  success: true,
+  data: { tableData: fetchedData, count: fetchedData?.length },
+});
+return;
+} catch (err) {}
 };
