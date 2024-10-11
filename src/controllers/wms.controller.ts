@@ -3,7 +3,7 @@ import { RequestWithUser } from "../interfaces/cmmon.interfacte";
 import Country from "../models/wms/country_wms.model";
 import { IUser } from "../interfaces/user.interface";
 import constants from "../helpers/constants";
-import { ICountry } from "../interfaces/wms/country_wms.interface";
+import { ICountry } from "../interfaces/wms/gm_wms.interface";
 
 export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
   try {

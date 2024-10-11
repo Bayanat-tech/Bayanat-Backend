@@ -14,7 +14,6 @@ app.use(express.urlencoded({ extended: true }));
 //routes
 import authRoutes from "./src/routes/auth.routes";
 import wmsRoutes from "./src/routes/wms.routes";
-
 app.use("/api/auth", authRoutes);
 app.use("/api/wms", wmsRoutes);
 

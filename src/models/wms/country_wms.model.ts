@@ -1,7 +1,7 @@
-import { DataTypes, Model } from "sequelize";
-import { ICountry } from "../../interfaces/wms/country_wms.interface";
+ import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
+import { ICountry } from "../../interfaces/wms/gm_wms.interface";
 
 class Country extends Model<ICountry> {}
 
@@ -59,3 +59,5 @@ Country.init(
 );
 
 export default Country;
+
+
