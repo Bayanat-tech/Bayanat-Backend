@@ -15,12 +15,16 @@ export const countrySchema = (data: ICountry) => {
 };
 export const departmentSchema = (data: IDepartment) => {
   const schema = Joi.object().keys({
-    company_code: Joi.string().required(),
     dept_code: Joi.string().required(),
     dept_name: Joi.string().required(),
-    jobno_seq: Joi.string().allow(null),
+    inv_flag: Joi.string().allow(null),
+    jobno_seq: Joi.number().allow(null),
+    invno_seq: Joi.number().allow(null),
+    company_code: Joi.string().required(),
     operation_type: Joi.string().allow(null),
+    
     div_code: Joi.string().allow(null),
+    ac_div_code: Joi.string().allow(null),
     dept_email: Joi.string().allow(null),
     dn_email: Joi.string().allow(null),
     grn_email: Joi.string().allow(null),

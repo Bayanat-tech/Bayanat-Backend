@@ -26,7 +26,7 @@ Department.init(
       },
       operation_type: {
         type: DataTypes.STRING(1),  // Corrected length to 1
-        allowNull: false,
+        allowNull: true,
       },
       div_code: {
         type: DataTypes.STRING(5),  // Corrected to STRING(5)
@@ -34,38 +34,38 @@ Department.init(
       },
       ac_div_code: {
         type: DataTypes.STRING(5),  // Corrected to STRING(5)
-        allowNull: false,
+        allowNull: true,
       },
       dept_email: {
         type: DataTypes.STRING(250),  // Corrected length to 250
-        allowNull: false,
+        allowNull: true,
       },
       dn_email: {
         type: DataTypes.STRING(250),  // Corrected length to 250
-        allowNull: false,
+        allowNull: true,
       },
       grn_email: {
         type: DataTypes.STRING(250),  // Corrected length to 250
-        allowNull: false,
+        allowNull: true,
       },
       inv_gen: {
         type: DataTypes.CHAR(1),  // Corrected to CHAR(1)
-        allowNull: false,
+        allowNull: true,
       },
       inb_oub_related: {  // Corrected column name to INB_OUB_RELATED
         type: DataTypes.CHAR(1),  // Corrected to CHAR(1)
-        allowNull: false,
+        allowNull: true,
       },
       inv_prefix: {
         type: DataTypes.STRING(2),  // Corrected length to 2
-        allowNull: false,
+        allowNull: true,
       },
       jobno_seq: {
-        type: DataTypes.INTEGER,  // Corrected to INTEGER
+        type: DataTypes.NUMBER,  // Corrected to INTEGER
         allowNull: true,
       },
       invno_seq: {
-        type: DataTypes.INTEGER,  // Corrected to INTEGER
+        type: DataTypes.NUMBER,  // Corrected to INTEGER
         allowNull: true,
       },
       updated_by: {
