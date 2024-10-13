@@ -16,8 +16,8 @@ export const countrySchema = (data: ICountry) => {
 export const departmentSchema = (data: IDepartment) => {
   const schema = Joi.object().keys({
     company_code: Joi.string().required(),
-    department_code: Joi.string().required(),
-    department_name: Joi.string().required(),
+    dept_code: Joi.string().required(),
+    dept_name: Joi.string().required(),
     jobno_seq: Joi.string().allow(null),
     operation_type: Joi.string().allow(null),
     div_code: Joi.string().allow(null),
@@ -27,10 +27,10 @@ export const departmentSchema = (data: IDepartment) => {
     inv_gen: Joi.string().allow(null),
     inb_oub_related: Joi.string().allow(null),
     inv_prefix: Joi.string().allow(null),
- 
+
     //country_gcc: Joi.string().valid("Y", "N").required(),
     //short_desc: Joi.string().allow(null),
-   // nationality: Joi.string().allow(null),
+    // nationality: Joi.string().allow(null),
   });
   return schema.validate(data);
 };

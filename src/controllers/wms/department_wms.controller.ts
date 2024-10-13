@@ -8,8 +8,8 @@ import { departmentSchema } from "../../validation/wms/gm.validation";
 
 export const createdepartment = async (req: RequestWithUser, res: Response) => {
   try {
+    console.log("data aaya ki nhi in function bakend..", req.body);
     const requestUser: IUser = req.user;
-
     const { error } = departmentSchema(req.body);
     if (error) {
       res
@@ -17,14 +17,10 @@ export const createdepartment = async (req: RequestWithUser, res: Response) => {
         .json({ success: false, message: error.message });
       return;
     }
-    const { department_code, company_code } = req.body;
-
+    const { dept_code, company_code } = req.body;
     const department = await Department.findOne({
       where: {
-        [Op.and]: [
-          { company_code: company_code },
-          { dept_code: department_code },
-        ],
+        [Op.and]: [{ company_code: company_code }, { dept_code: dept_code }],
       },
     });
 
@@ -39,7 +35,6 @@ export const createdepartment = async (req: RequestWithUser, res: Response) => {
       company_code,
       created_by: requestUser.loginid,
       updated_by: requestUser.loginid,
-
       ...req.body,
     });
     if (!createdepartment) {
@@ -50,7 +45,8 @@ export const createdepartment = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.DEPARTMENT_WMS.DEPARTMENT_CREATED_SUCCESSFULLY,
+      message:
+        constants.MESSAGES.DEPARTMENT_WMS.DEPARTMENT_CREATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -63,7 +59,6 @@ export const createdepartment = async (req: RequestWithUser, res: Response) => {
 export const updatedepartment = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
-
     const { error } = departmentSchema(req.body);
     if (error) {
       res
@@ -71,14 +66,11 @@ export const updatedepartment = async (req: RequestWithUser, res: Response) => {
         .json({ success: false, message: error.message });
       return;
     }
-    const { department_code, company_code } = req.body;
+    const { dept_code, company_code } = req.body;
 
     const department = await Department.findOne({
       where: {
-        [Op.and]: [
-          { company_code: company_code },
-          { dept_code: department_code },
-        ],
+        [Op.and]: [{ company_code: company_code }, { dept_code: dept_code }],
       },
     });
 
@@ -94,14 +86,13 @@ export const updatedepartment = async (req: RequestWithUser, res: Response) => {
         company_code,
         created_by: requestUser.loginid,
         updated_by: requestUser.loginid,
-
         ...req.body,
       },
       {
         where: {
           [Op.and]: [
             { company_code: company_code },
-            { department_code: department_code },
+            { department_code: dept_code },
           ],
         },
       }
@@ -114,7 +105,8 @@ export const updatedepartment = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.DEPARTMENT_WMS.DEPARTMENT_UPDATED_SUCCESSFULLY,
+      message:
+        constants.MESSAGES.DEPARTMENT_WMS.DEPARTMENT_UPDATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
