@@ -1,6 +1,6 @@
   import * as express from "express";
   import passport from "passport";
-  import { getWmsMaster } from "../controllers/wms.controller";
+  import { getWmsMaster, deleteWmsMaster } from "../controllers/wms.controller";
   import gmWmsRouter from "./wms/gm_wms.routes";
   import { checkUserAuthorization } from "../middleware/checkUserAthorization";
 
@@ -23,6 +23,6 @@
   router.delete(
     "/:master",
     passport.authenticate("jwt", { session: false }),
-    getWmsMaster
+    deleteWmsMaster
   );
   export default router;
