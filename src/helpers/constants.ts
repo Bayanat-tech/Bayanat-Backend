@@ -9,6 +9,7 @@ export default {
     MS_TERRITORY: "MS_TERRITORY",
     MS_CURRENCY: "MS_CURRENCY",
     MS_SALESMAN: "MS_SALESMAN",
+    MS_SITE: "MS_SITE",
   },
 
   AUTHENTICATION: {
