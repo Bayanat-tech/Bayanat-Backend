@@ -10,6 +10,7 @@ export default {
     MS_CURRENCY: "MS_CURRENCY",
     MS_SALESMAN: "MS_SALESMAN",
     MS_SITE: "MS_SITE",
+    MS_STORAGE:"MS_STORAGE_CHARGE",
   },
 
   AUTHENTICATION: {
