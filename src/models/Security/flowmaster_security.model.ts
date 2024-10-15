@@ -1,27 +1,23 @@
 import { DataTypes, Model } from "sequelize";
-import { IIndustrysector } from "../../interfaces/wms/gm_wms.interface";
+import { IFlowmaster } from "../../interfaces/Security/Security.interfae";
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
 
-class industrysector extends Model<IIndustrysector> {}
+class flowmaster extends Model<IFlowmaster> {}
 
-industrysector.init(
+flowmaster.init(
   {
-    sector_code: {
+    flow_code: {
       type: DataTypes.STRING(5),
       allowNull: false,
       primaryKey: true,
     },
-    sector_name: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-    },
-    remarks: {
+    flow_description: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
     company_code: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(5),
       allowNull: false,
     },
     updated_by: {
@@ -43,11 +39,11 @@ industrysector.init(
   },
   {
     sequelize,
-    modelName: "Industrysector",
-    tableName: constants.TABLE.MS_INDUSTRY_SECTOR, 
+    modelName: "Flowmaster",
+    tableName: constants.TABLE.MS_PS_FLOW_MASTER, 
     createdAt: "created_at",
     updatedAt: "updated_at",
   }
 );
 
-export default industrysector;
+export default flowmaster;

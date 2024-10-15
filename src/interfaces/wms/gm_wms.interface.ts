@@ -1,4 +1,3 @@
-import { string } from "joi";
 
 export interface ICountry {
   country_code: string;
@@ -12,6 +11,20 @@ export interface ICountry {
   updated_at?: Date;
   updated_by?: string;
 }
+
+export interface  IIndustrysector {
+  sector_code: string;
+  sector_name: string;
+  remarks: string;
+  company_code?: string;
+  created_at?: Date;
+  created_by?: string;
+  updated_at?: Date;
+  updated_by?: string;
+}
+
+
+
 export interface IDepartment {
   dept_code: string;
   dept_name: string;
@@ -33,3 +46,4 @@ export interface IDepartment {
   updated_at?: Date;
   updated_by?: string;
 }
+

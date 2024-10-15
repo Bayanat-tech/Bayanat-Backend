@@ -1,27 +1,27 @@
 import { DataTypes, Model } from "sequelize";
-import { IIndustrysector } from "../../interfaces/wms/gm_wms.interface";
+import { IRolemaster } from "../../interfaces/Security/Security.interfae";
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
 
-class industrysector extends Model<IIndustrysector> {}
+class rolemaster extends Model<IRolemaster> {}
 
-industrysector.init(
+rolemaster.init(
   {
-    sector_code: {
-      type: DataTypes.STRING(5),
+    role_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
     },
-    sector_name: {
-      type: DataTypes.STRING(50),
+    role_desc: {
+      type: DataTypes.STRING(30),
       allowNull: false,
     },
     remarks: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(50),
       allowNull: false,
     },
     company_code: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(10),
       allowNull: false,
     },
     updated_by: {
@@ -43,11 +43,11 @@ industrysector.init(
   },
   {
     sequelize,
-    modelName: "Industrysector",
-    tableName: constants.TABLE.MS_INDUSTRY_SECTOR, 
+    modelName: "Rolemaster",
+    tableName: constants.TABLE.SEC_ROLE_MASTER, 
     createdAt: "created_at",
     updatedAt: "updated_at",
   }
 );
 
-export default industrysector;
+export default rolemaster;

@@ -1,27 +1,23 @@
 import { DataTypes, Model } from "sequelize";
-import { IIndustrysector } from "../../interfaces/wms/gm_wms.interface";
+import { ICostmaster } from "../../interfaces/Purchaseflow/Purucahseflow.interface";
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
 
-class industrysector extends Model<IIndustrysector> {}
+class costmaster extends Model<ICostmaster> {}
 
-industrysector.init(
+costmaster.init(
   {
-    sector_code: {
-      type: DataTypes.STRING(5),
+    cost_code: {
+      type: DataTypes.STRING(50),
       allowNull: false,
       primaryKey: true,
     },
-    sector_name: {
-      type: DataTypes.STRING(50),
+    cost_name: {
+      type: DataTypes.STRING(30),
       allowNull: false,
     },
-    remarks: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-    company_code: {
-      type: DataTypes.STRING(20),
+   company_code: {
+      type: DataTypes.STRING(10),
       allowNull: false,
     },
     updated_by: {
@@ -43,11 +39,11 @@ industrysector.init(
   },
   {
     sequelize,
-    modelName: "Industrysector",
-    tableName: constants.TABLE.MS_INDUSTRY_SECTOR, 
+    modelName: "Costmaster",
+    tableName: constants.TABLE.MS_PS_COST, 
     createdAt: "created_at",
     updatedAt: "updated_at",
   }
 );
 
-export default industrysector;
+export default costmaster;

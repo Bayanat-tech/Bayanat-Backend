@@ -1,7 +1,10 @@
 import Joi from "joi";
 import { IIndustrysector } from "../../interfaces/wms/industrysector_wms.interface";
-import { ICountry } from "../../interfaces/wms/gm_wms.interface";
-import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
+import { ICountry,IDepartment } from "../../interfaces/wms/gm_wms.interface";
+//import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
+
+
+
 
 export const countrySchema = (data: ICountry) => {
   const schema = Joi.object().keys({
