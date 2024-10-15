@@ -18,6 +18,7 @@ import Currency from "../models/wms/currency_wms.model";
 import Territory from "../models/wms/territory_wms.model";
 import Salesman from "../models/wms/salesman_wms.model";
 import Site from "../models/wms/site_wms.model";
+import Storage from "../models/wms/storage_wms.model";
 
 // Retrieves master data (country, department, territory, etc.) with optional pagination based on the `master` type.
 export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
@@ -114,6 +115,21 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as IFlowmaster[];
         }
         break;
+        case "site" :
+          {
+            (fetchedData = await Site.findAll({
+              where: { company_code: requestUser.company_code },
+             ...paginationOptions
+            }))
+          }
+          break;
+          case "storage":
+            {
+              (fetchedData = await Storage.findAll({
+                where: { company_code: 'BSG' },
+               ...paginationOptions
+              }))
+            }
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
