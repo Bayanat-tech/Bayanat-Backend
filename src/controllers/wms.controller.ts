@@ -20,6 +20,10 @@ import Salesman from "../models/wms/salesman_wms.model";
 import Site from "../models/wms/site_wms.model";
 import Storage from "../models/wms/storage_wms.model";
 
+// --- Database sequelize import ---
+import { sequelize } from "../database/connection";
+import { QueryTypes } from "sequelize";
+
 // Retrieves master data (country, department, territory, etc.) with optional pagination based on the `master` type.
 export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
   try {
@@ -115,21 +119,48 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as IFlowmaster[];
         }
         break;
-        case "site" :
-          {
-            (fetchedData = await Site.findAll({
-              where: { company_code: requestUser.company_code },
-             ...paginationOptions
-            }))
-          }
-          break;
-          case "storage":
-            {
-              (fetchedData = await Storage.findAll({
-                where: { company_code: 'BSG' },
-               ...paginationOptions
-              }))
-            }
+      case "site":
+        {
+          fetchedData = await Site.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          });
+        }
+        break;
+      case "storage":
+        {
+          fetchedData = await Storage.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          });
+        }
+        break;
+
+      case "activity_billing": {
+        const query = `
+                SELECT
+                  P.PRIN_NAME,
+                  B.ACT_CODE,
+                  A.ACTIVITY,
+                  B.JOBTYPE
+                FROM
+                  MS_PRINCIPAL P
+                JOIN
+                  MS_ACTIVITY_BILLING B ON P.PRIN_CODE = B.PRIN_CODE
+                JOIN
+                  MS_ACTIVITY A ON B.ACT_CODE = A.ACTIVITY_CODE
+                WHERE
+                  P.COMPANY_CODE = :companyCode;
+              `;
+
+        const activityBillingData = await sequelize.query(query, {
+          replacements: { companyCode: requestUser.company_code },
+          type: QueryTypes.SELECT,
+        });
+
+        fetchedData = activityBillingData;
+        break;
+      }
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
