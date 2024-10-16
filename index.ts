@@ -16,12 +16,12 @@ import authRoutes from "./src/routes/auth.routes";
 import wmsRoutes from "./src/routes/wms.routes";
 import pfRoutes from "./src/routes/pf_routes";
 import secRoutes from "./src/routes/secuity_routes";
+
+//----------------routes-------------
 app.use("/api/auth", authRoutes);
 app.use("/api/wms", wmsRoutes);
 app.use("/api/pf", pfRoutes);
 app.use("/api/security", secRoutes);
-
-
 
 // Start the server
 const PORT = process.env.PORT || 3500;

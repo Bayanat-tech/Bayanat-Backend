@@ -92,7 +92,6 @@ export const updateCountry = async (req: RequestWithUser, res: Response) => {
     const createCountry = await Country.update(
       {
         company_code,
-        created_by: requestUser.loginid,
         updated_by: requestUser.loginid,
 
         ...req.body,

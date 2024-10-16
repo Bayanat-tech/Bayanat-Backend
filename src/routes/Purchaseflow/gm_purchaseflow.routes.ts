@@ -1,12 +1,9 @@
 import * as express from "express";
 
 import {
-   
   createcostmaster,
-  updatecostmaster
- 
-  
-} from "../../controllers/Purchaseflow/costmaster_pf.controller"
+  updatecostmaster,
+} from "../../controllers/Purchaseflow/costmaster_pf.controller";
 
 const router = express.Router();
 

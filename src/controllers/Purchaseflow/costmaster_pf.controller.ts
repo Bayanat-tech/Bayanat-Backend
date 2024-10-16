@@ -6,7 +6,7 @@ import { IUser } from "../../interfaces/user.interface";
 import Costmaster from "../../models/Purchaseflow/costmaster_pf.model";
 import { costmasterSchema } from "../../validation/Purchaseflow/Purchaseflow.validation";
 
-export const createcostmaster  = async (req: RequestWithUser, res: Response) => {
+export const createcostmaster = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
@@ -17,36 +17,32 @@ export const createcostmaster  = async (req: RequestWithUser, res: Response) => 
         .json({ success: false, message: error.message });
       return;
     }
-    const { cost_code, cost_name,company_code } = req.body;
+    const { cost_code, cost_name, company_code } = req.body;
 
-    const costmasterData  = await Costmaster.findOne({
+    const costmasterData = await Costmaster.findOne({
       where: {
-        [Op.and]: [
-          { company_code: company_code },
-          { cost_code: cost_code },
-        ],
+        [Op.and]: [{ company_code: company_code }, { cost_code: cost_code }],
       },
     });
 
-    if (costmasterData ) {
+    if (costmasterData) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-         message: constants.MESSAGES.COSTMASTER_PF.COSTMASTER_ALREADY_EXISTS,
+        message: constants.MESSAGES.COSTMASTER_PF.COSTMASTER_ALREADY_EXISTS,
       });
       return;
     }
 
-    const createcostmaster  = await Costmaster.create({
+    const createcostmaster = await Costmaster.create({
       cost_code,
       cost_name,
       company_code,
       created_by: requestUser.loginid,
-      updated_by: requestUser.loginid
-
+      updated_by: requestUser.loginid,
     });
-    
-    
-    if (!createcostmaster ) {3
+
+    if (!createcostmaster) {
+      3;
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while Cost code" });
@@ -54,7 +50,7 @@ export const createcostmaster  = async (req: RequestWithUser, res: Response) => 
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-          message: constants.MESSAGES.COSTMASTER_PF.COSTMASTER_CREATED_SUCCESSFULLY,
+      message: constants.MESSAGES.COSTMASTER_PF.COSTMASTER_CREATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -64,7 +60,7 @@ export const createcostmaster  = async (req: RequestWithUser, res: Response) => 
     return;
   }
 };
-export const updatecostmaster  = async (req: RequestWithUser, res: Response) => {
+export const updatecostmaster = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
@@ -75,26 +71,22 @@ export const updatecostmaster  = async (req: RequestWithUser, res: Response) => 
         .json({ success: false, message: error.message });
       return;
     }
-    const { cost_code, cost_name,remarks,company_code} = req.body;
+    const { cost_code, cost_name, remarks, company_code } = req.body;
 
-    const costmasterData  = await Costmaster.findOne({
+    const costmasterData = await Costmaster.findOne({
       where: {
-        [Op.and]: [
-          { company_code: company_code },
-          { cost_code: cost_code },
-        ],
+        [Op.and]: [{ company_code: company_code }, { cost_code: cost_code }],
       },
     });
 
-    if (!costmasterData ) {
+    if (!costmasterData) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-   	message: constants.MESSAGES.COSTMASTER_PF.COSTMASTER_DOES_NOT_EXISTS,
-        
+        message: constants.MESSAGES.COSTMASTER_PF.COSTMASTER_DOES_NOT_EXISTS,
       });
       return;
     }
-    const createcostmaster  = await Costmaster.update(
+    const createcostmaster = await Costmaster.update(
       {
         company_code,
         created_by: requestUser.loginid,
@@ -104,14 +96,11 @@ export const updatecostmaster  = async (req: RequestWithUser, res: Response) => 
       },
       {
         where: {
-          [Op.and]: [
-            { company_code: company_code },
-            { cost_code: cost_code },
-          ],
+          [Op.and]: [{ company_code: company_code }, { cost_code: cost_code }],
         },
       }
     );
-    if (!createcostmaster ) {
+    if (!createcostmaster) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while updating company" });
@@ -136,7 +125,8 @@ export const deletecostmaster = async (req: RequestWithUser, res: Response) => {
     if (!req.body.length) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-         message: constants.MESSAGES.COSTMASTER_PF.SELECT_AT_LEAST_ONE_COSTMASTER,
+        message:
+          constants.MESSAGES.COSTMASTER_PF.SELECT_AT_LEAST_ONE_COSTMASTER,
       });
       return;
     }
@@ -154,7 +144,7 @@ export const deletecostmaster = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-   message: constants.MESSAGES.COSTMASTER_PF.COSTMASTER_DELETED_SUCCESSFULLY,
+      message: constants.MESSAGES.COSTMASTER_PF.COSTMASTER_DELETED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {

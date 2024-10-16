@@ -1,7 +1,7 @@
 import * as express from "express";
 import passport from "passport";
-import { getPfMaster } from "../controllers/Purchaseflow/purchaseflow.controller"
-import gmPfRouter from "./Purchaseflow/gm_purchaseflow.routes"
+import { getPfMaster } from "../controllers/Purchaseflow/purchaseflow.controller";
+import gmPfRouter from "./Purchaseflow/gm_purchaseflow.routes";
 import { checkUserAuthorization } from "../middleware/checkUserAthorization";
 
 const router = express.Router();

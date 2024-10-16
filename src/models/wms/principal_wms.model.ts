@@ -1,15 +1,16 @@
 import { DataTypes, Model } from "sequelize";
-import { IPrincipal } from "../../interfaces/wms/principal_wms.interface";
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
+import { IPrincipalWms } from "../../interfaces/wms/principal_wms.interface";
 
-class Principal extends Model<IPrincipal> {};
+class Principal extends Model<IPrincipalWms> {}
 
 Principal.init(
   {
-    company_code:{
-      type: DataTypes.STRING(10),
+    company_code: {
+      type: DataTypes.STRING(15),
       allowNull: false,
+      unique: true,
     },
     prin_code: {
       type: DataTypes.STRING(15),
@@ -40,15 +41,19 @@ Principal.init(
       type: DataTypes.STRING(30),
       allowNull: true,
     },
+    country_code: {
+      type: DataTypes.STRING(2),
+      allowNull: true,
+    },
+    territory_code: {
+      type: DataTypes.STRING(2),
+      allowNull: true,
+    },
     tax_country_code: {
       type: DataTypes.STRING(2),
       allowNull: true,
     },
     tax_country_sn: {
-      type: DataTypes.STRING(10),
-      allowNull: true,
-    },
-    salesman_code: {
       type: DataTypes.STRING(10),
       allowNull: true,
     },
@@ -122,16 +127,15 @@ Principal.init(
     },
     prin_invdate: {
       type: DataTypes.DATE,
-      allowNull: false,
+      // allowNull: false,
+
+      allowNull: true,
     },
     curr_code: {
       type: DataTypes.STRING(3),
       allowNull: false,
     },
-    prin_backdt: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: true,
-    },
+
     prin_infze: {
       type: DataTypes.STRING(1),
       allowNull: true,
@@ -160,10 +164,7 @@ Principal.init(
       type: DataTypes.STRING(20),
       allowNull: true,
     },
-    comm_reg_exp_date: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
+
     prin_imp_code: {
       type: DataTypes.STRING(10),
       allowNull: true,
@@ -172,46 +173,7 @@ Principal.init(
       type: DataTypes.STRING(15),
       allowNull: true,
     },
-    prin_cont_email1: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-    },
-    prin_cont_email2: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-    },
-    prin_cont_email3: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-    },
-    prin_cont_telno1: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-    prin_cont_telno2: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-    prin_cont_telno3: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-    prin_cont_faxno1: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-    prin_cont_faxno2: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-    prin_cont_faxno3: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-    prin_cont_ref1: {
-      type: DataTypes.STRING(50),
-      allowNull: true,
-    },
+
     pick_wave: {
       type: DataTypes.STRING(10),
       allowNull: true,
@@ -328,14 +290,6 @@ Principal.init(
       type: DataTypes.STRING(1),
       allowNull: true,
     },
-    created_at: { 
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    updated_at: { 
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
     updated_by: {
       type: DataTypes.STRING(50),
       allowNull: false,
@@ -346,12 +300,12 @@ Principal.init(
     },
   },
   {
-        sequelize,
-        modelName: "Principal",
-        tableName: constants.TABLE.MS_PRINCIPAL,
-        createdAt: "created_at",
-        updatedAt: "updated_at",
-      }
+    sequelize,
+    modelName: "Principal",
+    tableName: constants.TABLE.MS_PRINCIPAL,
+    createdAt: "created_at",
+    updatedAt: "updated_at",
+  }
 );
 
 export default Principal;
