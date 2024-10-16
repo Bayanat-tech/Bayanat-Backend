@@ -10,10 +10,12 @@ import { IIndustrysector } from "../interfaces/wms/gm_wms.interface";
 import { IFlowmaster } from "../interfaces/Security/Security.interfae";
 import { IRolemaster } from "../interfaces/Security/Security.interfae";
 import { ICostmaster } from "../interfaces/Purchaseflow/Purucahseflow.interface";
+import { ILocation } from "../interfaces/wms/location_wms.interface";
 
 // Importing models for WMS master data
 import Country from "../models/wms/country_wms.model";
 import Department from "../models/wms/department_wms.model";
+import Location from "../models/wms/location_wms.model";
 import Currency from "../models/wms/currency_wms.model";
 import Territory from "../models/wms/territory_wms.model";
 import Salesman from "../models/wms/salesman_wms.model";
@@ -25,6 +27,7 @@ import { sequelize } from "../database/connection";
 import { QueryTypes } from "sequelize";
 
 // Retrieves master data (country, department, territory, etc.) with optional pagination based on the `master` type.
+
 export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
   try {
     const { master } = req.params;
@@ -119,14 +122,7 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as IFlowmaster[];
         }
         break;
-      case "site":
-        {
-          fetchedData = await Site.findAll({
-            where: { company_code: requestUser.company_code },
-            ...paginationOptions,
-          });
-        }
-        break;
+
       case "storage":
         {
           fetchedData = await Storage.findAll({
@@ -161,6 +157,17 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
         fetchedData = activityBillingData;
         break;
       }
+
+      case "location":
+        {
+          //console.log("i am here ");
+          (fetchedData = await Location.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as ILocation[];
+          //console.log("i am here ");
+        }
+        break;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
@@ -215,6 +222,34 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
           });
         }
         break;
+      case "department":
+        {
+          if (!dept_code || dept_code.length === 0) {
+            throw new Error("departmentCode is required");
+          }
+          await Department.destroy({
+            where: {
+              company_code: requestUser.company_code,
+              dept_code: dept_code,
+            },
+          });
+        }
+        break;
+
+      case "location":
+        {
+          if (!dept_code || dept_code.length === 0) {
+            throw new Error("location Code is required");
+          }
+          await Location.destroy({
+            where: {
+              company_code: requestUser.company_code,
+              location_code: dept_code,
+            },
+          });
+        }
+        break;
+
       case "territory":
         {
           if (!territory_code || territory_code.length === 0) {
