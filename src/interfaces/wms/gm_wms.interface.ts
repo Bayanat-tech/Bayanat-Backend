@@ -1,4 +1,3 @@
-
 export interface ICountry {
   country_code: string;
   country_name: string;
@@ -12,7 +11,7 @@ export interface ICountry {
   updated_by?: string;
 }
 
-export interface  IIndustrysector {
+export interface IIndustrysector {
   sector_code: string;
   sector_name: string;
   remarks: string;
@@ -22,8 +21,6 @@ export interface  IIndustrysector {
   updated_at?: Date;
   updated_by?: string;
 }
-
-
 
 export interface IDepartment {
   dept_code: string;
@@ -37,7 +34,7 @@ export interface IDepartment {
   ac_div_code: string;
   dept_email: string;
   dn_email: string;
-  grn_email:  string;  
+  grn_email: string;
   inv_gen: string;
   inb_oub_related: string;
   inv_prefix: string;
@@ -46,4 +43,3 @@ export interface IDepartment {
   updated_at?: Date;
   updated_by?: string;
 }
-

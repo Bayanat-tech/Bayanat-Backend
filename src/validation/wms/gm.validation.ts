@@ -1,10 +1,8 @@
 import Joi from "joi";
 import { IIndustrysector } from "../../interfaces/wms/industrysector_wms.interface";
-import { ICountry,IDepartment } from "../../interfaces/wms/gm_wms.interface";
+import { ICountry, IDepartment } from "../../interfaces/wms/gm_wms.interface";
+import { IPort } from "../../interfaces/wms/port_wms.interface";
 //import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
-
-
-
 
 export const countrySchema = (data: ICountry) => {
   const schema = Joi.object().keys({
@@ -17,13 +15,24 @@ export const countrySchema = (data: ICountry) => {
   });
   return schema.validate(data);
 };
+
+export const portSchema = (data: IPort) => {
+  const schema = Joi.object().keys({
+    company_code: Joi.string().required(),
+    port_code: Joi.string().required(),
+    port_name: Joi.string().required().allow(null),
+    country_code: Joi.string(),
+    trp_mode: Joi.string().allow(""),
+  });
+  return schema.validate(data);
+};
 export const industrysectorSchema = (data: IIndustrysector) => {
   const schema = Joi.object().keys({
     company_code: Joi.string().required(),
     sector_code: Joi.string().required(),
     sector_name: Joi.string().required(),
-    remarks: Joi.string().required()
-      });
+    remarks: Joi.string().required(),
+  });
   return schema.validate(data);
 };
 
@@ -36,7 +45,7 @@ export const departmentSchema = (data: IDepartment) => {
     invno_seq: Joi.number().allow(null),
     company_code: Joi.string().required(),
     operation_type: Joi.string().allow(null),
-    
+
     div_code: Joi.string().allow(null),
     ac_div_code: Joi.string().allow(null),
     dept_email: Joi.string().allow(null),

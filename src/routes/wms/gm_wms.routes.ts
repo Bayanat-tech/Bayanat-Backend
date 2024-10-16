@@ -3,38 +3,36 @@ import {
   createCountry,
   deleteCountries,
   updateCountry,
-  } from "../../controllers/wms/country_wms.controller";
-  
-import { createdepartment, updatedepartment } from "../../controllers/wms/department_wms.controller";
+} from "../../controllers/wms/country_wms.controller";
+
+import {
+  createPort,
+  deletePorts,
+  updatePort,
+} from "../../controllers/wms/port_wms.controller";
+
+import {
+  createdepartment,
+  updatedepartment,
+} from "../../controllers/wms/department_wms.controller";
 //import { createcountry, updateCountry } from "../../controllers/wms/country_wms.controller";
 //import { createdepartment, updatedepartment } from "../../controllers/wms/flowmaster_wms.controller";
 //import { createdepartment, updatedepartment } from "../../controllers/wms/rolemaster_wms.controller";
 
 import {
-   
   createcostmaster,
-  updatecostmaster
- 
-  
-} from "../../controllers/Purchaseflow/costmaster_pf.controller"
-
+  updatecostmaster,
+} from "../../controllers/Purchaseflow/costmaster_pf.controller";
 
 import {
-
   createrolemaster,
-  updaterolemaster
- 
-  
+  updaterolemaster,
 } from "../../controllers/Security/rolemaster_security.controller";
 
 import {
-
   createflowmaster,
-  updateflowmaster
- 
-  
+  updateflowmaster,
 } from "../../controllers/Security/flowmaster_security.controller";
-
 
 const router = express.Router();
 
@@ -43,7 +41,6 @@ router.put("/rolemaster", updaterolemaster);
 
 router.post("/flowmaster", createflowmaster);
 router.put("/flowmaster", updateflowmaster);
-
 
 router.post("/country", createCountry);
 router.put("/country", updateCountry);
@@ -55,5 +52,10 @@ router.put("/department", updatedepartment);
 router.post("/country/delete", deleteCountries);
 router.post("/costmaster", createcostmaster);
 router.put("/costmastert", updatecostmaster);
+
+//-------------port------------
+router.post("/port", createPort);
+router.put("/port", updatePort);
+router.post("/port/delete", deletePorts);
 
 export default router;

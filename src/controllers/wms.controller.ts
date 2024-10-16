@@ -4,6 +4,7 @@ import { RequestWithUser } from "../interfaces/cmmon.interfacte";
 import { IUser } from "../interfaces/user.interface";
 import { ICountry } from "../interfaces/wms/gm_wms.interface";
 import { IDepartment } from "../interfaces/wms/department_wms.interface";
+import { IPort } from "../interfaces/wms/port_wms.interface";
 import { ITerritory } from "../interfaces/wms/territory_wms.interface";
 import { ICurrency } from "../interfaces/wms/currency_wms.interface";
 import { IIndustrysector } from "../interfaces/wms/gm_wms.interface";
@@ -11,16 +12,16 @@ import { IFlowmaster } from "../interfaces/Security/Security.interfae";
 import { IRolemaster } from "../interfaces/Security/Security.interfae";
 import { ICostmaster } from "../interfaces/Purchaseflow/Purucahseflow.interface";
 
-
 // Importing models for WMS master data
 import Country from "../models/wms/country_wms.model";
+import Port from "../models/wms/port_wms.model";
 import Department from "../models/wms/department_wms.model";
 import Currency from "../models/wms/currency_wms.model";
 import Territory from "../models/wms/territory_wms.model";
 import Salesman from "../models/wms/salesman_wms.model";
 import Site from "../models/wms/site_wms.model";
 
-// Retrieves master data (country, department, territory, etc.) with optional pagination based on the `master` type.
+// Retrieves master data (country,Port , department, territory, etc.) with optional pagination based on the `master` type.
 export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
   try {
     const { master } = req.params;
@@ -37,6 +38,14 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
             where: { company_code: requestUser.company_code },
             ...paginationOptions,
           })) as unknown[] as ICountry[];
+        }
+        break;
+      case "port":
+        {
+          (fetchedData = await Port.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IPort[];
         }
         break;
       case "department":
@@ -79,7 +88,7 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           });
         }
         break;
-        case "industrysector":
+      case "industrysector":
         {
           (fetchedData = await Country.findAll({
             where: { company_code: requestUser.company_code },
@@ -88,33 +97,33 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as IIndustrysector[];
         }
         break;
-        case "costmaster":
-          {
-            (fetchedData = await Country.findAll({
-              where: { company_code: requestUser.company_code },
-              offset: skip,
-              limit: limit,
-            })) as unknown[] as ICostmaster[];
-          }
-          break;
-          case "rolemaster":
-          {
-            (fetchedData = await Country.findAll({
-              where: { company_code: requestUser.company_code },
-              offset: skip,
-              limit: limit,
-            })) as unknown[] as IRolemaster[];
-          }
-          break;
-          case "flowmaster":
-            {
-              (fetchedData = await Country.findAll({
-                where: { company_code: requestUser.company_code },
-                offset: skip,
-                limit: limit,
-              })) as unknown[] as IFlowmaster[];
-            }
-            break;
+      case "costmaster":
+        {
+          (fetchedData = await Country.findAll({
+            where: { company_code: requestUser.company_code },
+            offset: skip,
+            limit: limit,
+          })) as unknown[] as ICostmaster[];
+        }
+        break;
+      case "rolemaster":
+        {
+          (fetchedData = await Country.findAll({
+            where: { company_code: requestUser.company_code },
+            offset: skip,
+            limit: limit,
+          })) as unknown[] as IRolemaster[];
+        }
+        break;
+      case "flowmaster":
+        {
+          (fetchedData = await Country.findAll({
+            where: { company_code: requestUser.company_code },
+            offset: skip,
+            limit: limit,
+          })) as unknown[] as IFlowmaster[];
+        }
+        break;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
@@ -130,7 +139,7 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
   }
 };
 
-// Delete master data (country, department, territory, etc.) with optional pagination based on the `master` type.
+// Delete master data (country,Port , department, territory, etc.) with optional pagination based on the `master` type.
 export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
   try {
     const { master } = req.params;
@@ -138,6 +147,7 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
     const {
       dept_code,
       country_code,
+      port_code,
       territory_code,
       curr_code,
       salesman_code,
@@ -152,6 +162,20 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
             where: {
               company_code: requestUser.company_code,
               country_code: country_code,
+            },
+          });
+        }
+        break;
+
+      case "port":
+        {
+          if (!port_code || port_code.length === 0) {
+            throw new Error("PortCode is required");
+          }
+          await Port.destroy({
+            where: {
+              company_code: requestUser.company_code,
+              port_code: port_code,
             },
           });
         }
