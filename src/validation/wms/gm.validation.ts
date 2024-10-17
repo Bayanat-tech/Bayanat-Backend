@@ -1,10 +1,16 @@
 import Joi from "joi";
 import { IIndustrysector } from "../../interfaces/wms/industrysector_wms.interface";
+<<<<<<< Updated upstream
 import { ICountry, IDepartment } from "../../interfaces/wms/gm_wms.interface";
 //import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
 
 import { ILocation } from "../../interfaces/wms/location_wms.interface";
 
+=======
+import { ICountry,IDepartment,ISalesman} from "../../interfaces/wms/gm_wms.interface";
+//import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
+
+>>>>>>> Stashed changes
 export const countrySchema = (data: ICountry) => {
   const schema = Joi.object().keys({
     company_code: Joi.string().required(),
@@ -16,6 +22,7 @@ export const countrySchema = (data: ICountry) => {
   });
   return schema.validate(data);
 };
+
 export const industrysectorSchema = (data: IIndustrysector) => {
   const schema = Joi.object().keys({
     company_code: Joi.string().required(),
@@ -45,9 +52,18 @@ export const departmentSchema = (data: IDepartment) => {
     inb_oub_related: Joi.string().allow(null),
     inv_prefix: Joi.string().allow(null),
 
-    //country_gcc: Joi.string().valid("Y", "N").required(),
-    //short_desc: Joi.string().allow(null),
-    // nationality: Joi.string().allow(null),
+     
+  });
+
+  
+  return schema.validate(data);
+};
+
+export const salesmanSchema = (data: ISalesman) => {
+  const schema = Joi.object().keys({
+    company_code: Joi.string().required(),
+    salesman_code: Joi.string().required(),
+    salesman_name: Joi.string().required(),
   });
   return schema.validate(data);
 };
