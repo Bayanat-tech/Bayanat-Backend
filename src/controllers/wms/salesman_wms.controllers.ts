@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 // import { Response } from "express";
 // import { Op } from "sequelize";
 // import constants from "../../helpers/constants";
@@ -131,6 +132,8 @@
 // };
 
 
+=======
+>>>>>>> Stashed changes
 import { Response } from "express";
 import { Op } from "sequelize";
 import constants from "../../helpers/constants";
