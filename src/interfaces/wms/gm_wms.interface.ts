@@ -43,3 +43,20 @@ export interface IDepartment {
   updated_at?: Date;
   updated_by?: string;
 }
+
+export interface ISalesman {
+  company_code: string;
+<<<<<<< Updated upstream
+  salesman_code?: string;
+=======
+>>>>>>> Stashed changes
+  salesman_name: string;
+  created_at?: Date;
+  created_by?: string;
+  updated_at?: Date;
+  updated_by?: string;
+<<<<<<< Updated upstream
+}
+=======
+}
+>>>>>>> Stashed changes

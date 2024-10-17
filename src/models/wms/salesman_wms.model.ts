@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import { ISalesman } from "../../interfaces/wms/salesman_wms.interface";
+import { ISalesman } from "../../interfaces/wms/gm_wms.interface"; 
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
 
@@ -22,11 +22,11 @@ Salesman.init({
   },
   updated_by: {
     type: DataTypes.STRING(50),
-    allowNull: false,
+    allowNull: true,
   },
   created_by: {
     type: DataTypes.STRING(20),
-    allowNull: false,
+    allowNull: true,
   },
 },
 {
