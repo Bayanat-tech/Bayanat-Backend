@@ -6,6 +6,11 @@ import {
 } from "../../controllers/wms/country_wms.controller";
 
 import {
+  createcurrency,
+  updatecurrency,
+} from "../../controllers/wms/currency_wms.controller";
+
+import {
   createdepartment,
   updatedepartment,
 } from "../../controllers/wms/department_wms.controller";
@@ -19,10 +24,13 @@ import {
 } from "../../controllers/wms/location_wms.controller";
 const router = express.Router();
 
+//-------------country------------
+
 router.post("/country", createCountry);
 router.put("/country", updateCountry);
 
-//-------------department------------
+router.post("/country/delete", deleteCountries);
+
 router.post("/department", createdepartment);
 router.put("/department", updatedepartment);
 
@@ -31,6 +39,9 @@ router.put("/department", updatedepartment);
 router.post("/location", createlocation);
 router.put("/location", updatelocation);
 
-router.post("/country/delete", deleteCountries);
+//-------------currency------------
+
+router.post("/currency", createcurrency);
+router.put("/currency", updatecurrency);
 
 export default router;

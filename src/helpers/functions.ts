@@ -43,10 +43,10 @@ export const buildTree = (
 
     if (!tree[APP_CODE]) {
       tree[APP_CODE] = {
-        id: (permission[APP_CODE]?.serial_number??0).toString(),
+        id: (permission[APP_CODE]?.serial_number ?? 0).toString(),
         title: APP_CODE,
         type: "collapse",
-        icon: "AbcIcon", 
+        icon: "AbcIcon",
         url_path: APP_CODE.toLowerCase(),
         children: [],
       };
@@ -66,7 +66,8 @@ export const buildTree = (
         children: [],
       };
       tree[APP_CODE].children!.push(level1Node);
-      tree[APP_CODE].id=permission[APP_CODE].children[LEVEL1]?.serial_number.toString()
+      tree[APP_CODE].id =
+        permission[APP_CODE].children[LEVEL1]?.serial_number.toString();
     }
 
     // Find or create Level 2 (LEVEL2), using SERIAL_NO for LEVEL2

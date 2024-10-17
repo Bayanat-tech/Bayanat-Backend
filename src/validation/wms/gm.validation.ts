@@ -1,6 +1,7 @@
 import Joi from "joi";
 import { IIndustrysector } from "../../interfaces/wms/industrysector_wms.interface";
 import { ICountry, IDepartment } from "../../interfaces/wms/gm_wms.interface";
+import { ICurrency } from "../../interfaces/wms/currency_wms.interface";
 //import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
 
 import { ILocation } from "../../interfaces/wms/location_wms.interface";
@@ -99,5 +100,18 @@ export const locationSchema = (data: ILocation) => {
     created_at: Joi.date().allow(""),
   });
 
+  return schema.validate(data);
+};
+
+export const currencySchema = (data: ICurrency) => {
+  const schema = Joi.object().keys({
+    curr_code: Joi.string().required(),
+    curr_name: Joi.string().required(),
+    ex_rate: Joi.string().allow(null),
+    division: Joi.string().allow(""),
+    subdivision: Joi.number().allow(""),
+    company_code: Joi.string().required(),
+    curr_sign: Joi.string().allow(""),
+  });
   return schema.validate(data);
 };
