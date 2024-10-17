@@ -1,27 +1,12 @@
 import Joi from "joi";
 import { IIndustrysector } from "../../interfaces/wms/industrysector_wms.interface";
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-import { ICountry, IDepartment } from "../../interfaces/wms/gm_wms.interface";
-=======
 import { ICountry,IDepartment,ISalesman } from "../../interfaces/wms/gm_wms.interface";
->>>>>>> Stashed changes
 import { ICurrency } from "../../interfaces/wms/currency_wms.interface";
-//import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
-
 import { ILocation } from "../../interfaces/wms/location_wms.interface";
-
-=======
-import { ICountry,IDepartment,ISalesman} from "../../interfaces/wms/gm_wms.interface";
 //import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
 
 
-
->>>>>>> Stashed changes
 export const countrySchema = (data: ICountry) => {
   const schema = Joi.object().keys({
     company_code: Joi.string().required(),
@@ -79,7 +64,6 @@ export const salesmanSchema = (data: ISalesman) => {
   return schema.validate(data);
 };
 
-<<<<<<< Updated upstream
 export const locationSchema = (data: ILocation) => {
   const schema = Joi.object().keys({
     site_code: Joi.string().required(),
@@ -129,18 +113,9 @@ export const locationSchema = (data: ILocation) => {
 
   return schema.validate(data);
 };
-=======
-export const salesmanSchema = (data: ISalesman) => {
-  const schema = Joi.object().keys({
-    company_code: Joi.string().required(),
-    salesman_code: Joi.string().required(),
-    salesman_name: Joi.string().required(),
-  });
-  return schema.validate(data);
-};
 
 
->>>>>>> Stashed changes
+
 
 export const currencySchema = (data: ICurrency) => {
   const schema = Joi.object().keys({
