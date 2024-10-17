@@ -3,11 +3,22 @@ import {
   createCountry,
   deleteCountries,
   updateCountry,
+} from "../../controllers/wms/country_wms.controller";
 
-  } from "../../controllers/wms/country_wms.controller";
-  
-import { createdepartment, updatedepartment } from "../../controllers/wms/department_wms.controller";
-import { createSalesman, updateSalesman } from "../../controllers/wms/salesman_wms.controllers";
+import {
+  createcurrency,
+  updatecurrency,
+} from "../../controllers/wms/currency_wms.controller";
+
+import {
+  createdepartment,
+  updatedepartment,
+} from "../../controllers/wms/department_wms.controller";
+
+import {
+  createSalesman,
+  updateSalesman,
+} from "../../controllers/wms/salesman_wms.controllers";
 
 //import { createcountry, updateCountry } from "../../controllers/wms/country_wms.controller";
 //import { createdepartment, updatedepartment } from "../../controllers/wms/flowmaster_wms.controller";
@@ -38,6 +49,5 @@ router.put("/location", updatelocation);
 
 router.post("/salesman", createSalesman);
 router.put("/salesman", updateSalesman);
-
 
 export default router;

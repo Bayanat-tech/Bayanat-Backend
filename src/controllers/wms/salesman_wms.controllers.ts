@@ -4,26 +4,24 @@ import constants from "../../helpers/constants";
 import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
 import { IUser } from "../../interfaces/user.interface";
 import Salesman from "../../models/wms/salesman_wms.model";
-import { salesmanSchema } from "../../validation/wms/gm.validation"; 
+import { salesmanSchema } from "../../validation/wms/gm.validation";
 export const createSalesman = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-
-
-    const { error } =salesmanSchema(req.body);
+    const { error } = salesmanSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const {company_code, salesman_code } = req.body;
-     console.log('body',req.body);
-     
-    console.log('rsesponse',req.body);
-    
-    const country = await Salesman.findOne({
+    const { company_code, salesman_code } = req.body;
+    console.log("body", req.body);
+
+    console.log("rsesponse", req.body);
+
+    const salesman = await Salesman.findOne({
       where: {
         [Op.and]: [
           { company_code: company_code },
@@ -32,7 +30,7 @@ export const createSalesman = async (req: RequestWithUser, res: Response) => {
       },
     });
 
-    if (country) {
+    if (salesman) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
         message: constants.MESSAGES.COUNTRY_WMS.COUNTRY_ALREADY_EXISTS,
@@ -68,7 +66,7 @@ export const updateSalesman = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } =salesmanSchema(req.body);
+    const { error } = salesmanSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
@@ -81,8 +79,7 @@ export const updateSalesman = async (req: RequestWithUser, res: Response) => {
       where: {
         [Op.and]: [
           { company_code: company_code },
-          { salesman_code: salesman_code },  
-          
+          { salesman_code: salesman_code },
         ],
       },
     });
@@ -129,5 +126,3 @@ export const updateSalesman = async (req: RequestWithUser, res: Response) => {
     return;
   }
 };
-
-
