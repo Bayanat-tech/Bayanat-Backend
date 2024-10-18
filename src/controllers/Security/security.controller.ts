@@ -9,7 +9,7 @@ import { IRolemaster } from "../../interfaces/Security/Security.interfae";
 // Importing models for WMS master data
 import Rolemaster from "../../models/Security/rolemaster_security..model";
 import Flowmaster from "../../models/Security/flowmaster_security.model";
-import { Console } from "console";
+
 
 
 // Retrieves master data (country, department, territory, etc.) with optional pagination based on the `master` type.

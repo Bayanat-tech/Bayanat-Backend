@@ -45,8 +45,7 @@ router.put("/department", updatedepartment);
 router.post("/location", createlocation);
 router.put("/location", updatelocation);
 
-//--------salesaman
-
+//--------salesaman------------------
 router.post("/salesman", createSalesman);
 router.put("/salesman", updateSalesman);
 
