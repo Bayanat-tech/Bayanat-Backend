@@ -3,9 +3,9 @@ import { ICostmaster } from "../../interfaces/Purchaseflow/Purucahseflow.interfa
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
 
-class costmaster extends Model<ICostmaster> {}
+class Costmaster extends Model<ICostmaster> {}
 
-costmaster.init(
+Costmaster.init(
   {
     cost_code: {
       type: DataTypes.STRING(50),
@@ -46,4 +46,4 @@ costmaster.init(
   }
 );
 
-export default costmaster;
+export default Costmaster;

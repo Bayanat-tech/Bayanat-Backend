@@ -3,9 +3,9 @@ import { IFlowmaster } from "../../interfaces/Security/Security.interfae";
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
 
-class flowmaster extends Model<IFlowmaster> {}
+class Flowmaster extends Model<IFlowmaster> {}
 
-flowmaster.init(
+Flowmaster.init(
   {
     flow_code: {
       type: DataTypes.STRING(5),
@@ -46,4 +46,4 @@ flowmaster.init(
   }
 );
 
-export default flowmaster;
+export default Flowmaster;

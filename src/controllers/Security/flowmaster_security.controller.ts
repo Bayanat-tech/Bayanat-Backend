@@ -11,6 +11,7 @@ export const createflowmaster  = async (req: RequestWithUser, res: Response) => 
     const requestUser: IUser = req.user;
 
     const { error } = flowmasterSchema(req.body);
+    console.log("inside create");
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
@@ -21,7 +22,7 @@ export const createflowmaster  = async (req: RequestWithUser, res: Response) => 
 
     const flowmasterData  = await flowmaster.findOne({
       where: {
-        [Op.and]: [
+       [Op.and]: [
           { company_code: company_code },
           { flow_code: flow_code },
         ],
@@ -31,7 +32,7 @@ export const createflowmaster  = async (req: RequestWithUser, res: Response) => 
     if (flowmasterData ) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-         message: constants.MESSAGES.FLOWMASTER_WMS.FLOWMASTER_ALREADY_EXISTS,
+         message: constants.MESSAGES.FLOWMASTER_PF.FLOWMASTER_ALREADY_EXISTS,
       });
       return;
     }
@@ -46,12 +47,12 @@ export const createflowmaster  = async (req: RequestWithUser, res: Response) => 
     if (!createflowmaster ) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
-        .json({ success: false, message: "Error while Flow master" });
+        .json({ success: false, message: "Error while Industry Sector" });
       return;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-          message: constants.MESSAGES.FLOWMASTER_WMS.FLOWMASTER_CREATED_SUCCESSFULLY,
+          message: constants.MESSAGES.FLOWMASTER_PF.FLOWMASTER_CREATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -67,7 +68,6 @@ export const updateflowmaster  = async (req: RequestWithUser, res: Response) => 
 
     const { error } = flowmasterSchema(req.body);
     if (error) {
-     
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
@@ -87,7 +87,7 @@ export const updateflowmaster  = async (req: RequestWithUser, res: Response) => 
     if (!flowmasterData ) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-   	message: constants.MESSAGES.FLOWMASTER_WMS.FLOWMASTER_DOES_NOT_EXISTS,
+   	message: constants.MESSAGES.FLOWMASTER_PF.FLOWMASTER_DOES_NOT_EXISTS,
         
       });
       return;
@@ -112,12 +112,12 @@ export const updateflowmaster  = async (req: RequestWithUser, res: Response) => 
     if (!createflowmaster ) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
-        .json({ success: false, message: "Error while updating flow Master" });
+        .json({ success: false, message: "Error while updating company" });
       return;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.FLOWMASTER_WMS.FLOWMASTER_UPDATED_SUCCESSFULLY,
+      message: constants.MESSAGES.FLOWMASTER_PF.FLOWMASTER_UPDATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -134,7 +134,7 @@ export const deleteflowmaster = async (req: RequestWithUser, res: Response) => {
     if (!req.body.length) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-         message: constants.MESSAGES.FLOWMASTER_WMS.SELECT_AT_LEAST_ONE_FLOWMASTER,
+         message: constants.MESSAGES.FLOWMASTER_PF.SELECT_AT_LEAST_ONE_FLOWMASTER,
       });
       return;
     }
@@ -152,7 +152,7 @@ export const deleteflowmaster = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-   message: constants.MESSAGES.FLOWMASTER_WMS.FLOWMASTER_DELETED_SUCCESSFULLY,
+   message: constants.MESSAGES.FLOWMASTER_PF.FLOWMASTER_DELETED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
