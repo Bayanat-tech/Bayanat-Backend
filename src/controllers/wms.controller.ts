@@ -132,8 +132,9 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
         }
         break;
 
-      case "activity_billing": {
-        const query = `
+      case "activity_billing":
+        {
+          const query = `
                 SELECT
                   P.PRIN_NAME,
                   B.ACT_CODE,
@@ -149,25 +150,49 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
                   P.COMPANY_CODE = :companyCode;
               `;
 
-        const activityBillingData = await sequelize.query(query, {
-          replacements: { companyCode: requestUser.company_code },
-          type: QueryTypes.SELECT,
-        });
+          const activityBillingData = await sequelize.query(query, {
+            replacements: { companyCode: requestUser.company_code },
+            type: QueryTypes.SELECT,
+          });
 
-        fetchedData = activityBillingData;
+          fetchedData = activityBillingData;
+        }
         break;
-      }
 
       case "location":
         {
-          //console.log("i am here ");
           (fetchedData = await Location.findAll({
             where: { company_code: requestUser.company_code },
             ...paginationOptions,
           })) as unknown[] as ILocation[];
-          //console.log("i am here ");
         }
         break;
+      
+      case "uoc" :
+      case "moc1":
+      case "moc2":
+        
+      {
+        const query = `
+            SELECT
+              mau.company_code,  
+              mau.charge_type,  
+              mau.charge_code,  
+              mau.description,  
+              mau.activity_group_code  
+            FROM
+              MS_ACTIVITY_UOC mau
+            WHERE
+              COALESCE(mau.CHARGE_TYPE, ' ') = :charge_type
+        AND mau.COMPANY_CODE = :company_code;
+          `;
+          const activityData = await sequelize.query(query, {
+            replacements: {charge_type:master, company_code: requestUser.company_code },
+            type: QueryTypes.SELECT,
+          });
+          fetchedData = activityData;
+      }
+     break;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
