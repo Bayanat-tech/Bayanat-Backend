@@ -4,11 +4,13 @@ import { IUser } from "../../interfaces/user.interface"
 import constants from "../../helpers/constants";
 import { IFlowmaster } from "../../interfaces/Security/Security.interfae";
 import { IRolemaster } from "../../interfaces/Security/Security.interfae";
+import { ISecmaster } from "../../interfaces/Security/Security.interfae";
 
 
 // Importing models for WMS master data
 import Rolemaster from "../../models/Security/rolemaster_security..model";
 import Flowmaster from "../../models/Security/flowmaster_security.model";
+import secmaster from "../../models/Security/seclogin_security..model";
 
 
 
@@ -43,6 +45,14 @@ export const getSecMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as IRolemaster[];
         }
         break;
+        case "seclogin":
+          {
+            (fetchedData = await secmaster.findAll({
+              where: { company_code: requestUser.company_code },
+              ...paginationOptions,
+            })) as unknown[] as ISecmaster[];
+          }
+          break;  
       }
       res.status(constants.STATUS_CODES.OK).json({
         success: true,
