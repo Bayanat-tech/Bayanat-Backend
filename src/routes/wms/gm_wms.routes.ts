@@ -10,6 +10,7 @@ import {
   updatecurrency,
 } from "../../controllers/wms/currency_wms.controller";
 
+
 import {
   createdepartment,
   updatedepartment,
@@ -49,5 +50,6 @@ router.put("/location", updatelocation);
 
 router.post("/salesman", createSalesman);
 router.put("/salesman", updateSalesman);
+
 
 export default router;
