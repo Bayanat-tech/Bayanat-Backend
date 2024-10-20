@@ -4,9 +4,13 @@ import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
 import { IUser } from "../../interfaces/user.interface"
 
 import Costmaster from "../../models/Purchaseflow/costmaster_pf.model";
+import Projectmaster from "../../models/Purchaseflow/projectmaster_pf_model";
+
 import constants from "../../helpers/constants";
 
 import { ICostmaster } from "../../interfaces/Purchaseflow/Purucahseflow.interface";
+import { IProjectmaster } from "../../interfaces/Purchaseflow/Purucahseflow.interface";
+
 
 // This is for Purchase flow module
 export const getPfMaster = async (req: RequestWithUser, res: Response) => {
@@ -26,6 +30,15 @@ export const getPfMaster = async (req: RequestWithUser, res: Response) => {
             offset: skip,
             limit: limit,
           })) as unknown[] as ICostmaster[];
+        }
+        break;
+        case "projectmaster":
+          {
+         (fetchedData = await Projectmaster.findAll({
+          where: { company_code: requestUser.company_code },
+          offset: skip,
+         limit: limit,
+         })) as unknown[] as IProjectmaster[];
         }
         break;
      }
@@ -61,6 +74,20 @@ export const deletepfMaster = async (req: RequestWithUser, res: Response) => {
           });
         }
         break;
+        case "project_code":
+        /*  console.log("inside purchaseflow delete");
+          {
+            if (!cost_code || cost_code.length === 0) {
+              throw new Error("flowCode is required");
+            }
+            await Projectmaster.destroy({
+              where: {
+                company_code: requestUser.company_code,
+                project_code: project_code,
+              },
+            });
+          }
+          break;*/
      
 
       }
