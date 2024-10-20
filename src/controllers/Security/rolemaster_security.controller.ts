@@ -73,7 +73,7 @@ export const updaterolemaster  = async (req: RequestWithUser, res: Response) => 
         .json({ success: false, message: error.message });
       return;
     }
-    const { role_id, role_desc,remarks,company_code} = req.body;
+    const { role_id, company_code} = req.body;
 
     const rolemasterData  = await rolemaster.findOne({
       where: {
