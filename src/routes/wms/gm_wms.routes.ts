@@ -6,6 +6,12 @@ import {
 } from "../../controllers/wms/country_wms.controller";
 
 import {
+  createActivityGroup,
+  deleteActivityGroup,
+  updateActivityGroup,
+} from "../../controllers/wms/ACTIVITYGROUP_wms.controller";
+
+import {
   createdepartment,
   updatedepartment,
 } from "../../controllers/wms/department_wms.controller";
@@ -32,5 +38,10 @@ router.post("/location", createlocation);
 router.put("/location", updatelocation);
 
 router.post("/country/delete", deleteCountries);
+
+//-------------Activity Group------------
+router.post("/activitygroup", createActivityGroup);
+router.put("/activitygroup", updateActivityGroup);
+router.post("/activitygroup/delete", deleteActivityGroup);
 
 export default router;

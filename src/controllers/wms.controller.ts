@@ -11,6 +11,7 @@ import { IFlowmaster } from "../interfaces/Security/Security.interfae";
 import { IRolemaster } from "../interfaces/Security/Security.interfae";
 import { ICostmaster } from "../interfaces/Purchaseflow/Purucahseflow.interface";
 import { ILocation } from "../interfaces/wms/location_wms.interface";
+import { IActivityGroup } from "../interfaces/wms/activitygroup_wms.interface";
 
 // Importing models for WMS master data
 import Country from "../models/wms/country_wms.model";
@@ -21,6 +22,7 @@ import Territory from "../models/wms/territory_wms.model";
 import Salesman from "../models/wms/salesman_wms.model";
 import Site from "../models/wms/site_wms.model";
 import Storage from "../models/wms/storage_wms.model";
+import activitygroup from "../models/wms/activitygroup_wms.model";
 
 // --- Database sequelize import ---
 import { sequelize } from "../database/connection";
@@ -131,6 +133,14 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           });
         }
         break;
+      case "activitygroup":
+        {
+          (fetchedData = await activitygroup.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IActivityGroup[];
+        }
+        break;
 
       case "activity_billing": {
         const query = `
@@ -194,6 +204,7 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
       territory_code,
       curr_code,
       salesman_code,
+      activity_group_code,
     } = req.body;
     switch (master) {
       case "country":
@@ -205,6 +216,19 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
             where: {
               company_code: requestUser.company_code,
               country_code: country_code,
+            },
+          });
+        }
+        break;
+      case "activitygroup":
+        {
+          if (!activity_group_code || activity_group_code.length === 0) {
+            throw new Error("Activity Group Code is required");
+          }
+          await activitygroup.destroy({
+            where: {
+              company_code: requestUser.company_code,
+              activity_group_code: activity_group_code,
             },
           });
         }

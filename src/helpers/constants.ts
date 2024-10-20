@@ -19,6 +19,8 @@ export default {
     MS_ACTIVITY_BILLING: "MS_ACTIVITY_BILLING",
     MS_PRINCIPAL: "MS_PRINCIPAL",
     MS_LOCATION: "MS_LOCATION",
+    MS_ACTIVITY_UOC: "MS_ACTIVITY_UOC",
+    MS_ACTIVITY_GROUP: "MS_ACTIVITY_GROUP",
   },
 
   AUTHENTICATION: {
@@ -43,6 +45,16 @@ export default {
       SELECT_AT_LEAST_ONE_COUNTRY: "SELECT AT LEAST ONE COUNTRY",
       COUNTRY_DELETED_SUCCESSFULLY: "COUNTRY DELETED SUCCESSFULLY",
     },
+
+    CURRENCY_WMS: {
+      CURRENCY_ALREADY_EXISTS: "CURRENCY ALREADY EXISTS",
+      CURRENCY_DOES_NOT_EXISTS: "CURRENCY DOES NOT EXISTS",
+      CURRENCY_CREATED_SUCCESSFULLY: "CURRENCY ADDED SUCCESSFULLY",
+      CURRENCY_UPDATED_SUCCESSFULLY: "CURRENCY UPDATED SUCCESSFULLY",
+      SELECT_AT_LEAST_ONE_CURRENCY: "SELECT AT LEAST ONE CURRENCY",
+      CURRENCY_DELETED_SUCCESSFULLY: "CURRENCY DELETED SUCCESSFULLY",
+    },
+
     INDUSTRYSECTOR_WMS: {
       INDUSTRYSECTOR_ALREADY_EXISTS: "INDUSTRYSECTOR ALREADY EXISTS",
       INDUSTRYSECTOR_DOES_NOT_EXISTS: "INDUSTRYSECTOR DOES NOT EXISTS",
@@ -61,7 +73,7 @@ export default {
       SELECT_AT_LEAST_ONE_DEPARTMENT: "SELECT AT LEAST ONE DEPARTMENT",
       DEPARTMENT_DELETED_SUCCESSFULLY: "DEPARTMENT DELETED SUCCESSFULLY",
     },
-    FLOWMASTER_WMS: {
+    FLOWMASTER_PF: {
       FLOWMASTER_ALREADY_EXISTS: "FLOWMASTER ALREADY EXISTS",
       FLOWMASTER_DOES_NOT_EXISTS: "FLOWMASTER DOES NOT EXISTS",
       FLOWMASTER_CREATED_SUCCESSFULLY: "FLOWMASTER ADDED SUCCESSFULLY",
@@ -84,152 +96,164 @@ export default {
       COSTMASTER_UPDATED_SUCCESSFULLY: "COSTMASTER UPDATED SUCCESSFULLY",
       SELECT_AT_LEAST_ONE_COSTMASTER: "SELECT AT LEAST ONE COSTMASTER",
       COSTMASTER_DELETED_SUCCESSFULLY: "COSTMASTER DELETED SUCCESSFULLY",
-      LOCATION_WMS: {
-        LOCATION_ALREADY_EXISTS: "LOCATION ALREADY EXISTS",
-        LOCATION_DOES_NOT_EXISTS: "LOCATION DOES NOT EXISTS",
-        LOCATION_CREATED_SUCCESSFULLY: "LOCATION ADDED SUCCESSFULLY",
-        LOCATION_UPDATED_SUCCESSFULLY: "LOCATION UPDATED SUCCESSFULLY",
-        SELECT_AT_LEAST_ONE_LOCATION: "SELECT AT LEAST ONE LOCATION",
-        LOCATION_DELETED_SUCCESSFULLY: "LOCATION DELETED SUCCESSFULLY",
-      },
-      USER: {
-        EMAIL_IS_REQUIRED: "Email is required",
-        REQUEST_USER_NOT_FOUND: "Request user not found",
-        USER_NOT_FOUND: "User not found",
-        PASSWORD_NOT_MATCH: "Password not matched",
-        INVALID_PASSWORD: "Invalid password",
-        YOU_CAN_NOT_USE_THIS_EMAIL: "You cannot use this email",
-        USER_EXIST: "User already exist",
-        USER_EXIST_WITH_EMAIL: "User already exists with this email",
-        USER_EXIST_WITH_EMAIL_AND_INACTIVATED:
-          "User already exists with this email and it's inactivated",
-        ESTIMATOR_NOT_FOUND: "Estimator not found",
-        FIELD_WORKER_NOT_FOUND: "Field Worker not found",
-        PUNCH_NOT_FOUND: "Punch not found",
-        CLOCK_IN_NOT_FOUND: "Clock in not found",
-        ALREADY_CLOCKED_IN: "Already clocked in",
-        ALREADY_CLOCKED_OUT: "Already clocked out",
-        REIMBURSED_USER_NOT_FOUND: "Reimbursed user not found",
-        EMAIL_NOT_VERIFIED: "Email is not verified",
-        EMAIL_ALREADY_VERIFIED: "Email is already verified",
-        INVALID_OTP: "Invalid OTP",
-      },
-      CUSTOMER: {
-        CUSTOMER_NOT_FOUND: "Customer not found",
-        CUSTOMER_EXIST: "Customer already exist",
-      },
-      CALENDAR: {
-        CALENDAR_NOT_FOUND: "Calendar not found",
-      },
-      COMPANY: {
-        COMPANY_NOT_FOUND: "Company not found",
-        SAME_EMAIL_FOR_COMPANY_AND_ADMIN:
-          "Email should be the same for company and admin",
+    },
+
+    LOCATION_WMS: {
+      LOCATION_ALREADY_EXISTS: "LOCATION ALREADY EXISTS",
+      LOCATION_DOES_NOT_EXISTS: "LOCATION DOES NOT EXISTS",
+      LOCATION_CREATED_SUCCESSFULLY: "LOCATION ADDED SUCCESSFULLY",
+      LOCATION_UPDATED_SUCCESSFULLY: "LOCATION UPDATED SUCCESSFULLY",
+      SELECT_AT_LEAST_ONE_LOCATION: "SELECT AT LEAST ONE LOCATION",
+      LOCATION_DELETED_SUCCESSFULLY: "LOCATION DELETED SUCCESSFULLY",
+    },
+    ACTIVITY_GROUP_WMS: {
+      ACTIVITY_GROUP_ALREADY_EXISTS: "ACTIVITY GROUP ALREADY EXISTS",
+      ACTIVITY_GROUP_DOES_NOT_EXISTS: "ACTIVITY GROUP DOES NOT EXISTS",
+      ACTIVITY_GROUP_CREATED_SUCCESSFULLY: "ACTIVITY GROUP ADDED SUCCESSFULLY",
+      ACTIVITY_GROUP_UPDATED_SUCCESSFULLY:
+        "ACTIVITY GROUP UPDATED SUCCESSFULLY",
+      ACTIVITY_GROUP_AT_LEAST_ONE_ACTIVITY_GROUP:
+        "SELECT AT LEAST ONE ACTIVITY GROUP",
+      ACTIVITY_GROUP_DELETED_SUCCESSFULLY:
+        "ACTIVITY GROUP DELETED SUCCESSFULLY",
+    },
+    USER: {
+      EMAIL_IS_REQUIRED: "Email is required",
+      REQUEST_USER_NOT_FOUND: "Request user not found",
+      USER_NOT_FOUND: "User not found",
+      PASSWORD_NOT_MATCH: "Password not matched",
+      INVALID_PASSWORD: "Invalid password",
+      YOU_CAN_NOT_USE_THIS_EMAIL: "You cannot use this email",
+      USER_EXIST: "User already exist",
+      USER_EXIST_WITH_EMAIL: "User already exists with this email",
+      USER_EXIST_WITH_EMAIL_AND_INACTIVATED:
+        "User already exists with this email and it's inactivated",
+      ESTIMATOR_NOT_FOUND: "Estimator not found",
+      FIELD_WORKER_NOT_FOUND: "Field Worker not found",
+      PUNCH_NOT_FOUND: "Punch not found",
+      CLOCK_IN_NOT_FOUND: "Clock in not found",
+      ALREADY_CLOCKED_IN: "Already clocked in",
+      ALREADY_CLOCKED_OUT: "Already clocked out",
+      REIMBURSED_USER_NOT_FOUND: "Reimbursed user not found",
+      EMAIL_NOT_VERIFIED: "Email is not verified",
+      EMAIL_ALREADY_VERIFIED: "Email is already verified",
+      INVALID_OTP: "Invalid OTP",
+    },
+    CUSTOMER: {
+      CUSTOMER_NOT_FOUND: "Customer not found",
+      CUSTOMER_EXIST: "Customer already exist",
+    },
+    CALENDAR: {
+      CALENDAR_NOT_FOUND: "Calendar not found",
+    },
+    COMPANY: {
+      COMPANY_NOT_FOUND: "Company not found",
+      SAME_EMAIL_FOR_COMPANY_AND_ADMIN:
+        "Email should be the same for company and admin",
+    },
+  },
+  DATABASE: {
+    NAME: String(process.env.DATABASE_NAME),
+    USER: String(process.env.DATABASE_USERNAME),
+    PASSWORD: String(process.env.DATABASE_PASSWORD),
+    HOST: String(process.env.DATABASE_HOST),
+    DIALECT: String(process.env.DATABASE_DIALECT),
+  },
+  STATUS_CODES: {
+    OK: 200,
+    CREATED: 201,
+    BAD_REQUEST: 400,
+    UNAUTHORIZED: 401,
+    FORBIDDEN: 403,
+    NOT_FOUND: 404,
+    INTERNAL_SERVER_ERROR: 500,
+  },
+  STATUS: {
+    USER: {
+      DELETED: 0,
+      ACTIVE: 1,
+      INACTIVE: 2,
+      ACTIVITY: {
+        OFFLINE: 0,
+        ONLINE: 1,
+        IDOL: 2,
       },
     },
-    DATABASE: {
-      NAME: String(process.env.DATABASE_NAME),
-      USER: String(process.env.DATABASE_USERNAME),
-      PASSWORD: String(process.env.DATABASE_PASSWORD),
-      HOST: String(process.env.DATABASE_HOST),
-      DIALECT: String(process.env.DATABASE_DIALECT),
+    CUSTOMER: {
+      DELETED: 0,
+      ACTIVE: 1,
+      INACTIVE: 2,
     },
-    STATUS_CODES: {
-      OK: 200,
-      CREATED: 201,
-      BAD_REQUEST: 400,
-      UNAUTHORIZED: 401,
-      FORBIDDEN: 403,
-      NOT_FOUND: 404,
-      INTERNAL_SERVER_ERROR: 500,
+    COMPANY: { DELETED: 0, ACTIVE: 1, INACTIVE: 2 },
+    JOB: {
+      DELETED: 0,
+      OPEN: 1,
+      COMPLETED: 2,
+      SUSPEND: 3,
     },
-    STATUS: {
-      USER: {
-        DELETED: 0,
-        ACTIVE: 1,
-        INACTIVE: 2,
-        ACTIVITY: {
-          OFFLINE: 0,
-          ONLINE: 1,
-          IDOL: 2,
-        },
-      },
-      CUSTOMER: {
-        DELETED: 0,
-        ACTIVE: 1,
-        INACTIVE: 2,
-      },
-      COMPANY: { DELETED: 0, ACTIVE: 1, INACTIVE: 2 },
-      JOB: {
-        DELETED: 0,
-        OPEN: 1,
-        COMPLETED: 2,
-        SUSPEND: 3,
-      },
-      FOLLOW_UP: {
-        DELETED: 0,
-        OPEN: 1,
-        COMPLETED: 2,
-      },
-      JOB_EMAIL_AND_SMS: {
-        DELETED: 0,
-        ACTIVE: 1,
-      },
-      SCHEDULE_MESSAGE: {
-        INCOMPLETE: 0,
-        COMPLETED: 1,
-        DELETED: 2,
-      },
-      JOB_CATEGORY: {
-        DELETED: 0,
-        ACTIVE: 1,
-      },
-      PUNCH: {
-        DELETED: 0,
-        ACTIVE: 1,
-        INACTIVE: 2,
-      },
-      MATERIAL: {
-        DELETED: 0,
-        ACTIVE: 1,
-      },
-      SERVICE_AND_PRODUCT: {
-        DELETED: 0,
-        ACTIVE: 1,
-      },
-      NOTE: {
-        DELETED: 0,
-        ACTIVE: 1,
-      },
-      LOG: { DELETED: 0, ACTIVE: 1 },
-      SETTING: {
-        DELETED: 0,
-        ACTIVE: 1,
-      },
-      PAYROLL: {
-        DELETED: 0,
-        ACTIVE: 1,
-      },
-      TWILIO: {
-        DELETED: 0,
-        ACTIVE: 1,
-      },
-      TEMPLATE: {
-        ACTIVE: 1,
-        INACTIVE: 2,
-      },
-      INVOICES: {
-        DELETED: 0,
-        ACTIVE: 1,
-      },
-      STRIPE_SUBSCRIPTION: {
-        TRIALING: "trialing",
-        ACTIVE: "active",
-      },
-      AUTO_APPOINTMENT: {
-        DELETED: 0,
-        ACTIVE: 1,
-      },
+    FOLLOW_UP: {
+      DELETED: 0,
+      OPEN: 1,
+      COMPLETED: 2,
+    },
+    JOB_EMAIL_AND_SMS: {
+      DELETED: 0,
+      ACTIVE: 1,
+    },
+    SCHEDULE_MESSAGE: {
+      INCOMPLETE: 0,
+      COMPLETED: 1,
+      DELETED: 2,
+    },
+    JOB_CATEGORY: {
+      DELETED: 0,
+      ACTIVE: 1,
+    },
+    PUNCH: {
+      DELETED: 0,
+      ACTIVE: 1,
+      INACTIVE: 2,
+    },
+    MATERIAL: {
+      DELETED: 0,
+      ACTIVE: 1,
+    },
+    SERVICE_AND_PRODUCT: {
+      DELETED: 0,
+      ACTIVE: 1,
+    },
+    NOTE: {
+      DELETED: 0,
+      ACTIVE: 1,
+    },
+    LOG: { DELETED: 0, ACTIVE: 1 },
+    SETTING: {
+      DELETED: 0,
+      ACTIVE: 1,
+    },
+    PAYROLL: {
+      DELETED: 0,
+      ACTIVE: 1,
+    },
+    TWILIO: {
+      DELETED: 0,
+      ACTIVE: 1,
+    },
+    TEMPLATE: {
+      ACTIVE: 1,
+      INACTIVE: 2,
+    },
+    INVOICES: {
+      DELETED: 0,
+      ACTIVE: 1,
+    },
+    STRIPE_SUBSCRIPTION: {
+      TRIALING: "trialing",
+      ACTIVE: "active",
+    },
+    AUTO_APPOINTMENT: {
+      DELETED: 0,
+      ACTIVE: 1,
     },
   },
 };
