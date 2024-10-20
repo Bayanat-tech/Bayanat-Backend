@@ -1,10 +1,12 @@
 import { Response } from "express";
 import { Op } from "sequelize";
 import constants from "../../helpers/constants";
-import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
+import { IFiles, RequestWithUser } from "../../interfaces/cmmon.interface";
 import PrincipalContactDetl from "../../models/wms/principal_contact_details_wms.model";
 import Principal from "../../models/wms/principal_wms.model";
 import { principalSchema } from "../../validation/wms/gm.validation";
+import Files from "../../models/files.model";
+import { sequelize } from "../../database/connection";
 
 export const createPrincipal = async (req: RequestWithUser, res: Response) => {
   try {
@@ -14,23 +16,6 @@ export const createPrincipal = async (req: RequestWithUser, res: Response) => {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
-      return;
-    }
-
-    const isPrincipalDataExists = await Principal.findOne({
-      where: {
-        [Op.and]: [
-          { company_code: requestUser.company_code },
-          { prin_code: req.body.prin_code },
-        ],
-      },
-    });
-
-    if (isPrincipalDataExists) {
-      res.status(constants.STATUS_CODES.BAD_REQUEST).json({
-        success: false,
-        message: "Principal " + constants.MESSAGES.ALREADY_EXISTS,
-      });
       return;
     }
 
@@ -48,6 +33,7 @@ export const createPrincipal = async (req: RequestWithUser, res: Response) => {
         prin_cont_faxno2,
         prin_cont_faxno3,
         prin_cont_ref1,
+        files,
         ...prinicipalPayload
       } = req.body,
       created_by = requestUser.loginid,
@@ -56,6 +42,7 @@ export const createPrincipal = async (req: RequestWithUser, res: Response) => {
     const principalData = await Principal.create({
       created_by,
       updated_by,
+      prin_code: "",
       ...prinicipalPayload,
     });
     if (!principalData) {
@@ -64,11 +51,13 @@ export const createPrincipal = async (req: RequestWithUser, res: Response) => {
         .json({ success: false, message: "Principal data creation failed" });
       return;
     }
-    console.log("principalData", principalData);
+    const getSessionCode: { code: string }[][] = (await sequelize.query(
+      `SELECT code from GT_SESSION_INFO WHERE USERID='${req.user.loginid}'`
+    )) as { code: string }[][];
 
     const contactDetails = await PrincipalContactDetl.create({
       company_code: req.body.company_code,
-      prin_code: req.body.prin_code,
+      prin_code: getSessionCode[0][0].code,
       prin_cont1,
       prin_cont2,
       prin_cont3,
@@ -85,13 +74,22 @@ export const createPrincipal = async (req: RequestWithUser, res: Response) => {
       created_by,
       updated_by,
     });
-    console.log("contactDetails", contactDetails);
 
     if (!contactDetails) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Principal data creation failed" });
       return;
+    }
+    if (!!files && files.length) {
+      await Files.bulkCreate(
+        (files as IFiles[]).map((eachFile) => {
+          return {
+            ...eachFile,
+            request_number: "PRI" + getSessionCode[0][0].code,
+          };
+        })
+      );
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
@@ -131,16 +129,17 @@ export const updatePrincipal = async (req: RequestWithUser, res: Response) => {
         prin_cont_faxno2,
         prin_cont_faxno3,
         prin_cont_ref1,
+        files,
         ...prinicipalPayload
       } = req.body,
       updated_by = requestUser.loginid;
-    const country = await Principal.findOne({
+    const existingPrincipalData = await Principal.findOne({
       where: {
         [Op.and]: [{ prin_code: prin_code }, { prin_status: "Y" }],
       },
     });
 
-    if (!country) {
+    if (!existingPrincipalData) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
         message: "Principal " + constants.MESSAGES.DOES_NOT_EXISTS,
@@ -154,7 +153,7 @@ export const updatePrincipal = async (req: RequestWithUser, res: Response) => {
         ...prinicipalPayload,
       },
       {
-        where: { prin_code: req.body.prin_code },
+        where: { prin_code },
       }
     );
     if (!principalData) {
@@ -191,6 +190,9 @@ export const updatePrincipal = async (req: RequestWithUser, res: Response) => {
         .json({ success: false, message: "Principal data updation failed" });
       return;
     }
+    if (!!files && files.length) {
+      await Files.bulkCreate(files);
+    }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
       message: `Principal ${constants.MESSAGES.UPDATED_SUCCESSFULLY}`,
@@ -206,12 +208,14 @@ export const updatePrincipal = async (req: RequestWithUser, res: Response) => {
 export const getPrincipal = async (req: RequestWithUser, res: Response) => {
   try {
     const { prin_code } = req.params;
+
     const principalData = await Principal.findOne({
-      where: { prin_code, prin_status: "Y" },
+      where: { prin_code },
     });
     const contactdetails = await PrincipalContactDetl.findOne({
       where: { prin_code },
     });
+
     if (!principalData || !contactdetails) {
       res.status(constants.STATUS_CODES.NOT_FOUND).json({
         success: false,
@@ -221,22 +225,9 @@ export const getPrincipal = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: { ...principalData, ...contactdetails },
+      data: { ...principalData.dataValues, ...contactdetails.dataValues },
     });
     return;
-  } catch (error: unknown) {
-    const knownError = error as { message: string };
-    res
-      .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
-      .json({ success: false, message: knownError.message });
-  }
-};
-export const getPrincipalCode = async (req: RequestWithUser, res: Response) => {
-  try {
-    res.status(constants.STATUS_CODES.OK).json({
-      success: true,
-      data: { prin_code: Math.floor(Math.random() * 1000) },
-    });
   } catch (error: unknown) {
     const knownError = error as { message: string };
     res

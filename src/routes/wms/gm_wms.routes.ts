@@ -16,7 +16,6 @@ import {
 import {
   createPrincipal,
   getPrincipal,
-  getPrincipalCode,
   updatePrincipal,
 } from "../../controllers/wms/principal_wms.controller";
 
@@ -31,10 +30,9 @@ router.post("/department", createdepartment);
 router.put("/department", updatedepartment);
 
 //-------------principal------------
-router.get("/principal/code", getPrincipalCode);
 router.get("/principal/:prin_code", getPrincipal);
 router.post("/principal", createPrincipal);
-router.put("/:prin_code", updatePrincipal);
+router.put("/principal/:prin_code", updatePrincipal);
 
 router.post("/country/delete", deleteCountries);
 

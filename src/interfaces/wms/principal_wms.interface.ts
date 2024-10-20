@@ -41,6 +41,7 @@ export interface IPrincipalWms {
   comm_exp_date?: Date;
   prin_imp_code?: string;
   parent_prin_code?: string;
+  files?: string[];
 
   pick_wave?: string;
   pick_wave_qty_sort?: string;

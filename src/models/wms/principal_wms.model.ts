@@ -10,7 +10,6 @@ Principal.init(
     company_code: {
       type: DataTypes.STRING(15),
       allowNull: false,
-      unique: true,
     },
     prin_code: {
       type: DataTypes.STRING(15),

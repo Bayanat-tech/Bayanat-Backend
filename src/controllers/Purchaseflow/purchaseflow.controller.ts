@@ -1,10 +1,9 @@
 import { Response } from "express";
-import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
+import { RequestWithUser } from "../../interfaces/cmmon.interface";
 
-import { IUser } from "../../interfaces/user.interface"
+import { IUser } from "../../interfaces/user.interface";
 
 import costmaster from "../../models/Purchaseflow/costmaster_pf.model";
-
 
 import constants from "../../helpers/constants";
 
@@ -29,12 +28,11 @@ export const getPfMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as ICostmaster[];
         }
         break;
-     }
+    }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
       data: { tableData: fetchedData, count: fetchedData?.length },
     });
     return;
   } catch (err) {}
-  
 };

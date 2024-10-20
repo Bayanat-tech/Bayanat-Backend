@@ -20,7 +20,7 @@ router.use(
   gmWmsRouter
 );
 
-router.delete(
+router.post(
   "/:master",
   passport.authenticate("jwt", { session: false }),
   deleteWmsMaster

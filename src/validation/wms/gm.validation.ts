@@ -55,7 +55,6 @@ export const principalSchema = (
 ) => {
   const schema = Joi.object({
     //---------------basic----------
-    prin_code: Joi.string().required(),
     prin_name: Joi.string().required(),
     company_code: Joi.string().required(),
     prin_dept_code: Joi.string().required(),
@@ -94,10 +93,11 @@ export const principalSchema = (
     prin_imp_code: Joi.string().allow(""),
     parent_prin_code: Joi.string().allow(""),
     prin_invdate: Joi.date().allow(null),
+    files: Joi.array().items(Joi.any()).allow(null),
     //---------------contact--------------
-    prin_cont1: Joi.string().email().allow(""),
-    prin_cont2: Joi.string().email().allow(""),
-    prin_cont3: Joi.string().email().allow(""),
+    prin_cont1: Joi.string().allow(""),
+    prin_cont2: Joi.string().allow(""),
+    prin_cont3: Joi.string().allow(""),
     prin_cont_email1: Joi.string().email().allow(""),
     prin_cont_email2: Joi.string().email().allow(""),
     prin_cont_email3: Joi.string().email().allow(""),

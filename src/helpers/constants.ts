@@ -19,6 +19,7 @@ export default {
     MS_ACTIVITY_BILLING: "MS_ACTIVITY_BILLING",
     MS_PRINCIPAL: "MS_PRINCIPAL",
     MS_PRINCIPAL_CONTACT_DETL: "MS_PRINCIPAL_CONTACT_DETL",
+    UPLOADED_FILES_DLTS: "UPLOADED_FILES_DLTS",
   },
   VIEW: {
     VW_MS_PRIN_LIST_DATA: "VW_MS_PRIN_LIST_DATA",
@@ -28,6 +29,7 @@ export default {
     APP_SECRET: String(process.env.APP_SECRET),
   },
   MESSAGES: {
+    BAD_REQUEST: "Bad Request",
     INTERNAL_SERVER_ERROR: "Internal server error",
     UNAUTHORIZED: "Unauthorized",
     FORBIDDEN: "Forbidden",
@@ -232,5 +234,12 @@ export default {
       DELETED: 0,
       ACTIVE: 1,
     },
+  },
+  AWS_S3_CREDENTIALS: {
+    ACCESS_KEY: String(process.env.S3_ACCESS_KEY),
+    SECRET_ACCESS_KEY: String(process.env.S3_SECRET_ACCESS_KEY),
+    S3_BUCKET: String(process.env.S3_BUCKET_NAME),
+    REGION: String(process.env.S3_REGION),
+    AWS_S3_URL: (file_name: string) => `${process.env.AWS_S3_URL}/${file_name}`,
   },
 };

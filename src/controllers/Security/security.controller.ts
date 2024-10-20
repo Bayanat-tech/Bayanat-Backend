@@ -1,6 +1,6 @@
 import { Response } from "express";
-import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
-import { IUser } from "../../interfaces/user.interface"
+import { RequestWithUser } from "../../interfaces/cmmon.interface";
+import { IUser } from "../../interfaces/user.interface";
 import constants from "../../helpers/constants";
 import { IFlowmaster } from "../../interfaces/Security/Security.interfae";
 import { IRolemaster } from "../../interfaces/Security/Security.interfae";
@@ -17,24 +17,24 @@ export const getSecMaster = async (req: RequestWithUser, res: Response) => {
 
     let fetchedData: unknown[] = [];
     switch (master) {
-         case "rolemaster":
-          {
-            (fetchedData = await rolemaster.findAll({
-              where: { company_code: requestUser.company_code },
-              offset: skip,
-              limit: limit,
-            })) as unknown[] as IRolemaster[];
-          }
-          break;
-          case "flowmaster":
-            {
-              (fetchedData = await flowmaster.findAll({
-                where: { company_code: requestUser.company_code },
-                offset: skip,
-                limit: limit,
-              })) as unknown[] as IFlowmaster[];
-            }
-            break;
+      case "rolemaster":
+        {
+          (fetchedData = await rolemaster.findAll({
+            where: { company_code: requestUser.company_code },
+            offset: skip,
+            limit: limit,
+          })) as unknown[] as IRolemaster[];
+        }
+        break;
+      case "flowmaster":
+        {
+          (fetchedData = await flowmaster.findAll({
+            where: { company_code: requestUser.company_code },
+            offset: skip,
+            limit: limit,
+          })) as unknown[] as IFlowmaster[];
+        }
+        break;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
@@ -42,5 +42,4 @@ export const getSecMaster = async (req: RequestWithUser, res: Response) => {
     });
     return;
   } catch (err) {}
-  
 };
