@@ -75,7 +75,7 @@ export const updatecostmaster  = async (req: RequestWithUser, res: Response) => 
         .json({ success: false, message: error.message });
       return;
     }
-    const { cost_code, cost_name,remarks,company_code} = req.body;
+    const { cost_code, cost_name,company_code} = req.body;
 
     const costmasterData  = await Costmaster.findOne({
       where: {
