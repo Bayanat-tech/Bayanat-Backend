@@ -5,12 +5,12 @@ import { IUser } from "../../interfaces/user.interface"
 
 import Costmaster from "../../models/Purchaseflow/costmaster_pf.model";
 import Projectmaster from "../../models/Purchaseflow/projectmaster_pf_model";
+import Itemmaster_pf from "../../models/Purchaseflow/itemmaster_pf_model";
 
 import constants from "../../helpers/constants";
 
-import { ICostmaster } from "../../interfaces/Purchaseflow/Purucahseflow.interface";
+import { ICostmaster, IItemtmaster } from "../../interfaces/Purchaseflow/Purucahseflow.interface";
 import { IProjectmaster } from "../../interfaces/Purchaseflow/Purucahseflow.interface";
-
 
 // This is for Purchase flow module
 export const getPfMaster = async (req: RequestWithUser, res: Response) => {
@@ -39,6 +39,15 @@ export const getPfMaster = async (req: RequestWithUser, res: Response) => {
           offset: skip,
          limit: limit,
          })) as unknown[] as IProjectmaster[];
+        }
+        break;
+        case "itemmaster":
+          {
+         (fetchedData = await Itemmaster_pf.findAll({
+          where: { company_code: requestUser.company_code },
+          offset: skip,
+         limit: limit,
+         })) as unknown[] as IItemtmaster[];
         }
         break;
      }

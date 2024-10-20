@@ -3,7 +3,7 @@ import { Op } from "sequelize";
 import constants from "../../helpers/constants";
 import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
 import { IUser } from "../../interfaces/user.interface";
-import rolemaster from "../../models/Security/rolemaster_security..model";
+import rolemaster from "../../models/Security/rolemaster_security.model";
 import { rolemasterSchema } from "../../validation/Security/Security.validation";
 
 export const createrolemaster  = async (req: RequestWithUser, res: Response) => {

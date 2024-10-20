@@ -1,12 +1,8 @@
 import * as express from "express";
 
-import {
-   
-  createcostmaster,
-  updatecostmaster
- 
-  
-} from "../../controllers/Purchaseflow/costmaster_pf.controller"
+import { createcostmaster, updatecostmaster } from "../../controllers/Purchaseflow/costmaster_pf.controller"
+
+import { createitemmaster, updateitemmaster } from "../../controllers/Purchaseflow/itemmaster_pf.controller";
 
 const router = express.Router();
 
@@ -26,5 +22,10 @@ import {
 
 router.post("/projectmaster", createprojectmaster);
 router.put("/projectmaster", updateprojectmaster);
+
+//-----Item Master---------------
+
+router.post("/itemmaster", createitemmaster);
+router.post("/itemmaster", updateitemmaster);
 
 export default router;

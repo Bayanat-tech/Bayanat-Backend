@@ -8,9 +8,9 @@ import { ISecmaster } from "../../interfaces/Security/Security.interfae";
 
 
 // Importing models for WMS master data
-import Rolemaster from "../../models/Security/rolemaster_security..model";
+import Rolemaster from "../../models/Security/rolemaster_security.model";
 import Flowmaster from "../../models/Security/flowmaster_security.model";
-import secmaster from "../../models/Security/seclogin_security..model";
+import secmaster from "../../models/Security/seclogin_security.model";
 
 
 
