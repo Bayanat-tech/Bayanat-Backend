@@ -208,12 +208,32 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
                 type: QueryTypes.SELECT,
               });
             }
-          
             // Assigning the fetched data
             fetchedData = activityBillingData;
           }          
         break;
-
+      case "activity":
+        {
+          console.log("Enter in activity", master);
+          const query = `
+                SELECT
+                  A.ACTIVITY_CODE,
+                  A.ACTIVITY,
+                  A.ACTIVITY_GROUP_CODE
+                FROM
+                  MS_ACTIVITY A
+                WHERE
+                  A.COMPANY_CODE = :company_code
+              `;
+             const activityData = await sequelize.query(query, {
+                replacements: {
+                  company_code: requestUser.company_code
+                },
+                type: QueryTypes.SELECT,
+              });
+              fetchedData = activityData;
+        }
+        break;
       case "location":
         {
           (fetchedData = await Location.findAll({
