@@ -265,33 +265,33 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
           });
         }
         break;
-      case "department":
-        {
-          if (!dept_code || dept_code.length === 0) {
-            throw new Error("departmentCode is required");
-          }
-          await Department.destroy({
-            where: {
-              company_code: requestUser.company_code,
-              dept_code: dept_code,
-            },
-          });
-        }
-        break;
+      // case "department":
+      //   {
+      //     if (!dept_code || dept_code.length === 0) {
+      //       throw new Error("departmentCode is required");
+      //     }
+      //     await Department.destroy({
+      //       where: {
+      //         company_code: requestUser.company_code,
+      //         dept_code: dept_code,
+      //       },
+      //     });
+      //   }
+      //   break;
 
-      case "location":
-        {
-          if (!dept_code || dept_code.length === 0) {
-            throw new Error("location Code is required");
-          }
-          await Location.destroy({
-            where: {
-              company_code: requestUser.company_code,
-              location_code: dept_code,
-            },
-          });
-        }
-        break;
+      // case "location":
+      //   {
+      //     if (!dept_code || dept_code.length === 0) {
+      //       throw new Error("location Code is required");
+      //     }
+      //     await Location.destroy({
+      //       where: {
+      //         company_code: requestUser.company_code,
+      //         location_code: dept_code,
+      //       },
+      //     });
+      //   }
+      //   break;
 
       case "territory":
         {

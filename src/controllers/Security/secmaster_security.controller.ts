@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { Op } from "sequelize";
 import constants from "../../helpers/constants";
-import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
+import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
 import secmaster from "../../models/Security/seclogin_security.model";
 import { secmasterSchema } from "../../validation/Security/Security.validation"; 

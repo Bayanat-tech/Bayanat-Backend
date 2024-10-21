@@ -2,7 +2,7 @@ import {  Response } from "express";
 import { QueryTypes } from "sequelize";
 import { sequelize } from "../../database/connection";
 import { IUser } from "../../interfaces/user.interface";
-import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
+import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import ActivityBilling from "../../models/wms/activity_billing.model"
 
  //Get Api Controller Based On Specific Principal Code 
