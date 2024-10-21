@@ -1,12 +1,15 @@
 import { Response } from "express";
 import { Op } from "sequelize";
 import constants from "../../helpers/constants";
-import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
+import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
-import Industrysector  from "../../models/wms/industrysector_wms.model";
+import Industrysector from "../../models/wms/industrysector_wms.model";
 import { industrysectorSchema } from "../../validation/wms/gm.validation";
 
-export const createindustrysector  = async (req: RequestWithUser, res: Response) => {
+export const createindustrysector = async (
+  req: RequestWithUser,
+  res: Response
+) => {
   try {
     const requestUser: IUser = req.user;
 
@@ -17,9 +20,9 @@ export const createindustrysector  = async (req: RequestWithUser, res: Response)
         .json({ success: false, message: error.message });
       return;
     }
-    const { sector_code, sector_name,remarks,company_code } = req.body;
+    const { sector_code, sector_name, remarks, company_code } = req.body;
 
-    const industrysectorData  = await Industrysector.findOne({
+    const industrysectorData = await Industrysector.findOne({
       where: {
         [Op.and]: [
           { company_code: company_code },
@@ -28,23 +31,23 @@ export const createindustrysector  = async (req: RequestWithUser, res: Response)
       },
     });
 
-    if (industrysectorData ) {
+    if (industrysectorData) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-         message: constants.MESSAGES.INDUSTRYSECTOR_WMS.INDUSTRYSECTOR_ALREADY_EXISTS,
+        message:
+          constants.MESSAGES.INDUSTRYSECTOR_WMS.INDUSTRYSECTOR_ALREADY_EXISTS,
       });
       return;
     }
-    const createindustrysector  = await Industrysector.create({
+    const createindustrysector = await Industrysector.create({
       sector_code,
       sector_name,
       remarks,
       company_code,
       created_by: requestUser.loginid,
-      updated_by: requestUser.loginid
-
+      updated_by: requestUser.loginid,
     });
-    if (!createindustrysector ) {
+    if (!createindustrysector) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while Industry Sector" });
@@ -52,7 +55,9 @@ export const createindustrysector  = async (req: RequestWithUser, res: Response)
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-          message: constants.MESSAGES.INDUSTRYSECTOR_WMS.INDUSTRYSECTOR_CREATED_SUCCESSFULLY,
+      message:
+        constants.MESSAGES.INDUSTRYSECTOR_WMS
+          .INDUSTRYSECTOR_CREATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -62,7 +67,10 @@ export const createindustrysector  = async (req: RequestWithUser, res: Response)
     return;
   }
 };
-export const updateindustrysector  = async (req: RequestWithUser, res: Response) => {
+export const updateindustrysector = async (
+  req: RequestWithUser,
+  res: Response
+) => {
   try {
     const requestUser: IUser = req.user;
 
@@ -73,9 +81,9 @@ export const updateindustrysector  = async (req: RequestWithUser, res: Response)
         .json({ success: false, message: error.message });
       return;
     }
-    const { sector_code, sector_name,remarks,company_code} = req.body;
+    const { sector_code, sector_name, remarks, company_code } = req.body;
 
-    const industrysector  = await Industrysector.findOne({
+    const industrysector = await Industrysector.findOne({
       where: {
         [Op.and]: [
           { company_code: company_code },
@@ -84,15 +92,15 @@ export const updateindustrysector  = async (req: RequestWithUser, res: Response)
       },
     });
 
-    if (!industrysector ) {
+    if (!industrysector) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-   	message: constants.MESSAGES.INDUSTRYSECTOR_WMS.INDUSTRYSECTOR_DOES_NOT_EXISTS,
-        
+        message:
+          constants.MESSAGES.INDUSTRYSECTOR_WMS.INDUSTRYSECTOR_DOES_NOT_EXISTS,
       });
       return;
     }
-    const createindustrysector  = await industrysector.update(
+    const createindustrysector = await industrysector.update(
       {
         company_code,
         created_by: requestUser.loginid,
@@ -109,7 +117,7 @@ export const updateindustrysector  = async (req: RequestWithUser, res: Response)
         },
       }
     );
-    if (!createindustrysector ) {
+    if (!createindustrysector) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while updating company" });
@@ -117,7 +125,9 @@ export const updateindustrysector  = async (req: RequestWithUser, res: Response)
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.INDUSTRYSECTOR_WMS.INDUSTRYSECTOR_UPDATED_SUCCESSFULLY,
+      message:
+        constants.MESSAGES.INDUSTRYSECTOR_WMS
+          .INDUSTRYSECTOR_UPDATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -127,14 +137,19 @@ export const updateindustrysector  = async (req: RequestWithUser, res: Response)
     return;
   }
 };
-export const deleteindustrysector = async (req: RequestWithUser, res: Response) => {
+export const deleteindustrysector = async (
+  req: RequestWithUser,
+  res: Response
+) => {
   try {
     const industrysectorcode = req.body;
 
     if (!req.body.length) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-         message: constants.MESSAGES.INDUSTRYSECTOR_WMS.SELECT_AT_LEAST_ONE_INDUSTRYSECTOR,
+        message:
+          constants.MESSAGES.INDUSTRYSECTOR_WMS
+            .SELECT_AT_LEAST_ONE_INDUSTRYSECTOR,
       });
       return;
     }
@@ -152,7 +167,9 @@ export const deleteindustrysector = async (req: RequestWithUser, res: Response) 
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-   message: constants.MESSAGES.INDUSTRYSECTOR_WMS.INDUSTRYSECTOR_DELETED_SUCCESSFULLY,
+      message:
+        constants.MESSAGES.INDUSTRYSECTOR_WMS
+          .INDUSTRYSECTOR_DELETED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {

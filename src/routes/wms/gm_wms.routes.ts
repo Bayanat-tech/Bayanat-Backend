@@ -5,57 +5,62 @@ import {
   updateCountry,
   } from "../../controllers/wms/country_wms.controller";
   
-import { createdepartment, updatedepartment } from "../../controllers/wms/department_wms.controller";
 import { createPickwave, updatePickwave } from "../../controllers/wms/pickwave_wms.controller";
+
+import {
+  createdepartment,
+  updatedepartment,
+} from "../../controllers/wms/department_wms.controller";
+import {
+  createcurrency,
+  updatecurrency,
+} from "../../controllers/wms/currency_wms.controller";
+
+import {
+  createSalesman,
+  updateSalesman,
+} from "../../controllers/wms/salesman_wms.controllers";
+
 //import { createcountry, updateCountry } from "../../controllers/wms/country_wms.controller";
 //import { createdepartment, updatedepartment } from "../../controllers/wms/flowmaster_wms.controller";
 //import { createdepartment, updatedepartment } from "../../controllers/wms/rolemaster_wms.controller";
 
 import {
-   
-  createcostmaster,
-  updatecostmaster
- 
-  
-} from "../../controllers/Purchaseflow/costmaster_pf.controller"
-
+  createPrincipal,
+  getPrincipal,
+  updatePrincipal,
+} from "../../controllers/wms/principal_wms.controller";
 
 import {
-
-  createrolemaster,
-  updaterolemaster
- 
-  
-} from "../../controllers/Security/rolemaster_security.controller";
-
-import {
-
-  createflowmaster,
-  updateflowmaster
- 
-  
-} from "../../controllers/Security/flowmaster_security.controller";
-
-
+  createlocation,
+  updatelocation,
+} from "../../controllers/wms/location_wms.controller";
 const router = express.Router();
 
-router.post("/rolemaster", createrolemaster);
-router.put("/rolemaster", updaterolemaster);
-
-router.post("/flowmaster", createflowmaster);
-router.put("/flowmaster", updateflowmaster);
-
+//-------------country------------
 
 router.post("/country", createCountry);
 router.put("/country", updateCountry);
 
-//-------------department------------
+router.post("/country/delete", deleteCountries);
+
 router.post("/department", createdepartment);
 router.put("/department", updatedepartment);
 
+//-------------principal------------
+router.get("/principal/:prin_code", getPrincipal);
+router.post("/principal", createPrincipal);
+router.put("/principal/:prin_code", updatePrincipal);
+
 router.post("/country/delete", deleteCountries);
-router.post("/costmaster", createcostmaster);
-router.put("/costmastert", updatecostmaster);
+//-------------location------------
+
+router.post("/location", createlocation);
+router.put("/location", updatelocation);
+
+//--------salesaman------------------
+router.post("/salesman", createSalesman);
+router.put("/salesman", updateSalesman);
 
 //-------------pickwave------------
 router.post("/pickwave", createPickwave);

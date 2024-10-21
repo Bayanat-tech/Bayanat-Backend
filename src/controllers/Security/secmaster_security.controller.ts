@@ -1,46 +1,57 @@
 import { Response } from "express";
 import { Op } from "sequelize";
 import constants from "../../helpers/constants";
-import { RequestWithUser } from "../../interfaces/cmmon.interface";
+import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
 import { IUser } from "../../interfaces/user.interface";
-import flowmaster from "../../models/Security/flowmaster_security.model";
-import { flowmasterSchema } from "../../validation/Security/Security.validation";
+import secmaster from "../../models/Security/seclogin_security.model";
+import { secmasterSchema } from "../../validation/Security/Security.validation"; 
 
-export const createflowmaster = async (req: RequestWithUser, res: Response) => {
+
+export const createsecmaster  = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = flowmasterSchema(req.body);
-    console.log("inside create");
+    const { error } = secmasterSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { flow_code, flow_description, company_code } = req.body;
+    const { id, username, contact_no, email_id, userpass,company_code } = req.body;
 
-    const flowmasterData = await flowmaster.findOne({
+    const secmasterData  = await secmaster.findOne({
       where: {
-        [Op.and]: [{ company_code: company_code }, { flow_code: flow_code }],
+       [Op.and]: [
+          { company_code: company_code },
+          { id: id },
+          { contact_no: contact_no},
+          { email_id : email_id},
+          { userpass : userpass},
+          { username : username},
+        ],
       },
     });
 
-    if (flowmasterData) {
+    if (secmasterData ) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.FLOWMASTER_PF.FLOWMASTER_ALREADY_EXISTS,
+         message: constants.MESSAGES.ROLEMASTER_WMS.ROLEMASTER_ALREADY_EXISTS,
       });
       return;
     }
-    const createflowmaster = await flowmaster.create({
-      flow_code,
-      flow_description,
+    const createrolemaster  = await secmaster.create({
       company_code,
+      id,
+      contact_no,
+      email_id,
+      username,
+      userpass,
       created_by: requestUser.loginid,
-      updated_by: requestUser.loginid,
+      updated_by: requestUser.loginid
+
     });
-    if (!createflowmaster) {
+    if (!createrolemaster ) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while Industry Sector" });
@@ -48,7 +59,7 @@ export const createflowmaster = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.FLOWMASTER_PF.FLOWMASTER_CREATED_SUCCESSFULLY,
+          message: constants.MESSAGES.ROLEMASTER_WMS.ROLEMASTER_CREATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -58,33 +69,37 @@ export const createflowmaster = async (req: RequestWithUser, res: Response) => {
     return;
   }
 };
-export const updateflowmaster = async (req: RequestWithUser, res: Response) => {
+export const updatesecmaster  = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = flowmasterSchema(req.body);
+    const { error } = secmasterSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { flow_code, flow_description, company_code } = req.body;
+    const { id, company_code} = req.body;
 
-    const flowmasterData = await flowmaster.findOne({
+    const secmasterData  = await secmaster.findOne({
       where: {
-        [Op.and]: [{ company_code: company_code }, { flow_code: flow_code }],
+        [Op.and]: [
+          { company_code: company_code },
+          { id: id },
+        ],
       },
     });
 
-    if (!flowmasterData) {
+    if (!secmasterData ) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.FLOWMASTER_PF.FLOWMASTER_DOES_NOT_EXISTS,
+   	message: constants.MESSAGES.ROLEMASTER_WMS.ROLEMASTER_DOES_NOT_EXISTS,
+        
       });
       return;
     }
-    const createflowmaster = await flowmaster.update(
+    const createsecmaster  = await secmaster.update(
       {
         company_code,
         created_by: requestUser.loginid,
@@ -94,11 +109,14 @@ export const updateflowmaster = async (req: RequestWithUser, res: Response) => {
       },
       {
         where: {
-          [Op.and]: [{ company_code: company_code }, { flow_code: flow_code }],
+          [Op.and]: [
+            { company_code: company_code },
+            { id: id },
+          ],
         },
       }
     );
-    if (!createflowmaster) {
+    if (!createsecmaster ) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while updating company" });
@@ -106,7 +124,7 @@ export const updateflowmaster = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.FLOWMASTER_PF.FLOWMASTER_UPDATED_SUCCESSFULLY,
+      message: constants.MESSAGES.ROLEMASTER_WMS.ROLEMASTER_UPDATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -116,33 +134,32 @@ export const updateflowmaster = async (req: RequestWithUser, res: Response) => {
     return;
   }
 };
-export const deleteflowmaster = async (req: RequestWithUser, res: Response) => {
+export const deletesecmaster = async (req: RequestWithUser, res: Response) => {
   try {
-    const flowmastercode = req.body;
+    const rolemastercode = req.body;
 
     if (!req.body.length) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message:
-          constants.MESSAGES.FLOWMASTER_PF.SELECT_AT_LEAST_ONE_FLOWMASTER,
+         message: constants.MESSAGES.ROLEMASTER_WMS.SELECT_AT_LEAST_ONE_ROLEMASTER,
       });
       return;
     }
-    const FlowmasterDeleteResponse = await flowmaster.destroy({
+    const RolemasterDeleteResponse = await secmaster.destroy({
       where: {
-        flow_code: flowmastercode,
+        id: rolemastercode,
       },
     });
-    if (FlowmasterDeleteResponse === 0) {
+    if (RolemasterDeleteResponse === 0) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: FlowmasterDeleteResponse,
+        message: RolemasterDeleteResponse,
       });
       return;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.FLOWMASTER_PF.FLOWMASTER_DELETED_SUCCESSFULLY,
+   message: constants.MESSAGES.ROLEMASTER_WMS.ROLEMASTER_DELETED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {

@@ -7,113 +7,112 @@ class ActivityBilling extends Model<IActivityBilling> {};
 
 ActivityBilling.init(
   {
-    PRIN_CODE: {
+    prin_code: {
       type: DataTypes.STRING(15),
-      allowNull: false,
+      allowNull: true, // Allowing null
       primaryKey: true, // Assuming PRIN_CODE is the primary key
     },
     act_code: {
       type: DataTypes.STRING(15),
-      allowNull: false,
+      allowNull: true, // Allowing null
     },
     wip_code: {
       type: DataTypes.STRING(10),
-      allowNull: false,
+      allowNull: true, // Allowing null
     },
     cost: {
       type: DataTypes.DECIMAL(15, 2),
-      allowNull: false,
+      allowNull: true, // Allowing null
     },
     income_code: {
       type: DataTypes.STRING(10),
-      allowNull: false,
+      allowNull: true, // Allowing null
     },
     bill_amount: {
       type: DataTypes.DECIMAL(15, 2),
-      allowNull: false,
+      allowNull: true, // Allowing null
     },
     jobtype: {
       type: DataTypes.STRING(10),
-      allowNull: true,
+      allowNull: true, // Already null
     },
     company_code: {
       type: DataTypes.STRING(10),
-      allowNull: false,
+      allowNull: true, // Allowing null
     },
     freeze_flag: {
       type: DataTypes.STRING(1),
-      allowNull: false,
+      allowNull: true, // Allowing null
     },
     mandatory_flag: {
       type: DataTypes.STRING(1),
-      allowNull: false,
+      allowNull: true, // Allowing null
     },
     validate_flag: {
       type: DataTypes.STRING(1),
-      allowNull: false,
+      allowNull: true, // Allowing null
     },
     uoc: {
       type: DataTypes.STRING(10),
-      allowNull: true,
+      allowNull: true, // Already null
     },
     moc: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: true,
+      allowNull: true, // Already null
     },
     moc1: {
       type: DataTypes.STRING(50),
-      allowNull: true,
+      allowNull: true, // Already null
     },
     moc2: {
       type: DataTypes.STRING(50),
-      allowNull: true,
+      allowNull: true, // Already null
     },
     cust_code: {
       type: DataTypes.STRING(15),
-      allowNull: true,
+      allowNull: true, // Already null
     },
     start_point: {
       type: DataTypes.STRING(50),
-      allowNull: true,
+      allowNull: true, // Already null
     },
     end_point: {
       type: DataTypes.STRING(50),
-      allowNull: true,
+      allowNull: true, // Already null
     },
     customer_type: {
       type: DataTypes.STRING(10),
-      allowNull: true,
+      allowNull: true, // Already null
     },
     vtype_code: {
       type: DataTypes.STRING(10),
-      allowNull: true,
+      allowNull: true, // Already null
     },
     serial_no: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true, // Allowing null
     },
     serial_no2: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true, // Allowing null
     },
-    
     updated_by: {
       type: DataTypes.STRING(50),
-      allowNull: false,
+      allowNull: true, // Allowing null
     },
-   
     created_by: {
       type: DataTypes.STRING(50),
-      allowNull: false,
+      allowNull: true, // Allowing null
     },
   },
   {
     sequelize,
     modelName: "ActivityBilling",
-    tableName: constants.TABLE.MS_ACTIVITY_BILLING, 
+    tableName: constants.TABLE.MS_ACTIVITY_BILLING,
     createdAt: "created_at",
     updatedAt: "updated_at",
   }
 );
+
 
 export default ActivityBilling;

@@ -1,23 +1,23 @@
 import { DataTypes, Model } from "sequelize";
-import { IFlowmaster } from "../../interfaces/Security/Security.interfae";
+import { IProjectmaster } from "../../interfaces/Purchaseflow/Purucahseflow.interface";
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
 
-class Flowmaster extends Model<IFlowmaster> {}
+class Projectmaster extends Model<IProjectmaster> {}
 
-Flowmaster.init(
+Projectmaster.init(
   {
-    flow_code: {
-      type: DataTypes.STRING(5),
+    project_code: {
+      type: DataTypes.STRING(50),
       allowNull: false,
       primaryKey: true,
     },
-    flow_description: {
-      type: DataTypes.STRING(100),
+    project_name: {
+      type: DataTypes.STRING(30),
       allowNull: false,
     },
-    company_code: {
-      type: DataTypes.STRING(5),
+   company_code: {
+      type: DataTypes.STRING(10),
       allowNull: false,
     },
     updated_by: {
@@ -39,11 +39,11 @@ Flowmaster.init(
   },
   {
     sequelize,
-    modelName: "Flowmaster",
-    tableName: constants.TABLE.MS_PS_FLOW_MASTER, 
+    modelName: "Projectmaster",
+    tableName: constants.TABLE.MS_PS_PROJECT_MASTER, 
     createdAt: "created_at",
     updatedAt: "updated_at",
   }
 );
 
-export default Flowmaster;
+export default Projectmaster;

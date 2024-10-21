@@ -13,6 +13,7 @@ User.init(
     },
     loginid: {
       type: DataTypes.STRING(50),
+      primaryKey: true,
       allowNull: false,
     },
     email_id: {

@@ -1,43 +1,58 @@
 import { Response } from "express";
 import { Op } from "sequelize";
 import constants from "../../helpers/constants";
-import { RequestWithUser } from "../../interfaces/cmmon.interface";
+import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
 import { IUser } from "../../interfaces/user.interface";
-import Department from "../../models/wms/department_wms.model";
-import { departmentSchema } from "../../validation/wms/gm.validation";
+//import Department from "../../models/wms/department_wms.model";
+import Location from "../../models/wms/location_wms.model";
+//import { departmentSchema } from "../../validation/wms/gm.validation";
+import { locationSchema } from "../../validation/wms/gm.validation";
 
-export const createdepartment = async (req: RequestWithUser, res: Response) => {
+export const createlocation = async (req: RequestWithUser, res: Response) => {
   try {
-    console.log("data aaya ki nhi in function bakend..", req.body);
+    //console.log("data aaya ki nhi in function bakend..yesr", req.body);
     const requestUser: IUser = req.user;
-    const { error } = departmentSchema(req.body);
+    const { error } = locationSchema(req.body);
+
+    const location_code = `${req.body.aisle}${req.body.column_no}${req.body.height}`;
+    const loc_desc = `${req.body.site_code}-${req.body.aisle}${req.body.column_no}${req.body.height}`;
+
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { dept_code, company_code } = req.body;
-    const department = await Department.findOne({
+    //console.log("called0");
+
+    const { company_code } = req.body;
+    const location = await Location.findOne({
       where: {
-        [Op.and]: [{ company_code: company_code }, { dept_code: dept_code }],
+        [Op.and]: [{ company_code: company_code }, { loc_desc: loc_desc }],
       },
     });
 
-    if (department) {
+    if (location) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.DEPARTMENT_WMS.DEPARTMENT_ALREADY_EXISTS,
+        message: constants.MESSAGES.LOCATION_WMS.LOCATION_ALREADY_EXISTS,
       });
       return;
     }
-    const createdepartment = await Department.create({
+
+    // Log the values to the console
+    console.log("Location Code:", location_code);
+    console.log("Location Description:", loc_desc);
+
+    const createlocation = await Location.create({
+      ...req.body,
       company_code,
       created_by: requestUser.loginid,
       updated_by: requestUser.loginid,
-      ...req.body,
+      location_code: location_code,
+      loc_desc: loc_desc,
     });
-    if (!createdepartment) {
+    if (!createlocation) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while creating company" });
@@ -45,8 +60,7 @@ export const createdepartment = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message:
-        constants.MESSAGES.DEPARTMENT_WMS.DEPARTMENT_CREATED_SUCCESSFULLY,
+      message: constants.MESSAGES.LOCATION_WMS.LOCATION_CREATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -56,48 +70,50 @@ export const createdepartment = async (req: RequestWithUser, res: Response) => {
     return;
   }
 };
-export const updatedepartment = async (req: RequestWithUser, res: Response) => {
+export const updatelocation = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
-    const { error } = departmentSchema(req.body);
+    const { error } = locationSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { dept_code, company_code } = req.body;
+    const { location_code, company_code } = req.body;
 
-    const department = await Department.findOne({
+    const location = await Location.findOne({
       where: {
-        [Op.and]: [{ company_code: company_code }, { dept_code: dept_code }],
+        [Op.and]: [{ company_code: company_code }, { loc_desc: location_code }],
       },
     });
 
-    if (!department) {
+    if (!location) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.DEPARTMENT_WMS.DEPARTMENT_DOES_NOT_EXISTS,
+        message: constants.MESSAGES.LOCATION_WMS.LOCATION_DOES_NOT_EXISTS,
       });
       return;
     }
-    const createdepartment = await department.update(
+    const createlocation = await location.update(
       {
         company_code,
         created_by: requestUser.loginid,
         updated_by: requestUser.loginid,
+
         ...req.body,
       },
+
       {
         where: {
           [Op.and]: [
             { company_code: company_code },
-            { department_code: dept_code },
+            { location_code: location_code },
           ],
         },
       }
     );
-    if (!createdepartment) {
+    if (!createlocation) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while updating company" });
@@ -105,8 +121,7 @@ export const updatedepartment = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message:
-        constants.MESSAGES.DEPARTMENT_WMS.DEPARTMENT_UPDATED_SUCCESSFULLY,
+      message: constants.MESSAGES.LOCATION_WMS.LOCATION_UPDATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
