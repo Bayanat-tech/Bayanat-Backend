@@ -9,7 +9,7 @@ import {
   createActivityGroup,
   deleteActivityGroup,
   updateActivityGroup,
-} from "../../controllers/wms/ACTIVITYGROUP_wms.controller";
+} from "../../controllers/wms/activitygroup_wms.controller";
 
 import {
   createdepartment,
@@ -39,6 +39,8 @@ import {
   createlocation,
   updatelocation,
 } from "../../controllers/wms/location_wms.controller";
+
+import { createActivityBillingDataByCompanyAndPrincipal, updateActivityBillingDataByCompanyAndPrincipal } from "../../controllers/wms/activity_wms.controller";
 const router = express.Router();
 
 //-------------country------------
@@ -70,5 +72,8 @@ router.put("/salesman", updateSalesman);
 router.post("/activitygroup", createActivityGroup);
 router.put("/activitygroup", updateActivityGroup);
 router.post("/activitygroup/delete", deleteActivityGroup);
+// -------- Activity Billing Data -------
+router.post("/activity_billing/:principalCode", createActivityBillingDataByCompanyAndPrincipal);
+router.put("/activity_billing/:principalCode/:activityCode", updateActivityBillingDataByCompanyAndPrincipal);
 
 export default router;

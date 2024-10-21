@@ -36,6 +36,7 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
   try {
     const { master } = req.params;
     const requestUser: IUser = req.user;
+    const principalCode = req.query.prin_code;
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
     const skip = Number(page * limit - limit);
@@ -159,13 +160,36 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
         }
         break;
 
-      case "activity_billing":
-        {
-          const query = `
+        case "activity_billing":
+          {
+            let activityBillingData: any[] = [];
+            if (principalCode) {
+              const query = `
+                SELECT
+                  *
+                FROM
+                  VW_GEN_ACTIVITY_BILLING_DATA
+                WHERE 
+                  COMPANY_CODE = :company_code
+                  AND PRIN_CODE = :principal_code
+                  AND USER_ID = :user_id
+              `;
+              
+              activityBillingData = await sequelize.query(query, {
+                replacements: {
+                  company_code: requestUser.company_code,
+                  principal_code: principalCode,
+                  user_id: requestUser.loginid
+                },
+                type: QueryTypes.SELECT,
+              });
+            } else {
+              const query = `
                 SELECT
                   P.PRIN_NAME,
                   B.ACT_CODE,
                   A.ACTIVITY,
+                  A.ACTIVITY_GROUP_CODE,
                   B.JOBTYPE
                 FROM
                   MS_PRINCIPAL P
@@ -174,16 +198,20 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
                 JOIN
                   MS_ACTIVITY A ON B.ACT_CODE = A.ACTIVITY_CODE
                 WHERE
-                  P.COMPANY_CODE = :companyCode;
+                  P.COMPANY_CODE = :company_code
               `;
-
-          const activityBillingData = await sequelize.query(query, {
-            replacements: { companyCode: requestUser.company_code },
-            type: QueryTypes.SELECT,
-          });
-
-          fetchedData = activityBillingData;
-        }
+          
+              activityBillingData = await sequelize.query(query, {
+                replacements: {
+                  company_code: requestUser.company_code
+                },
+                type: QueryTypes.SELECT,
+              });
+            }
+          
+            // Assigning the fetched data
+            fetchedData = activityBillingData;
+          }          
         break;
 
       case "location":
