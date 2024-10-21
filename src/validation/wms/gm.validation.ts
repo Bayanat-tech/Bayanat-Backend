@@ -1,10 +1,18 @@
 import Joi from "joi";
 import { IIndustrysector } from "../../interfaces/wms/industrysector_wms.interface";
-import { ICountry, IDepartment } from "../../interfaces/wms/gm_wms.interface";
 import {
   IPrincipalContactDetlWMs,
   IPrincipalWms,
 } from "../../interfaces/wms/principal_wms.interface";
+//import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
+
+import {
+  ICountry,
+  IDepartment,
+  ISalesman,
+} from "../../interfaces/wms/gm_wms.interface";
+import { ICurrency } from "../../interfaces/wms/currency_wms.interface";
+import { ILocation } from "../../interfaces/wms/location_wms.interface";
 //import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
 
 export const countrySchema = (data: ICountry) => {
@@ -18,6 +26,7 @@ export const countrySchema = (data: ICountry) => {
   });
   return schema.validate(data);
 };
+
 export const industrysectorSchema = (data: IIndustrysector) => {
   const schema = Joi.object().keys({
     company_code: Joi.string().required(),
@@ -46,6 +55,79 @@ export const departmentSchema = (data: IDepartment) => {
     inv_gen: Joi.string().allow(null),
     inb_oub_related: Joi.string().allow(null),
     inv_prefix: Joi.string().allow(null),
+  });
+
+  return schema.validate(data);
+};
+
+export const salesmanSchema = (data: ISalesman) => {
+  const schema = Joi.object().keys({
+    company_code: Joi.string().required(),
+    salesman_code: Joi.string().required(),
+    salesman_name: Joi.string().required(),
+  });
+  return schema.validate(data);
+};
+
+export const locationSchema = (data: ILocation) => {
+  const schema = Joi.object().keys({
+    site_code: Joi.string().required(),
+    location_code: Joi.string().allow(""),
+    loc_desc: Joi.string().allow(""),
+    loc_type: Joi.string().allow(""),
+    loc_stat: Joi.string().allow(""),
+    aisle: Joi.string().required(),
+    column_no: Joi.number().required(),
+    height: Joi.number().required(),
+    job_no: Joi.string().allow(""),
+    prod_code: Joi.string().allow(""),
+    prin_code: Joi.string().allow(""),
+    stk_stat: Joi.string().allow(""),
+    pref_prin: Joi.string().allow(""),
+    pref_prod: Joi.string().allow(""),
+    pref_group: Joi.string().allow(""),
+    pref_brand: Joi.string().allow(""),
+    put_seqno: Joi.number().allow(""),
+    pick_seqno: Joi.number().allow(""),
+    push_level: Joi.string().allow(""),
+    max_qty: Joi.number().allow(""),
+    uom: Joi.string().allow(""),
+    reorder_qty: Joi.number().allow(""),
+    company_code: Joi.string().required(),
+    barcode: Joi.string().allow(""),
+    prod_type: Joi.number().allow(""),
+    depth: Joi.number().allow(""),
+    check_digit: Joi.string().allow(""),
+    assigned_prin_code: Joi.string().allow(""),
+    assigned_prodgroup: Joi.string().allow(""),
+    assigned_userid: Joi.string().allow(""),
+    location_code_002: Joi.string().allow(""),
+    volume_cbm: Joi.number().allow(""),
+    height_cm: Joi.number().allow(""),
+    breadth_cm: Joi.number().allow(""),
+    length_cm: Joi.number().allow(""),
+    blockcyc: Joi.string().valid("Y", "N").allow(""),
+    trolley_no: Joi.string().allow(""),
+    bonded_area_code: Joi.string().allow(""),
+    location_reserved_for: Joi.string().allow(""),
+    updated_at: Joi.date().allow(""),
+    updated_by: Joi.string().allow(""),
+    created_by: Joi.string().allow(""),
+    created_at: Joi.date().allow(""),
+  });
+
+  return schema.validate(data);
+};
+
+export const currencySchema = (data: ICurrency) => {
+  const schema = Joi.object().keys({
+    curr_code: Joi.string().required(),
+    curr_name: Joi.string().required(),
+    ex_rate: Joi.string().allow(null),
+    division: Joi.string().allow(""),
+    subdivision: Joi.number().allow(""),
+    company_code: Joi.string().required(),
+    curr_sign: Joi.string().allow(""),
   });
   return schema.validate(data);
 };

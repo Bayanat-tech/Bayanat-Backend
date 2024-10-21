@@ -16,8 +16,8 @@ app.use(express.urlencoded({ extended: true }));
 import fileRoutes from "./src/routes/files.routes";
 import authRoutes from "./src/routes/auth.routes";
 import wmsRoutes from "./src/routes/wms.routes";
-import pfRoutes from "./src/routes/pf_routes";
-import secRoutes from "./src/routes/secuity_routes";
+import pfRoutes from "./src/routes/pf.routes";
+import secRoutes from "./src/routes/secuity.routes";
 
 //----------------routes-------------
 app.use("/api/files", fileRoutes);

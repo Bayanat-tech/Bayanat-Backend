@@ -43,9 +43,10 @@ WHERE LTRIM(RTRIM(level3)) = '' AND LTRIM(RTRIM(level2)) != ''
 UNION
 
 SELECT 
-level3 AS menu, 
-level2 AS level, 
-serial_no, 
-(SELECT app_code FROM SEC_MODULE_DATA WHERE LTRIM(RTRIM(level2)) != '' LIMIT 1) AS app_code 
-FROM SEC_MODULE_DATA 
-WHERE LTRIM(RTRIM(level3)) != '' AND LTRIM(RTRIM(level2)) != ''`;
+a.level3 AS menu, 
+a.level2 AS level, 
+a.serial_no ,
+(SELECT app_code FROM SEC_MODULE_DATA b WHERE LTRIM(RTRIM(a.level1)) = LTRIM(RTRIM(b.level1)) and LTRIM(RTRIM(a.level3)) = LTRIM(RTRIM(b.level3))  
+and LTRIM(RTRIM(a.level2)) = LTRIM(RTRIM(b.level2)) LIMIT 1) AS app_code 
+FROM SEC_MODULE_DATA a
+WHERE LTRIM(RTRIM(a.level3)) != '' AND LTRIM(RTRIM(a.level2)) != ''`;

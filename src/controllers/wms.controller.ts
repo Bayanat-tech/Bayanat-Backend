@@ -10,10 +10,12 @@ import { IIndustrysector } from "../interfaces/wms/gm_wms.interface";
 import { IFlowmaster } from "../interfaces/Security/Security.interfae";
 import { IRolemaster } from "../interfaces/Security/Security.interfae";
 import { ICostmaster } from "../interfaces/Purchaseflow/Purucahseflow.interface";
+import { ILocation } from "../interfaces/wms/location_wms.interface";
 
 // Importing models for WMS master data
 import Country from "../models/wms/country_wms.model";
 import Department from "../models/wms/department_wms.model";
+import Location from "../models/wms/location_wms.model";
 import Currency from "../models/wms/currency_wms.model";
 import Territory from "../models/wms/territory_wms.model";
 import Salesman from "../models/wms/salesman_wms.model";
@@ -27,6 +29,7 @@ import PrincipalWmsView from "../models/wms/principal_wms.view.model";
 import Principal from "../models/wms/principal_wms.model";
 
 // Retrieves master data (country, department, territory, etc.) with optional pagination based on the `master` type.
+
 export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
   try {
     const { master } = req.params;
@@ -136,14 +139,7 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as IFlowmaster[];
         }
         break;
-      case "site":
-        {
-          fetchedData = await Site.findAll({
-            where: { company_code: requestUser.company_code },
-            ...paginationOptions,
-          });
-        }
-        break;
+
       case "storage":
         {
           fetchedData = await Storage.findAll({
@@ -153,8 +149,9 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
         }
         break;
 
-      case "activity_billing": {
-        const query = `
+      case "activity_billing":
+        {
+          const query = `
                 SELECT
                   P.PRIN_NAME,
                   B.ACT_CODE,
@@ -170,14 +167,49 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
                   P.COMPANY_CODE = :companyCode;
               `;
 
-        const activityBillingData = await sequelize.query(query, {
-          replacements: { companyCode: requestUser.company_code },
-          type: QueryTypes.SELECT,
-        });
+          const activityBillingData = await sequelize.query(query, {
+            replacements: { companyCode: requestUser.company_code },
+            type: QueryTypes.SELECT,
+          });
 
-        fetchedData = activityBillingData;
+          fetchedData = activityBillingData;
+        }
         break;
+
+      case "location":
+        {
+          (fetchedData = await Location.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as ILocation[];
+        }
+        break;
+      
+      case "uoc" :
+      case "moc1":
+      case "moc2":
+        
+      {
+        const query = `
+            SELECT
+              mau.company_code,  
+              mau.charge_type,  
+              mau.charge_code,  
+              mau.description,  
+              mau.activity_group_code  
+            FROM
+              MS_ACTIVITY_UOC mau
+            WHERE
+              COALESCE(mau.CHARGE_TYPE, ' ') = :charge_type
+        AND mau.COMPANY_CODE = :company_code;
+          `;
+          const activityData = await sequelize.query(query, {
+            replacements: {charge_type:master, company_code: requestUser.company_code },
+            type: QueryTypes.SELECT,
+          });
+          fetchedData = activityData;
       }
+     break;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
@@ -233,6 +265,34 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
           });
         }
         break;
+      case "department":
+        {
+          if (!dept_code || dept_code.length === 0) {
+            throw new Error("departmentCode is required");
+          }
+          await Department.destroy({
+            where: {
+              company_code: requestUser.company_code,
+              dept_code: dept_code,
+            },
+          });
+        }
+        break;
+
+      case "location":
+        {
+          if (!dept_code || dept_code.length === 0) {
+            throw new Error("location Code is required");
+          }
+          await Location.destroy({
+            where: {
+              company_code: requestUser.company_code,
+              location_code: dept_code,
+            },
+          });
+        }
+        break;
+
       case "territory":
         {
           await Territory.destroy({

@@ -1,10 +1,15 @@
 import * as express from "express";
 import passport from "passport";
-import { getPfMaster } from "../controllers/Purchaseflow/purchaseflow.controller";
+import {
+  getPfMaster,
+  deletepfMaster,
+} from "../controllers/Purchaseflow/purchaseflow.controller";
 import gmPfRouter from "./Purchaseflow/gm_purchaseflow.routes";
 import { checkUserAuthorization } from "../middleware/checkUserAthorization";
 
 const router = express.Router();
+
+console.log("In side Purchase");
 
 router.get(
   "/:master",
@@ -23,6 +28,6 @@ router.use(
 router.delete(
   "/:master",
   passport.authenticate("jwt", { session: false }),
-  getPfMaster
+  deletepfMaster
 );
 export default router;

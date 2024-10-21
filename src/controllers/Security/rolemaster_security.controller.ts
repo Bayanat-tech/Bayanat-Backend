@@ -3,7 +3,7 @@ import { Op } from "sequelize";
 import constants from "../../helpers/constants";
 import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
-import rolemaster from "../../models/Security/rolemaster_security..model";
+import rolemaster from "../../models/Security/rolemaster_security.model";
 import { rolemasterSchema } from "../../validation/Security/Security.validation";
 
 export const createrolemaster = async (req: RequestWithUser, res: Response) => {
@@ -70,7 +70,7 @@ export const updaterolemaster = async (req: RequestWithUser, res: Response) => {
         .json({ success: false, message: error.message });
       return;
     }
-    const { role_id, role_desc, remarks, company_code } = req.body;
+    const { role_id, company_code } = req.body;
 
     const rolemasterData = await rolemaster.findOne({
       where: {

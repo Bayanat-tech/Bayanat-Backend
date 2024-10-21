@@ -5,9 +5,27 @@ import {
   updatecostmaster,
 } from "../../controllers/Purchaseflow/costmaster_pf.controller";
 
+import {
+  createitemmaster,
+  updateitemmaster,
+} from "../../controllers/Purchaseflow/itemmaster_pf.controller";
+
 const router = express.Router();
 
 router.post("/costmaster", createcostmaster);
-router.put("/costmastert", updatecostmaster);
+router.put("/costmaster", updatecostmaster);
+
+import {
+  createprojectmaster,
+  updateprojectmaster,
+} from "../../controllers/Purchaseflow/projectmaster_pf.controller";
+
+router.post("/projectmaster", createprojectmaster);
+router.put("/projectmaster", updateprojectmaster);
+
+//-----Item Master---------------
+
+router.post("/itemmaster", createitemmaster);
+router.post("/itemmaster", updateitemmaster);
 
 export default router;
