@@ -68,7 +68,7 @@ export const createitemmaster  = async (req: RequestWithUser, res: Response) => 
 export const updateitemmaster  = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
-
+   
     const { error } = itemmasterSchema(req.body);
     if (error) {
       res
@@ -76,30 +76,27 @@ export const updateitemmaster  = async (req: RequestWithUser, res: Response) => 
         .json({ success: false, message: error.message });
       return;
     }
-    const {item_code, item_desp, company_code} = req.body;
-
+    const { item_code, company_code} = req.body;
+    
     const itemmasterData  = await Itemmaster_pf.findOne({
       where: {
         [Op.and]: [
-          { item_code: item_code },
-          { item_desp: item_desp},
-          { company_code: company_code },
-         
+          {company_code: company_code },
+          {item_code: item_code},
         ],
       },
     });
-
-    if (!itemmasterData ) {
+    
+      if (!itemmasterData ) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-   	message: constants.MESSAGES.ITEMMASTER_PF.ITEMMASTER_ALREADY_EXISTS,
+   	   message: constants.MESSAGES.ITEMMASTER_PF.ITEMMASTER_DOES_NOT_EXISTS,
         
       });
       return;
     }
-    const itemcostmaster  = await Itemmaster_pf.update(
-      { item_code,
-        item_desp,
+    const createitemmaster  = await Itemmaster_pf.update(
+      {
         company_code,
         created_by: requestUser.loginid,
         updated_by: requestUser.loginid,
@@ -109,15 +106,13 @@ export const updateitemmaster  = async (req: RequestWithUser, res: Response) => 
       {
         where: {
           [Op.and]: [
-            { item_code: item_code },
-            { item_desp: item_desp },
-            { company_code: company_code },
-            
+            {company_code: company_code },
+            {item_code: item_code},
           ],
         },
       }
     );
-    if (!itemcostmaster ) {
+    if (!createitemmaster ) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while updating company" });
@@ -135,4 +130,3 @@ export const updateitemmaster  = async (req: RequestWithUser, res: Response) => 
     return;
   }
 };
-

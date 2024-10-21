@@ -26,6 +26,6 @@ router.put("/projectmaster", updateprojectmaster);
 //-----Item Master---------------
 
 router.post("/itemmaster", createitemmaster);
-router.post("/itemmaster", updateitemmaster);
+router.put("/itemmaster", updateitemmaster);
 
 export default router;
