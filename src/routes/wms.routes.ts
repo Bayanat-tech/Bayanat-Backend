@@ -3,7 +3,6 @@
   import { getWmsMaster, deleteWmsMaster } from "../controllers/wms.controller";
   import gmWmsRouter from "./wms/gm_wms.routes";
   import { checkUserAuthorization } from "../middleware/checkUserAthorization";
- import { getActivityBillingDataByCompanyAndPrincipal, createActivityBillingDataByCompanyAndPrincipal, updateActivityBillingDataByCompanyAndPrincipal } from "../controllers/wms/activity_wms.controller";
   const router = express.Router();
 
   router.get(
@@ -12,25 +11,6 @@
     checkUserAuthorization,
     getWmsMaster
   );
-  router.get(
-    "/:master/:companyCode/:principalCode",
-    passport.authenticate("jwt", { session: false }),
-    checkUserAuthorization,
-    getActivityBillingDataByCompanyAndPrincipal 
-  );
-
-  router.post(
-   "/:master/:companyCode/:principalCode",
-    passport.authenticate("jwt", { session: false }),
-    checkUserAuthorization,
-    createActivityBillingDataByCompanyAndPrincipal
-   )
-  router.put(
-   "/:master/:companyCode/:principalCode/:activityCode",
-    passport.authenticate("jwt", { session: false }),
-    checkUserAuthorization,
-    updateActivityBillingDataByCompanyAndPrincipal
-   )
   
   router.use(
     "/gm",
@@ -38,7 +18,7 @@
     checkUserAuthorization,
     gmWmsRouter
   );
-
+  
 router.delete(
   "/:master",
   passport.authenticate("jwt", { session: false }),

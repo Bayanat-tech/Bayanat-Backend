@@ -29,6 +29,8 @@ import {
   createlocation,
   updatelocation,
 } from "../../controllers/wms/location_wms.controller";
+
+import { createActivityBillingDataByCompanyAndPrincipal, updateActivityBillingDataByCompanyAndPrincipal } from "../../controllers/wms/activity_wms.controller";
 const router = express.Router();
 
 //-------------country------------
@@ -50,5 +52,8 @@ router.put("/location", updatelocation);
 router.post("/salesman", createSalesman);
 router.put("/salesman", updateSalesman);
 
+// -------- Activity Billing Data -------
+router.post("/activity_billing/:principalCode", createActivityBillingDataByCompanyAndPrincipal);
+router.put("/activity_billing/:principalCode/:activityCode", updateActivityBillingDataByCompanyAndPrincipal);
 
 export default router;
