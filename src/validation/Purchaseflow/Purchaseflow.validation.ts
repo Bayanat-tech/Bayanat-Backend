@@ -13,7 +13,9 @@ export const projectmasterSchema = (data: IProjectmaster) => {
   const schema = Joi.object().keys({
     company_code: Joi.string().required(),
     project_code: Joi.string().required(), 
-    project_name: Joi.string().required()
+    project_name: Joi.string().required(),
+    prno_pre_fix: Joi.string().required(),
+    flag_proj_department: Joi.string().required()
     });
   return schema.validate(data);
 };

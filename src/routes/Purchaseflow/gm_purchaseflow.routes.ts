@@ -27,4 +27,11 @@ import {
 router.post("/projectmaster", createprojectmaster);
 router.put("/projectmaster", updateprojectmaster);
 
+
+
+
+import { getDivisions } from "../../controllers/Purchaseflow/fetch_division_pf.controller";
+
+// Define a GET route to fetch divisions
+router.get('/divisionsdropdown', getDivisions);
 export default router;

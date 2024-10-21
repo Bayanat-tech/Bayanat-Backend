@@ -17,7 +17,7 @@ export const createprojectmaster  = async (req: RequestWithUser, res: Response) 
           .json({ success: false, message: error.message });
         return;
       }
-      const { project_code, project_name,company_code } = req.body;
+      const { project_code, project_name,company_code,prno_pre_fix,flag_proj_department } = req.body;
   
       const projectmasterData  = await Projectmaster.findOne({
         where: {
@@ -40,6 +40,8 @@ export const createprojectmaster  = async (req: RequestWithUser, res: Response) 
         project_code,
         project_name,
         company_code,
+        prno_pre_fix,
+        flag_proj_department,
         created_by: requestUser.loginid,
         updated_by: requestUser.loginid
   

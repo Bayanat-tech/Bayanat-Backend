@@ -16,6 +16,14 @@ Projectmaster.init(
       type: DataTypes.STRING(30),
       allowNull: false,
     },
+    prno_pre_fix: {
+      type: DataTypes.STRING(30),
+      allowNull: false,
+    },
+    flag_proj_department: {
+      type: DataTypes.STRING(1),
+      allowNull: false,
+    },
    company_code: {
       type: DataTypes.STRING(10),
       allowNull: false,
