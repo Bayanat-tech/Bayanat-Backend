@@ -11,6 +11,7 @@ import { IFlowmaster } from "../interfaces/Security/Security.interfae";
 import { IRolemaster } from "../interfaces/Security/Security.interfae";
 import { ICostmaster } from "../interfaces/Purchaseflow/Purucahseflow.interface";
 import { ILocation } from "../interfaces/wms/location_wms.interface";
+import { IActivityGroup } from "../interfaces/wms/activitygroup_wms.interface";
 
 // Importing models for WMS master data
 import Country from "../models/wms/country_wms.model";
@@ -21,6 +22,7 @@ import Territory from "../models/wms/territory_wms.model";
 import Salesman from "../models/wms/salesman_wms.model";
 import Site from "../models/wms/site_wms.model";
 import Storage from "../models/wms/storage_wms.model";
+import activitygroup from "../models/wms/activitygroup_wms.model";
 
 // --- Database sequelize import ---
 import { sequelize } from "../database/connection";
@@ -148,6 +150,14 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           });
         }
         break;
+      case "activitygroup":
+        {
+          (fetchedData = await activitygroup.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IActivityGroup[];
+        }
+        break;
 
       case "activity_billing":
         {
@@ -255,6 +265,17 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
           });
         }
         break;
+      case "activitygroup":
+      {
+          await activitygroup.destroy({
+            where: {
+              company_code: requestUser.company_code,
+              activity_group_code: ids,
+            },
+          });
+        }
+        break;
+        break;
       case "department":
         {
           await Department.destroy({
@@ -267,13 +288,11 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
         break;
       case "department":
         {
-          if (!dept_code || dept_code.length === 0) {
-            throw new Error("departmentCode is required");
-          }
+    
           await Department.destroy({
             where: {
               company_code: requestUser.company_code,
-              dept_code: dept_code,
+              dept_code: ids,
             },
           });
         }
@@ -281,13 +300,11 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
 
       case "location":
         {
-          if (!dept_code || dept_code.length === 0) {
-            throw new Error("location Code is required");
-          }
+       
           await Location.destroy({
             where: {
               company_code: requestUser.company_code,
-              location_code: dept_code,
+              location_code: ids,
             },
           });
         }
