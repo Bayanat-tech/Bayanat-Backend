@@ -14,8 +14,8 @@ export const flowmasterSchema = (data: IFlowmaster) => {
   const schema = Joi.object().keys({
     company_code: Joi.string().required(),
     flow_code: Joi.string().required(),
-    flow_description: Joi.string().required()
-    });
+    flow_description: Joi.string().required(),
+  });
   return schema.validate(data);
 };
 export const rolemasterSchema = (data: IRolemaster) => {
@@ -23,8 +23,8 @@ export const rolemasterSchema = (data: IRolemaster) => {
     company_code: Joi.string().required(),
     role_id: Joi.number().integer(), // No longer required
     role_desc: Joi.string().required(),
-    remarks: Joi.string()
-    });
+    remarks: Joi.string(),
+  });
   return schema.validate(data);
 };
 

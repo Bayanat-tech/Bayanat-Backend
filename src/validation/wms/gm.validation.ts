@@ -1,5 +1,6 @@
 import Joi from "joi";
 import { IIndustrysector } from "../../interfaces/wms/industrysector_wms.interface";
+import { IActivity } from "../../interfaces/wms/activity_wms.interface";
 import {
   IPrincipalContactDetlWMs,
   IPrincipalWms,
@@ -13,6 +14,7 @@ import {
 } from "../../interfaces/wms/gm_wms.interface";
 import { ICurrency } from "../../interfaces/wms/currency_wms.interface";
 import { ILocation } from "../../interfaces/wms/location_wms.interface";
+import { IActivityGroup } from "../../interfaces/wms/activitygroup_wms.interface";
 //import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
 
 export const countrySchema = (data: ICountry) => {
@@ -119,6 +121,28 @@ export const locationSchema = (data: ILocation) => {
   return schema.validate(data);
 };
 
+export const activitygroupSchema = (data: IActivityGroup) => {
+  const schema = Joi.object().keys({
+    company_code: Joi.string().required(),
+    activity_group_code: Joi.string().required(),
+    act_group_name: Joi.string().required(),
+    mandatory_flag: Joi.string().valid("N", "Y"),
+    validate_flag: Joi.string().valid("N", "Y"),
+    account_code: Joi.string().allow(null),
+    act_group_type: Joi.string().allow(null),
+    alternate_accode: Joi.string().allow(null),
+    exp_account_code: Joi.string().allow(null),
+    freight_flag: Joi.string().valid("Y", "N"),
+    rpt_group_name: Joi.string().allow(null),
+    sw_flag: Joi.string().allow(null),
+    cost_group: Joi.string().allow(null),
+    updated_at: Joi.date().allow(""),
+    updated_by: Joi.string().allow(""),
+    created_by: Joi.string().allow(""),
+    created_at: Joi.date().allow(""),
+  });
+  return schema.validate(data);
+};
 export const currencySchema = (data: ICurrency) => {
   const schema = Joi.object().keys({
     curr_code: Joi.string().required(),
