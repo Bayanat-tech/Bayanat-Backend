@@ -1,3 +1,4 @@
+import { ObjectCannedACL } from "@aws-sdk/client-s3";
 import { Request } from "express";
 
 export interface GenerateTokenInterface {
@@ -40,4 +41,26 @@ export interface RequestWithUser extends Request {
 export interface TCreatedORUpdatedBy {
   loginid: string;
   username: string;
+}
+export interface UploadToS3ObjectInterface {
+  Bucket: string;
+  Key: string;
+  Body: any;
+  ACL: ObjectCannedACL;
+  ContentType: string;
+}
+export interface IFiles {
+  company_code: string;
+  request_number: string;
+  sr_no: number;
+  file_name: string;
+  extensions: string;
+  org_file_name: string;
+  aws_file_locn: string;
+  flow_level: number;
+  modules: string;
+  updated_at: Date;
+  updated_by: string;
+  created_by: string;
+  created_at: Date;
 }
