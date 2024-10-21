@@ -1,6 +1,7 @@
 import Joi from "joi";
 import { IIndustrysector } from "../../interfaces/wms/industrysector_wms.interface";
 import { ICountry,IDepartment } from "../../interfaces/wms/gm_wms.interface";
+import { IPickWave } from "../../interfaces/wms/pickwave_wms.interface";
 //import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
 
 
@@ -23,6 +24,15 @@ export const industrysectorSchema = (data: IIndustrysector) => {
     sector_code: Joi.string().required(),
     sector_name: Joi.string().required(),
     remarks: Joi.string().required()
+      });
+  return schema.validate(data);
+};
+export const pickwaveSchema = (data: IPickWave) => {
+  const schema = Joi.object().keys({
+    company_code: Joi.string().required(),
+    wave_code: Joi.string().required(),
+    wave_name: Joi.string().required()
+   
       });
   return schema.validate(data);
 };

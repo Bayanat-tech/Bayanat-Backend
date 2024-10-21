@@ -6,6 +6,7 @@ import {
   } from "../../controllers/wms/country_wms.controller";
   
 import { createdepartment, updatedepartment } from "../../controllers/wms/department_wms.controller";
+import { createPickwave, updatePickwave } from "../../controllers/wms/pickwave_wms.controller";
 //import { createcountry, updateCountry } from "../../controllers/wms/country_wms.controller";
 //import { createdepartment, updatedepartment } from "../../controllers/wms/flowmaster_wms.controller";
 //import { createdepartment, updatedepartment } from "../../controllers/wms/rolemaster_wms.controller";
@@ -55,5 +56,10 @@ router.put("/department", updatedepartment);
 router.post("/country/delete", deleteCountries);
 router.post("/costmaster", createcostmaster);
 router.put("/costmastert", updatecostmaster);
+
+//-------------pickwave------------
+router.post("/pickwave", createPickwave);
+router.put("/pickwave", updatePickwave);
+
 
 export default router;
