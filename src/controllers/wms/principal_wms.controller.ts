@@ -107,6 +107,8 @@ export const updatePrincipal = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser = req.user;
     const { prin_code } = req.params;
+    console.log(prin_code);
+
     const { error } = principalSchema(req.body);
     if (error) {
       res
@@ -133,9 +135,10 @@ export const updatePrincipal = async (req: RequestWithUser, res: Response) => {
         ...prinicipalPayload
       } = req.body,
       updated_by = requestUser.loginid;
+
     const existingPrincipalData = await Principal.findOne({
       where: {
-        [Op.and]: [{ prin_code: prin_code }, { prin_status: "Y" }],
+        [Op.and]: [{ prin_code: prin_code }],
       },
     });
 
