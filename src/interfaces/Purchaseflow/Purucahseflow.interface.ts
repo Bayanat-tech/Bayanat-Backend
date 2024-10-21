@@ -18,7 +18,20 @@ export interface  ICostmaster {
     created_at?: Date;                // Record creation timestamp (optional)
     created_by?: string;              // Created by user (optional)
   }
+<<<<<<< HEAD
   export interface IHrdivision {
     div_code?: string;            // Project code (optional)
     div_name?: string;            // Project name (optional)
     }
+=======
+
+  export interface IItemtmaster {
+    item_code : string;           
+    item_desp : string;           
+    company_code?: string;           
+    updated_at?: Date;                
+    updated_by?: string;             
+    created_at?: Date;               
+    created_by?: string;       
+  }
+>>>>>>> qa

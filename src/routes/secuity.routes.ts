@@ -1,11 +1,14 @@
 import * as express from "express";
 import passport from "passport";
-import { getSecMaster,deletesecMaster } from "../controllers/Security/security.controller"
-import gmSecRouter from "./Security/gm_Security.routes"
+import {
+  getSecMaster,
+  deletesecMaster,
+} from "../controllers/Security/security.controller";
+import gmSecRouter from "./Security/gm_Security.routes";
 import { checkUserAuthorization } from "../middleware/checkUserAthorization";
 
 const router = express.Router();
-console.log('Router declaration for Security')
+console.log("Router declaration for Security");
 router.get(
   "/:master",
   passport.authenticate("jwt", { session: false }),

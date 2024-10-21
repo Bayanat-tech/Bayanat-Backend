@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { Op } from "sequelize";
 import constants from "../../helpers/constants";
-import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
+import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
 import Industrysector from "../../models/wms/industrysector_wms.model";
 import { industrysectorSchema } from "../../validation/wms/gm.validation";

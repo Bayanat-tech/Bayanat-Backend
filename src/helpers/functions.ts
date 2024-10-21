@@ -4,7 +4,7 @@ import {
   GenerateTokenInterface,
   RowData,
   TreeNode,
-} from "../interfaces/cmmon.interfacte";
+} from "../interfaces/cmmon.interface";
 import jsonwebtoken from "jsonwebtoken";
 import constants from "./constants";
 import { StructuredResult } from "../interfaces/auth.interface";
