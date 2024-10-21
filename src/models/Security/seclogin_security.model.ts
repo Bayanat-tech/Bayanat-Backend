@@ -1,22 +1,34 @@
 import { DataTypes, Model } from "sequelize";
-import { ICostmaster } from "../../interfaces/Purchaseflow/Purucahseflow.interface";
+import { ISecmaster } from "../../interfaces/Security/Security.interfae"; 
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
 
-class Costmaster extends Model<ICostmaster> {}
+class secmaster extends Model<ISecmaster> {}
 
-Costmaster.init(
+secmaster.init(
   {
-    cost_code: {
-      type: DataTypes.STRING(50),
+    id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
     },
-    cost_name: {
+    username: {
       type: DataTypes.STRING(30),
       allowNull: false,
     },
-   company_code: {
+    contact_no: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    userpass: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    email_id: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    company_code: {
       type: DataTypes.STRING(10),
       allowNull: false,
     },
@@ -28,22 +40,22 @@ Costmaster.init(
       type: DataTypes.STRING(20),
       allowNull: false,
     },
-     created_at: {
+    created_at: {
       type: DataTypes.DATE,
-       allowNull: false,
-     },
-	updated_at: {
+      allowNull: false,
+    },
+    updated_at: {
       type: DataTypes.DATE,
-       allowNull: false,
-     }
+      allowNull: false,
+    },
   },
   {
     sequelize,
-    modelName: "Costmaster",
-    tableName: constants.TABLE.MS_PS_COST, 
+    modelName: "Secmaster",
+    tableName: constants.TABLE.SEC_LOGIN, 
     createdAt: "created_at",
     updatedAt: "updated_at",
   }
 );
 
-export default Costmaster;
+export default secmaster;

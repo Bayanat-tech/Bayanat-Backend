@@ -1,4 +1,4 @@
- import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
 import { ICountry } from "../../interfaces/wms/gm_wms.interface";
@@ -59,5 +59,3 @@ Country.init(
 );
 
 export default Country;
-
-

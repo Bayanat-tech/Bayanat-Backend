@@ -1,41 +1,43 @@
 import { Response } from "express";
 import { Op } from "sequelize";
 import constants from "../../helpers/constants";
-import { RequestWithUser } from "../../interfaces/cmmon.interface";
+import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
 import { IUser } from "../../interfaces/user.interface";
-import Country from "../../models/wms/country_wms.model";
-import { countrySchema } from "../../validation/wms/gm.validation";
-
-export const createCountry = async (req: RequestWithUser, res: Response) => {
+import Salesman from "../../models/wms/salesman_wms.model";
+import { salesmanSchema } from "../../validation/wms/gm.validation";
+export const createSalesman = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = countrySchema(req.body);
+    const { error } = salesmanSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { country_code, company_code } = req.body;
+    const { company_code, salesman_code } = req.body;
+    console.log("body", req.body);
 
-    const country = await Country.findOne({
+    console.log("rsesponse", req.body);
+
+    const salesman = await Salesman.findOne({
       where: {
         [Op.and]: [
           { company_code: company_code },
-          { country_code: country_code },
+          { salesman_code: salesman_code },
         ],
       },
     });
 
-    if (country) {
+    if (salesman) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
         message: constants.MESSAGES.COUNTRY_WMS.COUNTRY_ALREADY_EXISTS,
       });
       return;
     }
-    const createCountry = await Country.create({
+    const createCountry = await Salesman.create({
       company_code,
       created_by: requestUser.loginid,
       updated_by: requestUser.loginid,
@@ -60,24 +62,24 @@ export const createCountry = async (req: RequestWithUser, res: Response) => {
     return;
   }
 };
-export const updateCountry = async (req: RequestWithUser, res: Response) => {
+export const updateSalesman = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = countrySchema(req.body);
+    const { error } = salesmanSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { country_code, company_code } = req.body;
+    const { company_code, salesman_code } = req.body;
 
-    const country = await Country.findOne({
+    const country = await Salesman.findOne({
       where: {
         [Op.and]: [
           { company_code: company_code },
-          { country_code: country_code },
+          { salesman_code: salesman_code },
         ],
       },
     });
@@ -89,9 +91,10 @@ export const updateCountry = async (req: RequestWithUser, res: Response) => {
       });
       return;
     }
-    const createCountry = await Country.update(
+    const createCountry = await Salesman.update(
       {
         company_code,
+        created_by: requestUser.loginid,
         updated_by: requestUser.loginid,
 
         ...req.body,
@@ -100,7 +103,7 @@ export const updateCountry = async (req: RequestWithUser, res: Response) => {
         where: {
           [Op.and]: [
             { company_code: company_code },
-            { country_code: country_code },
+            { salesman_code: salesman_code },
           ],
         },
       }
@@ -114,41 +117,6 @@ export const updateCountry = async (req: RequestWithUser, res: Response) => {
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
       message: constants.MESSAGES.COUNTRY_WMS.COUNTRY_UPDATED_SUCCESSFULLY,
-    });
-    return;
-  } catch (error: any) {
-    res
-      .status(constants.STATUS_CODES.BAD_REQUEST)
-      .json({ success: false, message: error.message });
-    return;
-  }
-};
-export const deleteCountries = async (req: RequestWithUser, res: Response) => {
-  try {
-    const countriesCode = req.body;
-
-    if (!req.body.length) {
-      res.status(constants.STATUS_CODES.BAD_REQUEST).json({
-        success: false,
-        message: constants.MESSAGES.COUNTRY_WMS.SELECT_AT_LEAST_ONE_COUNTRY,
-      });
-      return;
-    }
-    const countriesDeleteResponse = await Country.destroy({
-      where: {
-        country_code: countriesCode,
-      },
-    });
-    if (countriesDeleteResponse === 0) {
-      res.status(constants.STATUS_CODES.BAD_REQUEST).json({
-        success: false,
-        message: countriesDeleteResponse,
-      });
-      return;
-    }
-    res.status(constants.STATUS_CODES.OK).json({
-      success: true,
-      message: constants.MESSAGES.COUNTRY_WMS.COUNTRY_DELETED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {

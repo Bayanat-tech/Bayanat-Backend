@@ -1,5 +1,5 @@
 import { NextFunction, Response } from "express";
-import { RequestWithUser } from "../interfaces/cmmon.interfacte";
+import { RequestWithUser } from "../interfaces/cmmon.interface";
 import { IUser } from "../interfaces/user.interface";
 import constants from "../helpers/constants";
 
