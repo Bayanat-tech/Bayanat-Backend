@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { Model, Op } from "sequelize";
 import constants from "../../helpers/constants";
-import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
+import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
 import Itemmaster_pf from "../../models/Purchaseflow/itemmaster_pf_model";
 import { itemmasterSchema} from "../../validation/Purchaseflow/Purchaseflow.validation";
