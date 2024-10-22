@@ -11,13 +11,9 @@ import { IFlowmaster } from "../interfaces/Security/Security.interfae";
 import { IRolemaster } from "../interfaces/Security/Security.interfae";
 import { ICostmaster } from "../interfaces/Purchaseflow/Purucahseflow.interface";
 import { ILocation } from "../interfaces/wms/location_wms.interface";
-<<<<<<< HEAD
 import { IUom } from "../interfaces/wms/gm_wms.interface";
 import { IMoc } from "../interfaces/wms/gm_wms.interface";
 import { IHarmonize } from "../interfaces/wms/harmonize.interface";
-=======
-import { IActivityGroup } from "../interfaces/wms/activitygroup_wms.interface";
->>>>>>> qa
 
 // Importing models for WMS master data
 import Country from "../models/wms/country_wms.model";
@@ -28,19 +24,21 @@ import Territory from "../models/wms/territory_wms.model";
 import Salesman from "../models/wms/salesman_wms.model";
 import Site from "../models/wms/site_wms.model";
 import Storage from "../models/wms/storage_wms.model";
-<<<<<<< HEAD
 import Uom from "../models/wms/uom_wms.model";
 import Moc from "../models/wms/moc_wms.model";
 import Harmonize from "../models/wms/harmonize_code.model";
-=======
-import activitygroup from "../models/wms/activitygroup_wms.model";
->>>>>>> qa
+import Activitysubgroup from "../models/wms/activity_subgroup.model";
+
 
 // --- Database sequelize import ---
 import { sequelize } from "../database/connection";
 import { Op, QueryTypes } from "sequelize";
 import PrincipalWmsView from "../models/wms/principal_wms.view.model";
 import Principal from "../models/wms/principal_wms.model";
+import activitygroup from "../models/wms/activitygroup_wms.model";
+import { IActivityGroup } from "../interfaces/wms/activitygroup_wms.interface";
+import { activitysubgroupSchema } from "../validation/wms/gm.validation";
+import { IActivitysubgroup } from "../interfaces/wms/activity_subgroup_wms.interface";
 
 
 // Retrieves master data (country, department, territory, etc.) with optional pagination based on the `master` type.
@@ -172,6 +170,15 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as IActivityGroup[];
         }
         break;
+        case "activitysubgroup":
+        {
+          (fetchedData = await Activitysubgroup.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IActivitysubgroup[];
+        }
+        break;
+
 
         case "activity_billing":
           {
@@ -255,7 +262,6 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as ILocation[];
         }
         break;
-<<<<<<< HEAD
       case "uom":
           {
             (fetchedData = await Uom.findAll({
@@ -298,11 +304,6 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
               })) as unknown[] as IHarmonize[];
             }
             break;
-=======
-      
-      case "uoc" :
-      case "moc1":
-      case "moc2":
         
       {
         const query = `
@@ -325,7 +326,6 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           fetchedData = activityData;
       }
      break;
->>>>>>> qa
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,

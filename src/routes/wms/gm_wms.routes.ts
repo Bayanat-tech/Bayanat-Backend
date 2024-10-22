@@ -39,16 +39,13 @@ import {
   createlocation,
   updatelocation,
 } from "../../controllers/wms/location_wms.controller";
-<<<<<<< HEAD
 import { createUom, updateUom } from "../../controllers/wms/uom_wms.controller";
 import { createMoc2, updateMoc2 } from "../../controllers/wms/moc2_wms.controller";
 import { createMoc,updateMoc } from "../../controllers/wms/moc_wms.controller";
 import { createUoc, updateUoc } from "../../controllers/wms/uoc_wms.controller";
 import { createHarmonize, updateHarmonize } from "../../controllers/wms/harmonize_wms.controller";
-=======
-
 import { createActivityBillingDataByCompanyAndPrincipal, updateActivityBillingDataByCompanyAndPrincipal } from "../../controllers/wms/activity_wms.controller";
->>>>>>> qa
+import { createActivitysubgroup } from "../../controllers/wms/activity_subgroup_wms.controller";
 const router = express.Router();
 
 //-------------country------------
@@ -76,9 +73,7 @@ router.put("/location", updatelocation);
 router.post("/salesman", createSalesman);
 router.put("/salesman", updateSalesman);
 
-<<<<<<< HEAD
 //--------uom
-
 router.post("/uom", createUom);
 router.put("/uom", updateUom);
 
@@ -98,7 +93,7 @@ router.put("/moc2",updateMoc2);
 //--------HARMONIZE
 router.post("/harmonize",createHarmonize);
 router.put("/harmonize",updateHarmonize);
-=======
+
 //-------------Activity Group------------
 router.post("/activitygroup", createActivityGroup);
 router.put("/activitygroup", updateActivityGroup);
@@ -106,6 +101,9 @@ router.post("/activitygroup/delete", deleteActivityGroup);
 // -------- Activity Billing Data -------
 router.post("/activity_billing/:principalCode", createActivityBillingDataByCompanyAndPrincipal);
 router.put("/activity_billing/:principalCode/:activityCode", updateActivityBillingDataByCompanyAndPrincipal);
->>>>>>> qa
+
+//-------------Activity Sub Group------------
+router.post("activitysubgroup",createActivitysubgroup);
+router.put("activitysubgroup",updateActivityGroup);
 
 export default router;

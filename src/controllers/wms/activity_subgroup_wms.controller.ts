@@ -3,46 +3,46 @@ import { Op } from "sequelize";
 import constants from "../../helpers/constants";
 import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
-import Uom from "../../models/wms/uom_wms.model";
-import { uomSchema } from "../../validation/wms/gm.validation";
+import Activitysubgroup from "../../models/wms/activity_subgroup.model";
+import { activitygroupSchema, activitysubgroupSchema } from "../../validation/wms/gm.validation";
 
-export const createUom = async (req: RequestWithUser, res: Response) => {
+export const createActivitysubgroup = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = uomSchema(req.body);
+    const { error } = activitysubgroupSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { uom_code, company_code } = req.body;
+    const { activity_subgroup_code, company_code } = req.body;
 
-    const uom = await Uom.findOne({
+    const activitysubgroup = await Activitysubgroup.findOne({
       where: {
         [Op.and]: [
           { company_code: company_code },
-          { uom_code: uom_code },
+          { activity_subgroup_code: activity_subgroup_code },
         ],
       },
     });
 
-    if (uom) {
+    if (activitysubgroup) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.UOM_WMS.UOM_ALREADY_EXISTS,
+        message: constants.MESSAGES.COUNTRY_WMS.COUNTRY_ALREADY_EXISTS,
       });
       return;
     }
-    const createUom = await Uom.create({
+    const createCountry = await Activitysubgroup.create({
       company_code,
       created_by: requestUser.loginid,
       updated_by: requestUser.loginid,
 
       ...req.body,
     });
-    if (!createUom) {
+    if (!createCountry) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while creating company" });
@@ -50,7 +50,7 @@ export const createUom = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.UOM_WMS.UOM_CREATED_SUCCESSFULLY,
+      message: constants.MESSAGES.COUNTRY_WMS.COUNTRY_CREATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -60,39 +60,38 @@ export const createUom = async (req: RequestWithUser, res: Response) => {
     return;
   }
 };
-export const updateUom = async (req: RequestWithUser, res: Response) => {
+export const updateActivitysubgroup = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = uomSchema(req.body);
+    const { error } = activitysubgroupSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { uom_code, company_code } = req.body;
+    const { activity_subgroup_code, company_code } = req.body;
 
-    const uom = await Uom.findOne({
+    const country = await Activitysubgroup.findOne({
       where: {
         [Op.and]: [
           { company_code: company_code },
-          { uom_code: uom_code },
+          { activity_subgroup_code: activity_subgroup_code },
         ],
       },
     });
 
-    if (!uom) {
+    if (!country) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.UOM_WMS.UOM_DOES_NOT_EXISTS,
+        message: constants.MESSAGES.ACTIVITY_SUBGROUP_WMS.ACTIVITY_SUBGROUP_DOES_NOT_EXISTS,
       });
       return;
     }
-    const createUom = await Uom.update(
+    const createactivitysubgroup = await Activitysubgroup.update(
       {
         company_code,
-        created_by: requestUser.loginid,
         updated_by: requestUser.loginid,
 
         ...req.body,
@@ -101,12 +100,12 @@ export const updateUom = async (req: RequestWithUser, res: Response) => {
         where: {
           [Op.and]: [
             { company_code: company_code },
-            { uom_code: uom_code },
+            { activity_subgroup_code: activity_subgroup_code },
           ],
         },
       }
     );
-    if (!createUom) {
+    if (!createActivitysubgroup) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while updating company" });
@@ -114,7 +113,7 @@ export const updateUom = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.UOM_WMS.UOM_UPDATED_SUCCESSFULLY,
+      message: constants.MESSAGES.ACTIVITY_SUBGROUP_WMS.ACTIVITY_SUBGROUP_DELETED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -131,13 +130,13 @@ export const deleteCountries = async (req: RequestWithUser, res: Response) => {
     if (!req.body.length) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.UOM_WMS.SELECT_AT_LEAST_ONE_UOM,
+        message: constants.MESSAGES.ACTIVITY_SUBGROUP_WMS.ACTIVITY_SUBGROUP_AT_LEAST_ONE_ACTIVITY_GROUP,
       });
       return;
     }
-    const countriesDeleteResponse = await Uom.destroy({
+    const countriesDeleteResponse = await Activitysubgroup.destroy({
       where: {
-        uom_code: countriesCode,
+        activity_subgroup_code: countriesCode,
       },
     });
     if (countriesDeleteResponse === 0) {
@@ -149,7 +148,7 @@ export const deleteCountries = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.UOM_WMS.UOM_DELETED_SUCCESSFULLY,
+      message: constants.MESSAGES.ACTIVITY_SUBGROUP_WMS.ACTIVITY_SUBGROUP_DELETED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {

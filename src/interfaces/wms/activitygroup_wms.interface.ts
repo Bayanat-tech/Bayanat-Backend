@@ -1,6 +1,6 @@
 export interface IActivityGroup {
   activity_group_code: string;
-  act_group_name: string;
+  act_subgroup_name: string;
   company_code?: string;
   mandatory_flag?: string;
   validate_flag?: string;
