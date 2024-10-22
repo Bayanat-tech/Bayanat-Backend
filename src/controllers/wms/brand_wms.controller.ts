@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { Op } from "sequelize";
 import constants from "../../helpers/constants";
-import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
+import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
 import Brand from "../../models/wms/brand_wms.model";
 import { brandSchema } from "../../validation/wms/gm.validation";

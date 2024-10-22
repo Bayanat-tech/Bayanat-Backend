@@ -6,7 +6,6 @@ import {
 } from "../../controllers/wms/country_wms.controller";
 
 import {
-<<<<<<< HEAD
   createManufacture,
   updateManufacture,
 } from "../../controllers/wms/manufacture_wms.controller";
@@ -17,15 +16,10 @@ import {
 } from "../../controllers/wms/productgroup_wms.controller";
 
 import {
-  createcurrency,
-  updatecurrency,
-} from "../../controllers/wms/currency_wms.controller";
-=======
   createActivityGroup,
   deleteActivityGroup,
   updateActivityGroup,
 } from "../../controllers/wms/activitygroup_wms.controller";
->>>>>>> qa
 
 import {
   createBrand,
@@ -66,7 +60,10 @@ import {
   updatelocation,
 } from "../../controllers/wms/location_wms.controller";
 
-import { createActivityBillingDataByCompanyAndPrincipal, updateActivityBillingDataByCompanyAndPrincipal } from "../../controllers/wms/activity_wms.controller";
+import {
+  createActivityBillingDataByCompanyAndPrincipal,
+  updateActivityBillingDataByCompanyAndPrincipal,
+} from "../../controllers/wms/activity_wms.controller";
 const router = express.Router();
 
 //-------------country------------
@@ -107,7 +104,6 @@ router.post("/country/delete", deleteCountries);
 router.post("/location", createlocation);
 router.put("/location", updatelocation);
 
-<<<<<<< HEAD
 //-------------currency------------
 
 router.post("/currency", createcurrency);
@@ -122,7 +118,6 @@ router.put("/salesman", updateSalesman);
 
 router.post("/supplier", createsupplier);
 router.put("/supplier", updatesupplier);
-=======
 //--------salesaman------------------
 router.post("/salesman", createSalesman);
 router.put("/salesman", updateSalesman);
@@ -132,8 +127,13 @@ router.post("/activitygroup", createActivityGroup);
 router.put("/activitygroup", updateActivityGroup);
 router.post("/activitygroup/delete", deleteActivityGroup);
 // -------- Activity Billing Data -------
-router.post("/activity_billing/:principalCode", createActivityBillingDataByCompanyAndPrincipal);
-router.put("/activity_billing/:principalCode/:activityCode", updateActivityBillingDataByCompanyAndPrincipal);
->>>>>>> qa
+router.post(
+  "/activity_billing/:principalCode",
+  createActivityBillingDataByCompanyAndPrincipal
+);
+router.put(
+  "/activity_billing/:principalCode/:activityCode",
+  updateActivityBillingDataByCompanyAndPrincipal
+);
 
 export default router;

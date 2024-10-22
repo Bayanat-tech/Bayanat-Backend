@@ -1,6 +1,11 @@
 import Joi from "joi";
 import { IIndustrysector } from "../../interfaces/wms/industrysector_wms.interface";
-<<<<<<< HEAD
+import {
+  IPrincipalContactDetlWMs,
+  IPrincipalWms,
+} from "../../interfaces/wms/principal_wms.interface";
+import { IActivity } from "../../interfaces/wms/activity_wms.interface";
+
 import {
   ICountry,
   IDepartment,
@@ -12,29 +17,11 @@ import {
 import { ICurrency } from "../../interfaces/wms/currency_wms.interface";
 import { ILocation } from "../../interfaces/wms/location_wms.interface";
 import { ISupplier } from "../../interfaces/wms/supplier_wms.interface";
+import { IActivityGroup } from "../../interfaces/wms/activitygroup_wms.interface";
 //import { IBrand } from "../../interfaces/wms/gm_wms.interface";
 
 //import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
 
-=======
-import { IActivity } from "../../interfaces/wms/activity_wms.interface";
-import {
-  IPrincipalContactDetlWMs,
-  IPrincipalWms,
-} from "../../interfaces/wms/principal_wms.interface";
-//import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
-
-import {
-  ICountry,
-  IDepartment,
-  ISalesman,
-} from "../../interfaces/wms/gm_wms.interface";
-import { ICurrency } from "../../interfaces/wms/currency_wms.interface";
-import { ILocation } from "../../interfaces/wms/location_wms.interface";
-import { IActivityGroup } from "../../interfaces/wms/activitygroup_wms.interface";
-//import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
-
->>>>>>> qa
 export const countrySchema = (data: ICountry) => {
   const schema = Joi.object().keys({
     company_code: Joi.string().required(),
@@ -179,8 +166,6 @@ export const locationSchema = (data: ILocation) => {
   return schema.validate(data);
 };
 
-<<<<<<< HEAD
-=======
 export const activitygroupSchema = (data: IActivityGroup) => {
   const schema = Joi.object().keys({
     company_code: Joi.string().required(),
@@ -203,7 +188,6 @@ export const activitygroupSchema = (data: IActivityGroup) => {
   });
   return schema.validate(data);
 };
->>>>>>> qa
 export const currencySchema = (data: ICurrency) => {
   const schema = Joi.object().keys({
     curr_code: Joi.string().required(),
@@ -217,7 +201,6 @@ export const currencySchema = (data: ICurrency) => {
   return schema.validate(data);
 };
 
-<<<<<<< HEAD
 export const supplierSchema = (data: ISupplier) => {
   const schema = Joi.object().keys({
     company_code: Joi.string().required(),
@@ -260,7 +243,9 @@ export const supplierSchema = (data: ISupplier) => {
     updated_by: Joi.string().allow(""),
     created_by: Joi.string().allow(""),
     created_at: Joi.date().allow(null),
-=======
+  });
+  return schema.validate(data);
+};
 export const principalSchema = (
   data: IPrincipalWms & IPrincipalContactDetlWMs
 ) => {
@@ -354,7 +339,6 @@ export const principalSchema = (
     storage_type: Joi.string().allow(""),
     default_foc: Joi.string().allow(""),
     automate_activity: Joi.string().allow(""),
->>>>>>> qa
   });
 
   return schema.validate(data);

@@ -11,14 +11,11 @@ import { IFlowmaster } from "../interfaces/Security/Security.interfae";
 import { IRolemaster } from "../interfaces/Security/Security.interfae";
 import { ICostmaster } from "../interfaces/Purchaseflow/Purucahseflow.interface";
 import { ILocation } from "../interfaces/wms/location_wms.interface";
-<<<<<<< HEAD
 import { ISupplier } from "../interfaces/wms/supplier_wms.interface";
 import { IBrand } from "../interfaces/wms/gm_wms.interface";
 import { IGroup } from "../interfaces/wms/gm_wms.interface";
 import { IManufacture } from "../interfaces/wms/gm_wms.interface";
-=======
 import { IActivityGroup } from "../interfaces/wms/activitygroup_wms.interface";
->>>>>>> qa
 
 // Importing models for WMS master data
 import Country from "../models/wms/country_wms.model";
@@ -29,14 +26,11 @@ import Territory from "../models/wms/territory_wms.model";
 import Salesman from "../models/wms/salesman_wms.model";
 import Site from "../models/wms/site_wms.model";
 import Storage from "../models/wms/storage_wms.model";
-<<<<<<< HEAD
 import Supplier from "../models/wms/supplier_wms.model";
 import Brand from "../models/wms/brand_wms.model";
 import Group from "../models/wms/productgroup_wms.model";
 import Manufacture from "../models/wms/manufacture_wms.model";
-=======
 import activitygroup from "../models/wms/activitygroup_wms.model";
->>>>>>> qa
 
 // --- Database sequelize import ---
 import { sequelize } from "../database/connection";
@@ -110,7 +104,6 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           ///console.log("i am here shiv dept", fetchedData);
         }
         break;
-<<<<<<< HEAD
 
       case "supplier":
         {
@@ -124,7 +117,6 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
         }
         break;
 
-=======
       case "principal": {
         fetchedData = await PrincipalWmsView.findAll({
           where: {
@@ -137,7 +129,6 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
         });
         break;
       }
->>>>>>> qa
       case "territory":
         {
           (fetchedData = await Territory.findAll({
@@ -224,11 +215,11 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
         }
         break;
 
-        case "activity_billing":
-          {
-            let activityBillingData: any[] = [];
-            if (principalCode) {
-              const query = `
+      case "activity_billing":
+        {
+          let activityBillingData: any[] = [];
+          if (principalCode) {
+            const query = `
                 SELECT
                   *
                 FROM
@@ -238,17 +229,17 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
                   AND PRIN_CODE = :principal_code
                   AND USER_ID = :user_id
               `;
-              
-              activityBillingData = await sequelize.query(query, {
-                replacements: {
-                  company_code: requestUser.company_code,
-                  principal_code: principalCode,
-                  user_id: requestUser.loginid
-                },
-                type: QueryTypes.SELECT,
-              });
-            } else {
-              const query = `
+
+            activityBillingData = await sequelize.query(query, {
+              replacements: {
+                company_code: requestUser.company_code,
+                principal_code: principalCode,
+                user_id: requestUser.loginid,
+              },
+              type: QueryTypes.SELECT,
+            });
+          } else {
+            const query = `
                 SELECT
                   P.PRIN_NAME,
                   B.ACT_CODE,
@@ -264,17 +255,17 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
                 WHERE
                   P.COMPANY_CODE = :company_code
               `;
-          
-              activityBillingData = await sequelize.query(query, {
-                replacements: {
-                  company_code: requestUser.company_code
-                },
-                type: QueryTypes.SELECT,
-              });
-            }
-            // Assigning the fetched data
-            fetchedData = activityBillingData;
-          }          
+
+            activityBillingData = await sequelize.query(query, {
+              replacements: {
+                company_code: requestUser.company_code,
+              },
+              type: QueryTypes.SELECT,
+            });
+          }
+          // Assigning the fetched data
+          fetchedData = activityBillingData;
+        }
         break;
       case "activity":
         {
@@ -289,13 +280,13 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
                 WHERE
                   A.COMPANY_CODE = :company_code
               `;
-             const activityData = await sequelize.query(query, {
-                replacements: {
-                  company_code: requestUser.company_code
-                },
-                type: QueryTypes.SELECT,
-              });
-              fetchedData = activityData;
+          const activityData = await sequelize.query(query, {
+            replacements: {
+              company_code: requestUser.company_code,
+            },
+            type: QueryTypes.SELECT,
+          });
+          fetchedData = activityData;
         }
         break;
       case "location":
@@ -306,13 +297,12 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as ILocation[];
         }
         break;
-      
-      case "uoc" :
+
+      case "uoc":
       case "moc1":
       case "moc2":
-        
-      {
-        const query = `
+        {
+          const query = `
             SELECT
               mau.company_code,  
               mau.charge_type,  
@@ -326,12 +316,15 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
         AND mau.COMPANY_CODE = :company_code;
           `;
           const activityData = await sequelize.query(query, {
-            replacements: {charge_type:master, company_code: requestUser.company_code },
+            replacements: {
+              charge_type: master,
+              company_code: requestUser.company_code,
+            },
             type: QueryTypes.SELECT,
           });
           fetchedData = activityData;
-      }
-     break;
+        }
+        break;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
@@ -378,7 +371,7 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
         }
         break;
       case "activitygroup":
-      {
+        {
           await activitygroup.destroy({
             where: {
               company_code: requestUser.company_code,
@@ -398,24 +391,7 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
           });
         }
         break;
-<<<<<<< HEAD
 
-      case "location":
-        {
-          if (!dept_code || dept_code.length === 0) {
-            throw new Error("location Code is required");
-          }
-          await Location.destroy({
-            where: {
-              company_code: requestUser.company_code,
-              location_code: dept_code,
-            },
-          });
-        }
-        break;
-
-=======
->>>>>>> qa
       case "territory":
         {
           await Territory.destroy({
