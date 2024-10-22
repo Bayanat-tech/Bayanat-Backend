@@ -53,3 +53,73 @@ export interface ISalesman {
   updated_at?: Date;
   updated_by?: string;
 }
+
+export interface ICountry {
+  country_code: string;
+  country_name: string;
+  country_gcc: string;
+  company_code?: string;
+  short_desc?: string;
+  nationality?: string;
+  created_at?: Date;
+  created_by?: string;
+  updated_at?: Date;
+  updated_by?: string;
+}
+
+export interface IUom {
+  uom_code: string;
+  uom_name: string;
+  company_code?: string;
+  created_at?: Date;
+  created_by?: string;
+  updated_at?: Date;
+  updated_by?: string;
+}
+
+export interface IMoc {
+  charge_code: string;
+  description: string;
+  charge_type: string;
+  company_code?: string;
+  created_at?: Date;
+  created_by?: string;
+  updated_at?: Date;
+  updated_by?: string;
+}
+
+export interface IMoc2 {
+  charge_code: string;
+  description: string;
+  charge_type: string;
+  company_code?: string;
+  created_at?: Date;
+  created_by?: string;
+  updated_at?: Date;
+  updated_by?: string;
+}
+
+export interface IUoc{
+  charge_code: string;
+  description: string;
+  charge_type: string;
+  company_code?: string;
+  created_at?: Date;
+  created_by?: string;
+  updated_at?: Date;
+  updated_by?: string;
+}
+
+export interface THarmonize{
+  harm_code: string;
+  harm_desc: string;
+  short_desc: string;
+  uom:string;
+  permit_reqd:string;
+  unit:string;
+  company_code?: string;
+  updated_at?: Date;
+  updated_by?: string;
+  created_by?: string;
+  created_at?: Date;
+}
