@@ -1,9 +1,6 @@
 import * as express from "express";
 import passport from "passport";
-import {
-  getSecMaster,
-  deletesecMaster,
-} from "../controllers/Security/security.controller";
+import { getSecMaster } from "../controllers/Security/security.controller";
 import gmSecRouter from "./Security/gm_Security.routes";
 import { checkUserAuthorization } from "../middleware/checkUserAthorization";
 
@@ -23,9 +20,9 @@ router.use(
   gmSecRouter
 );
 
-router.delete(
+router.post(
   "/:master",
-  passport.authenticate("jwt", { session: false }),
-  deletesecMaster
+  passport.authenticate("jwt", { session: false })
+  // deletesecMaster
 );
 export default router;

@@ -32,12 +32,14 @@ export interface  IFlowmaster {
   }
 
   export interface  ISecmodule {
-    id: number;
-    username: string;
-    contact_no: string;
-    userpass: string;
-    email_id?: string;
     company_code?: string;
+    app_code: string;
+    serial_no: number;
+    level1: string;
+    level2: string;
+    level3: string;
+    position: number;
+    url_path: string;
     created_at?: Date;
     created_by?: string;
     updated_at?: Date;

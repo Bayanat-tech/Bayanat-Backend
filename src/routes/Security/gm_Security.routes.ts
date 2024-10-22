@@ -15,6 +15,11 @@ import {
   updatesecmaster,
 } from "../../controllers/Security/secmaster_security.controller";
 
+import {
+  createsecmodulemaster,
+  updatesecmodulemaster,
+} from "../../controllers/Security/secmodule_security.controller";
+
 const router = express.Router();
 
 router.post("/rolemaster", createrolemaster);
@@ -30,4 +35,6 @@ router.put("/flowmaster", updateflowmaster);
 router.post("/secmaster", createsecmaster);
 router.put("/secmaster", updatesecmaster);
 
+router.post("/secmodule", createsecmodulemaster);
+router.put("/secmodule", updatesecmodulemaster);
 export default router;
