@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { TLogin } from "../interfaces/cmmon.interfacte";
+import { TLogin } from "../interfaces/cmmon.interface";
 
 export const loginSchema = (data: TLogin) => {
   const schema = Joi.object().keys({

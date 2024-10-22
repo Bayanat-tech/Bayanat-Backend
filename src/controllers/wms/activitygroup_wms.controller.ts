@@ -3,52 +3,61 @@ import { Op } from "sequelize";
 import constants from "../../helpers/constants";
 import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
-import flowmaster from "../../models/Security/flowmaster_security.model";
-import { flowmasterSchema } from "../../validation/Security/Security.validation";
+import activitygroup from "../../models/wms/activitygroup_wms.model";
+("../../models/wms/country_wms.model");
+import { activitygroupSchema } from "../../validation/wms/gm.validation";
 
-export const createflowmaster = async (req: RequestWithUser, res: Response) => {
+export const createActivityGroup = async (
+  req: RequestWithUser,
+  res: Response
+) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = flowmasterSchema(req.body);
-    console.log("inside create");
+    const { error } = activitygroupSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { flow_code, flow_description, company_code } = req.body;
+    const { activity_group_code, company_code } = req.body;
 
-    const flowmasterData = await flowmaster.findOne({
+    const Activitygroup = await activitygroup.findOne({
       where: {
-        [Op.and]: [{ company_code: company_code }, { flow_code: flow_code }],
+        [Op.and]: [
+          { company_code: company_code },
+          { activity_group_code: activity_group_code },
+        ],
       },
     });
 
-    if (flowmasterData) {
+    if (Activitygroup) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.FLOWMASTER_PF.FLOWMASTER_ALREADY_EXISTS,
+        message:
+          constants.MESSAGES.ACTIVITY_GROUP_WMS.ACTIVITY_GROUP_ALREADY_EXISTS,
       });
       return;
     }
-    const createflowmaster = await flowmaster.create({
-      flow_code,
-      flow_description,
+    const createActivityGroup = await activitygroup.create({
       company_code,
       created_by: requestUser.loginid,
       updated_by: requestUser.loginid,
+
+      ...req.body,
     });
-    if (!createflowmaster) {
+    if (!createActivityGroup) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
-        .json({ success: false, message: "Error while Industry Sector" });
+        .json({ success: false, message: "Error while creating Activity" });
       return;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.FLOWMASTER_PF.FLOWMASTER_CREATED_SUCCESSFULLY,
+      message:
+        constants.MESSAGES.ACTIVITY_GROUP_WMS
+          .ACTIVITY_GROUP_CREATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -58,33 +67,40 @@ export const createflowmaster = async (req: RequestWithUser, res: Response) => {
     return;
   }
 };
-export const updateflowmaster = async (req: RequestWithUser, res: Response) => {
+export const updateActivityGroup = async (
+  req: RequestWithUser,
+  res: Response
+) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = flowmasterSchema(req.body);
+    const { error } = activitygroupSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { flow_code, flow_description, company_code } = req.body;
+    const { activity_group_code, company_code } = req.body;
 
-    const flowmasterData = await flowmaster.findOne({
+    const Activitygroup = await activitygroup.findOne({
       where: {
-        [Op.and]: [{ company_code: company_code }, { flow_code: flow_code }],
+        [Op.and]: [
+          { company_code: company_code },
+          { activity_group_code: activity_group_code },
+        ],
       },
     });
 
-    if (!flowmasterData) {
+    if (!Activitygroup) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.FLOWMASTER_PF.FLOWMASTER_DOES_NOT_EXISTS,
+        message:
+          constants.MESSAGES.ACTIVITY_GROUP_WMS.ACTIVITY_GROUP_DOES_NOT_EXISTS,
       });
       return;
     }
-    const createflowmaster = await flowmaster.update(
+    const createActivityGroup = await activitygroup.update(
       {
         company_code,
         created_by: requestUser.loginid,
@@ -94,19 +110,24 @@ export const updateflowmaster = async (req: RequestWithUser, res: Response) => {
       },
       {
         where: {
-          [Op.and]: [{ company_code: company_code }, { flow_code: flow_code }],
+          [Op.and]: [
+            { company_code: company_code },
+            { activity_group_code: activity_group_code },
+          ],
         },
       }
     );
-    if (!createflowmaster) {
+    if (!createActivityGroup) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
-        .json({ success: false, message: "Error while updating company" });
+        .json({ success: false, message: "Error while updating Activity" });
       return;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.FLOWMASTER_PF.FLOWMASTER_UPDATED_SUCCESSFULLY,
+      message:
+        constants.MESSAGES.ACTIVITY_GROUP_WMS
+          .ACTIVITY_GROUP_UPDATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -116,33 +137,39 @@ export const updateflowmaster = async (req: RequestWithUser, res: Response) => {
     return;
   }
 };
-export const deleteflowmaster = async (req: RequestWithUser, res: Response) => {
+export const deleteActivityGroup = async (
+  req: RequestWithUser,
+  res: Response
+) => {
   try {
-    const flowmastercode = req.body;
+    const activitygroupCode = req.body;
 
     if (!req.body.length) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
         message:
-          constants.MESSAGES.FLOWMASTER_PF.SELECT_AT_LEAST_ONE_FLOWMASTER,
+          constants.MESSAGES.ACTIVITY_GROUP_WMS
+            .ACTIVITY_GROUP_AT_LEAST_ONE_ACTIVITY_GROUP,
       });
       return;
     }
-    const FlowmasterDeleteResponse = await flowmaster.destroy({
+    const activitygroupDeleteResponse = await activitygroup.destroy({
       where: {
-        flow_code: flowmastercode,
+        activity_group_code: activitygroupCode,
       },
     });
-    if (FlowmasterDeleteResponse === 0) {
+    if (activitygroupDeleteResponse === 0) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: FlowmasterDeleteResponse,
+        message: activitygroupDeleteResponse,
       });
       return;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.FLOWMASTER_PF.FLOWMASTER_DELETED_SUCCESSFULLY,
+      message:
+        constants.MESSAGES.ACTIVITY_GROUP_WMS
+          .ACTIVITY_GROUP_DELETED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
