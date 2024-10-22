@@ -11,6 +11,10 @@ import { IFlowmaster } from "../interfaces/Security/Security.interfae";
 import { IRolemaster } from "../interfaces/Security/Security.interfae";
 import { ICostmaster } from "../interfaces/Purchaseflow/Purucahseflow.interface";
 import { ILocation } from "../interfaces/wms/location_wms.interface";
+import { ISupplier } from "../interfaces/wms/supplier_wms.interface";
+import { IBrand } from "../interfaces/wms/gm_wms.interface";
+import { IGroup } from "../interfaces/wms/gm_wms.interface";
+import { IManufacture } from "../interfaces/wms/gm_wms.interface";
 
 // Importing models for WMS master data
 import Country from "../models/wms/country_wms.model";
@@ -21,6 +25,10 @@ import Territory from "../models/wms/territory_wms.model";
 import Salesman from "../models/wms/salesman_wms.model";
 import Site from "../models/wms/site_wms.model";
 import Storage from "../models/wms/storage_wms.model";
+import Supplier from "../models/wms/supplier_wms.model";
+import Brand from "../models/wms/brand_wms.model";
+import Group from "../models/wms/productgroup_wms.model";
+import Manufacture from "../models/wms/manufacture_wms.model";
 
 // --- Database sequelize import ---
 import { sequelize } from "../database/connection";
@@ -46,14 +54,61 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as ICountry[];
         }
         break;
+
+      case "manufacturer":
+        {
+          console.log("i am here shiv brand");
+          (fetchedData = await Manufacture.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IManufacture[];
+        }
+        break;
+
+      case "group":
+        {
+          console.log("adsghsdhsdgksssj,gakd");
+          (fetchedData = await Group.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IGroup[];
+        }
+        break;
+
+      case "brand":
+        {
+          //console.log("i am here shiv brand");
+          (fetchedData = await Brand.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IBrand[];
+          //console.log("i am here shiv brand", fetchedData);
+        }
+        break;
+
       case "department":
         {
+          ///console.log("i am here shiv dept");
           (fetchedData = await Department.findAll({
             where: { company_code: requestUser.company_code },
             ...paginationOptions,
           })) as unknown[] as IDepartment[];
+          ///console.log("i am here shiv dept", fetchedData);
         }
         break;
+
+      case "supplier":
+        {
+          console.log("i am here shiv");
+
+          (fetchedData = await Supplier.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as ISupplier[];
+          console.log(fetchedData);
+        }
+        break;
+
       case "territory":
         {
           (fetchedData = await Territory.findAll({
@@ -222,19 +277,6 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
           });
         }
         break;
-      case "department":
-        {
-          if (!dept_code || dept_code.length === 0) {
-            throw new Error("departmentCode is required");
-          }
-          await Department.destroy({
-            where: {
-              company_code: requestUser.company_code,
-              dept_code: dept_code,
-            },
-          });
-        }
-        break;
 
       case "location":
         {
@@ -276,6 +318,7 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
           });
         }
         break;
+
       case "salesman":
         {
           if (!salesman_code || salesman_code.length === 0) {

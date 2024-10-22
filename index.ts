@@ -21,8 +21,6 @@ app.use("/api/wms", wmsRoutes);
 app.use("/api/pf", pfRoutes);
 app.use("/api/security", secRoutes);
 
-
-
 // Start the server
 const PORT = process.env.PORT || 3500;
 databaseConnection()

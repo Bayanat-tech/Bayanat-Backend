@@ -1,11 +1,19 @@
 import Joi from "joi";
 import { IIndustrysector } from "../../interfaces/wms/industrysector_wms.interface";
-import { ICountry,IDepartment,ISalesman } from "../../interfaces/wms/gm_wms.interface";
+import {
+  ICountry,
+  IDepartment,
+  ISalesman,
+  IGroup,
+  IBrand,
+  IManufacture,
+} from "../../interfaces/wms/gm_wms.interface";
 import { ICurrency } from "../../interfaces/wms/currency_wms.interface";
 import { ILocation } from "../../interfaces/wms/location_wms.interface";
+import { ISupplier } from "../../interfaces/wms/supplier_wms.interface";
+//import { IBrand } from "../../interfaces/wms/gm_wms.interface";
+
 //import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
-
-
 
 export const countrySchema = (data: ICountry) => {
   const schema = Joi.object().keys({
@@ -15,6 +23,46 @@ export const countrySchema = (data: ICountry) => {
     country_gcc: Joi.string().valid("Y", "N").required(),
     short_desc: Joi.string().allow(null),
     nationality: Joi.string().allow(null),
+  });
+  return schema.validate(data);
+};
+
+export const manufactureSchema = (data: IManufacture) => {
+  const schema = Joi.object().keys({
+    company_code: Joi.string().required(),
+    manu_code: Joi.string().required(),
+    manu_name: Joi.string().required(),
+    prin_code: Joi.string().allow(null),
+  });
+  return schema.validate(data);
+};
+
+export const groupSchema = (data: IGroup) => {
+  const schema = Joi.object().keys({
+    company_code: Joi.string().required(),
+    group_code: Joi.string().required(),
+    group_name: Joi.string().required(),
+    prin_code: Joi.string().allow(null),
+  });
+  return schema.validate(data);
+};
+
+export const brandSchema = (data: IBrand) => {
+  const schema = Joi.object().keys({
+    brand_code: Joi.string().required(),
+    prin_code: Joi.string().required(),
+    group_code: Joi.string().required(),
+    brand_name: Joi.string().allow(null),
+    pref_site: Joi.string().allow(""),
+    pref_loc_from: Joi.string().allow(""),
+    pref_loc_to: Joi.string().allow(""),
+    pref_aisle_from: Joi.string().allow(""),
+    pref_aisle_to: Joi.string().allow(""),
+    pref_col_from: Joi.number().allow(""),
+    pref_col_to: Joi.number().allow(""),
+    pref_ht_from: Joi.number().allow(""),
+    pref_ht_to: Joi.number().allow(""),
+    company_code: Joi.string().required(),
   });
   return schema.validate(data);
 };
@@ -47,11 +95,8 @@ export const departmentSchema = (data: IDepartment) => {
     inv_gen: Joi.string().allow(null),
     inb_oub_related: Joi.string().allow(null),
     inv_prefix: Joi.string().allow(null),
-
-     
   });
 
-  
   return schema.validate(data);
 };
 
@@ -114,9 +159,6 @@ export const locationSchema = (data: ILocation) => {
   return schema.validate(data);
 };
 
-
-
-
 export const currencySchema = (data: ICurrency) => {
   const schema = Joi.object().keys({
     curr_code: Joi.string().required(),
@@ -127,5 +169,52 @@ export const currencySchema = (data: ICurrency) => {
     company_code: Joi.string().required(),
     curr_sign: Joi.string().allow(""),
   });
+  return schema.validate(data);
+};
+
+export const supplierSchema = (data: ISupplier) => {
+  const schema = Joi.object().keys({
+    company_code: Joi.string().required(),
+    prin_code: Joi.string().required(),
+    supp_code: Joi.string().required(),
+    curr_code: Joi.string().allow(null),
+    country_code: Joi.string().allow(null),
+    supp_name: Joi.string().allow(""),
+    supp_addr1: Joi.string().allow(""),
+    supp_addr2: Joi.string().allow(""),
+    supp_addr3: Joi.string().allow(""),
+    supp_addr4: Joi.string().allow(""),
+    supp_city: Joi.string().allow(""),
+    supp_contact1: Joi.string().allow(""),
+    supp_telno1: Joi.string().allow(""),
+    supp_faxno1: Joi.string().allow(""),
+    supp_email1: Joi.string().allow(""),
+    supp_contact2: Joi.string().allow(""),
+    supp_telno2: Joi.string().allow(""),
+    supp_faxno2: Joi.string().allow(""),
+    supp_email2: Joi.string().allow(""),
+    supp_contact3: Joi.string().allow(""),
+    supp_telno3: Joi.string().allow(""),
+    supp_faxno3: Joi.string().allow(""),
+    supp_ref1: Joi.string().allow(""),
+    supp_ref2: Joi.string().allow(""),
+    supp_ref3: Joi.string().allow(""),
+    service_date: Joi.date().allow(null),
+    supp_acref: Joi.string().allow(""),
+    supp_credit: Joi.number().allow(null),
+    supp_stat: Joi.string().allow(""),
+    supp_imp_code: Joi.string().allow(""),
+    supp_lic_no: Joi.string().allow(""),
+    supp_lic_type: Joi.string().allow(""),
+    price_check: Joi.string().allow(""),
+    supp_email3: Joi.string().allow(""),
+    payment_terms: Joi.number().allow(null),
+    importer_code: Joi.string().allow(""),
+    updated_at: Joi.date().allow(null),
+    updated_by: Joi.string().allow(""),
+    created_by: Joi.string().allow(""),
+    created_at: Joi.date().allow(null),
+  });
+
   return schema.validate(data);
 };
