@@ -11,7 +11,7 @@ import { sequelize } from "../database/connection";
 import User from "../models/user";
 import { permissionsListQuery, userPermissionQuery } from "../utils/query";
 import { StructuredResult } from "../interfaces/auth.interface";
-import { RequestWithUser } from "../interfaces/cmmon.interfacte";
+import { RequestWithUser } from "../interfaces/cmmon.interface";
 
 export const login = async (req: Request, res: Response) => {
   try {

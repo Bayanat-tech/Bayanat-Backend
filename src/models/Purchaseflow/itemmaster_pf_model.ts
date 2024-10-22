@@ -1,30 +1,30 @@
 import { DataTypes, Model } from "sequelize";
-import { IFlowmaster } from "../../interfaces/Security/Security.interfae";
+import { IItemtmaster} from "../../interfaces/Purchaseflow/Purucahseflow.interface";
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
 
-class Flowmaster extends Model<IFlowmaster> {}
+class Itemmaster_pf extends Model <IItemtmaster> {}
 
-Flowmaster.init(
+Itemmaster_pf.init(
   {
-    flow_code: {
-      type: DataTypes.STRING(5),
+      item_code: {
+      type: DataTypes.STRING(50),
       allowNull: false,
       primaryKey: true,
     },
-    flow_description: {
-      type: DataTypes.STRING(100),
+      item_desp: {
+      type: DataTypes.STRING(30),
       allowNull: false,
     },
-    company_code: {
-      type: DataTypes.STRING(5),
+     company_code: {
+      type: DataTypes.STRING(10),
       allowNull: false,
     },
-    updated_by: {
+      updated_by: {
       type: DataTypes.STRING(50),
       allowNull: false,
     },
-    created_by: {
+     created_by: {
       type: DataTypes.STRING(20),
       allowNull: false,
     },
@@ -39,11 +39,11 @@ Flowmaster.init(
   },
   {
     sequelize,
-    modelName: "Flowmaster",
-    tableName: constants.TABLE.MS_PS_FLOW_MASTER, 
+    modelName: "Itemmaster_pf",
+    tableName: constants.TABLE.MS_PS_ITEM_MASTER, 
     createdAt: "created_at",
     updatedAt: "updated_at",
   }
 );
 
-export default Flowmaster;
+export default Itemmaster_pf;
