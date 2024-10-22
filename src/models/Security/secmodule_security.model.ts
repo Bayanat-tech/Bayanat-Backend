@@ -18,6 +18,7 @@ secmodule.init(
     serial_no: {
       type: DataTypes.NUMBER,
       allowNull: false,
+      primaryKey: true,
     },
     level1: {
       type: DataTypes.STRING(50),
@@ -59,7 +60,7 @@ secmodule.init(
   {
     sequelize,
     modelName: "secmodule",
-    tableName: constants.TABLE.SEC_LOGIN,
+    tableName: constants.TABLE.SEC_MODULE_DATA,
     createdAt: "created_at",
     updatedAt: "updated_at",
   }

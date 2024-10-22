@@ -35,6 +35,7 @@ router.put("/flowmaster", updateflowmaster);
 router.post("/secmaster", createsecmaster);
 router.put("/secmaster", updatesecmaster);
 
-router.post("/secmodule", createsecmodulemaster);
-router.put("/secmodule", updatesecmodulemaster);
+router.post("/secmoduledata", createsecmodulemaster);
+router.put("/secmoduledata", updatesecmodulemaster);
+
 export default router;

@@ -53,7 +53,7 @@ export const getSecMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as ISecmaster[];
         }
         break;
-      case "secmodule": {
+      case "secmoduledata": {
         (fetchedData = await secmodule.findAll({
           where: { company_code: requestUser.company_code },
           ...paginationOptions,
