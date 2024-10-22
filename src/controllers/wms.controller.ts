@@ -2,7 +2,7 @@ import { Response } from "express";
 import constants from "../helpers/constants";
 import { RequestWithUser } from "../interfaces/cmmon.interface";
 import { IUser } from "../interfaces/user.interface";
-import { ICountry } from "../interfaces/wms/gm_wms.interface";
+import { ICountry, IMoc2 } from "../interfaces/wms/gm_wms.interface";
 import { IDepartment } from "../interfaces/wms/department_wms.interface";
 import { ITerritory } from "../interfaces/wms/territory_wms.interface";
 import { ICurrency } from "../interfaces/wms/currency_wms.interface";
@@ -11,11 +11,17 @@ import { IFlowmaster } from "../interfaces/Security/Security.interfae";
 import { IRolemaster } from "../interfaces/Security/Security.interfae";
 import { ICostmaster } from "../interfaces/Purchaseflow/Purucahseflow.interface";
 import { ILocation } from "../interfaces/wms/location_wms.interface";
+<<<<<<< HEAD
 import { ISupplier } from "../interfaces/wms/supplier_wms.interface";
 import { IBrand } from "../interfaces/wms/gm_wms.interface";
 import { IGroup } from "../interfaces/wms/gm_wms.interface";
 import { IManufacture } from "../interfaces/wms/gm_wms.interface";
 import { IActivityGroup } from "../interfaces/wms/activitygroup_wms.interface";
+=======
+import { IUom } from "../interfaces/wms/gm_wms.interface";
+import { IMoc } from "../interfaces/wms/gm_wms.interface";
+import { IHarmonize } from "../interfaces/wms/harmonize.interface";
+>>>>>>> qa
 
 // Importing models for WMS master data
 import Country from "../models/wms/country_wms.model";
@@ -26,17 +32,30 @@ import Territory from "../models/wms/territory_wms.model";
 import Salesman from "../models/wms/salesman_wms.model";
 import Site from "../models/wms/site_wms.model";
 import Storage from "../models/wms/storage_wms.model";
+<<<<<<< HEAD
 import Supplier from "../models/wms/supplier_wms.model";
 import Brand from "../models/wms/brand_wms.model";
 import Group from "../models/wms/productgroup_wms.model";
 import Manufacture from "../models/wms/manufacture_wms.model";
 import activitygroup from "../models/wms/activitygroup_wms.model";
+=======
+import Uom from "../models/wms/uom_wms.model";
+import Moc from "../models/wms/moc_wms.model";
+import Harmonize from "../models/wms/harmonize_code.model";
+import Activitysubgroup from "../models/wms/activity_subgroup.model";
+
+>>>>>>> qa
 
 // --- Database sequelize import ---
 import { sequelize } from "../database/connection";
 import { Op, QueryTypes } from "sequelize";
 import PrincipalWmsView from "../models/wms/principal_wms.view.model";
 import Principal from "../models/wms/principal_wms.model";
+import activitygroup from "../models/wms/activitygroup_wms.model";
+import { IActivityGroup } from "../interfaces/wms/activitygroup_wms.interface";
+import { activitysubgroupSchema } from "../validation/wms/gm.validation";
+import { IActivitysubgroup } from "../interfaces/wms/activity_subgroup_wms.interface";
+
 
 // Retrieves master data (country, department, territory, etc.) with optional pagination based on the `master` type.
 
@@ -214,6 +233,15 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as IActivityGroup[];
         }
         break;
+        case "activitysubgroup":
+        {
+          (fetchedData = await Activitysubgroup.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IActivitysubgroup[];
+        }
+        break;
+
 
       case "activity_billing":
         {
@@ -297,12 +325,60 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as ILocation[];
         }
         break;
+<<<<<<< HEAD
 
       case "uoc":
       case "moc1":
       case "moc2":
         {
           const query = `
+=======
+      case "uom":
+          {
+            (fetchedData = await Uom.findAll({
+              where: { company_code: requestUser.company_code },
+              ...paginationOptions,
+            })) as unknown[] as IUom[];
+          }
+          break;
+        case "moc":
+          {
+            (fetchedData = await Moc.findAll({
+              where: { company_code: requestUser.company_code },
+              ...paginationOptions,
+            })) as unknown[] as IMoc[];
+          }
+          break;
+        case "moc2":
+          {
+            console.log("i am sagar");
+            (fetchedData = await Moc.findAll({
+              where: { company_code: requestUser.company_code },
+              ...paginationOptions,
+            })) as unknown[] as IMoc2[];
+          }
+          break;
+        case "uoc":
+            {
+              (fetchedData = await Moc.findAll({
+                where: { company_code: requestUser.company_code },
+                ...paginationOptions,
+              })) as unknown[] as IMoc2[];
+            }
+            break;
+          case "harmonize":
+            {
+              console.log("i am sagar");
+              (fetchedData = await Harmonize.findAll({
+                where: { company_code: requestUser.company_code },
+                ...paginationOptions,
+              })) as unknown[] as IHarmonize[];
+            }
+            break;
+        
+      {
+        const query = `
+>>>>>>> qa
             SELECT
               mau.company_code,  
               mau.charge_type,  

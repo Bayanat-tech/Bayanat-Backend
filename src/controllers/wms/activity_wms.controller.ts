@@ -77,3 +77,39 @@ export const updateActivityBillingDataByCompanyAndPrincipal = async (
     });
   }
 };
+
+// Controller function to call the stored procedure
+export const copyBillingActivity = async (
+  req: RequestWithUser,
+  res: Response
+) => {
+  try {
+    const { from, to } = req.body;
+    console.log("Enter this procedure--->", from);
+    const requestUser: IUser = req.user;
+    // Calling the stored procedure
+    const result = await sequelize.query(
+      `CALL SP_WM_COPY_BILLING_ACTVY(:vs_comp_code, :vs_prin_from, :vs_prin_to, :vs_user)`,
+      {
+        replacements: {
+          vs_comp_code: requestUser.company_code,
+          vs_prin_from: from,
+          vs_prin_to: to,
+          vs_user: requestUser.loginid,
+        },
+        type: QueryTypes.RAW,
+      }
+    );
+    res.status(200).json({
+      success: true,
+      message: "Billing activity copied successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Error copying billing activity",
+      error: error.message,
+    });
+  }
+};

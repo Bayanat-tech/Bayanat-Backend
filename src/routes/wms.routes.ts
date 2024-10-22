@@ -4,6 +4,7 @@ import { getWmsMaster, deleteWmsMaster } from "../controllers/wms.controller";
 import gmWmsRouter from "./wms/gm_wms.routes";
 import { checkUserAuthorization } from "../middleware/checkUserAthorization";
 const router = express.Router();
+<<<<<<< HEAD
 
 router.get(
   "/:master",
@@ -20,6 +21,24 @@ router.use(
 );
 
 router.delete(
+=======
+
+router.get(
+  "/:master",
+  passport.authenticate("jwt", { session: false }),
+  checkUserAuthorization,
+  getWmsMaster
+);
+
+router.use(
+  "/gm",
+  passport.authenticate("jwt", { session: false }),
+  checkUserAuthorization,
+  gmWmsRouter
+);
+
+router.post(
+>>>>>>> qa
   "/:master",
   passport.authenticate("jwt", { session: false }),
   deleteWmsMaster

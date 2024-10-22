@@ -59,10 +59,29 @@ import {
   createlocation,
   updatelocation,
 } from "../../controllers/wms/location_wms.controller";
+import { createUom, updateUom } from "../../controllers/wms/uom_wms.controller";
+import {
+  createMoc2,
+  updateMoc2,
+} from "../../controllers/wms/moc2_wms.controller";
+import { createMoc, updateMoc } from "../../controllers/wms/moc_wms.controller";
+import { createUoc, updateUoc } from "../../controllers/wms/uoc_wms.controller";
+import {
+  createHarmonize,
+  updateHarmonize,
+} from "../../controllers/wms/harmonize_wms.controller";
+//import { createActivityBillingDataByCompanyAndPrincipal, updateActivityBillingDataByCompanyAndPrincipal } from "../../controllers/wms/activity_wms.controller";
+import { createActivitysubgroup } from "../../controllers/wms/activity_subgroup_wms.controller";
 
 import {
   createActivityBillingDataByCompanyAndPrincipal,
   updateActivityBillingDataByCompanyAndPrincipal,
+} from "../../controllers/wms/activity_wms.controller";
+
+import {
+  createActivityBillingDataByCompanyAndPrincipal,
+  updateActivityBillingDataByCompanyAndPrincipal,
+  copyBillingActivity,
 } from "../../controllers/wms/activity_wms.controller";
 const router = express.Router();
 
@@ -122,6 +141,26 @@ router.put("/supplier", updatesupplier);
 router.post("/salesman", createSalesman);
 router.put("/salesman", updateSalesman);
 
+//--------uom
+router.post("/uom", createUom);
+router.put("/uom", updateUom);
+
+//--------moc
+router.post("/moc", createMoc);
+router.put("/moc", updateMoc);
+
+//--------moc2
+router.post("/moc2", createMoc2);
+router.put("/moc2", updateMoc2);
+
+//--------UOC
+//router.post("/uoc",createUoc);
+//router.put("/uoc",updateUoc);
+
+//--------HARMONIZE
+router.post("/harmonize", createHarmonize);
+router.put("/harmonize", updateHarmonize);
+
 //-------------Activity Group------------
 router.post("/activitygroup", createActivityGroup);
 router.put("/activitygroup", updateActivityGroup);
@@ -136,4 +175,9 @@ router.put(
   updateActivityBillingDataByCompanyAndPrincipal
 );
 
+//-------------Activity Sub Group------------
+router.post("activitysubgroup", createActivitysubgroup);
+router.put("activitysubgroup", updateActivityGroup);
+
+router.post("/copy_billing_activity", copyBillingActivity);
 export default router;
