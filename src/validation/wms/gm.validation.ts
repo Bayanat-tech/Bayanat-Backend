@@ -1,10 +1,9 @@
 import Joi from "joi";
 import { IIndustrysector } from "../../interfaces/wms/industrysector_wms.interface";
-import { ICountry,IDepartment,ISalesman } from "../../interfaces/wms/gm_wms.interface";
+import { ICountry,IDepartment,ISalesman,IUom,IMoc, IMoc2, IUoc} from "../../interfaces/wms/gm_wms.interface";
 import { ICurrency } from "../../interfaces/wms/currency_wms.interface";
 import { ILocation } from "../../interfaces/wms/location_wms.interface";
-//import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
-
+import { IHarmonize } from "../../interfaces/wms/harmonize.interface";
 
 
 export const countrySchema = (data: ICountry) => {
@@ -129,3 +128,53 @@ export const currencySchema = (data: ICurrency) => {
   });
   return schema.validate(data);
 };
+
+export const uomSchema = (data: IUom) => {
+  const schema = Joi.object().keys({
+    company_code: Joi.string().required(),
+    uom_code: Joi.string().required(),
+    uom_name: Joi.string().required(),
+  });
+  return schema.validate(data);
+};
+
+export const mocSchema = (data: IMoc) => {
+  const schema = Joi.object().keys({
+    company_code: Joi.string().required(),
+    charge_code: Joi.string().required(),
+    description: Joi.string().required(),
+  });
+  return schema.validate(data);
+};
+
+export const moc2Schema = (data: IMoc2) => {
+  const schema = Joi.object().keys({
+    company_code: Joi.string().required(),
+    charge_code: Joi.string().required(),
+    description: Joi.string().required(),
+  });
+  return schema.validate(data);
+};
+
+export const uocSchema = (data: IUoc) => {
+  const schema = Joi.object().keys({
+    company_code: Joi.string().required(),
+    charge_code: Joi.string().required(),
+    description: Joi.string().required(),
+  });
+  return schema.validate(data);
+};
+
+export const harmonizeSchema = (data: IHarmonize) => {
+  const schema = Joi.object().keys({
+    company_code: Joi.string().required(),
+    harm_code: Joi.string().required(),
+    harm_desc: Joi.string().required(),
+    uom:Joi.string().allow(""),
+    permit_reqd:Joi.string().allow(""),
+    unit: Joi.string().allow(""),
+  });
+  return schema.validate(data);
+};
+
+

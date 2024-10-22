@@ -2,7 +2,7 @@ import { Response } from "express";
 import constants from "../helpers/constants";
 import { RequestWithUser } from "../interfaces/cmmon.interfacte";
 import { IUser } from "../interfaces/user.interface";
-import { ICountry } from "../interfaces/wms/gm_wms.interface";
+import { ICountry, IMoc2 } from "../interfaces/wms/gm_wms.interface";
 import { IDepartment } from "../interfaces/wms/department_wms.interface";
 import { ITerritory } from "../interfaces/wms/territory_wms.interface";
 import { ICurrency } from "../interfaces/wms/currency_wms.interface";
@@ -11,6 +11,9 @@ import { IFlowmaster } from "../interfaces/Security/Security.interfae";
 import { IRolemaster } from "../interfaces/Security/Security.interfae";
 import { ICostmaster } from "../interfaces/Purchaseflow/Purucahseflow.interface";
 import { ILocation } from "../interfaces/wms/location_wms.interface";
+import { IUom } from "../interfaces/wms/gm_wms.interface";
+import { IMoc } from "../interfaces/wms/gm_wms.interface";
+import { IHarmonize } from "../interfaces/wms/harmonize.interface";
 
 // Importing models for WMS master data
 import Country from "../models/wms/country_wms.model";
@@ -21,10 +24,14 @@ import Territory from "../models/wms/territory_wms.model";
 import Salesman from "../models/wms/salesman_wms.model";
 import Site from "../models/wms/site_wms.model";
 import Storage from "../models/wms/storage_wms.model";
+import Uom from "../models/wms/uom_wms.model";
+import Moc from "../models/wms/moc_wms.model";
+import Harmonize from "../models/wms/harmonize_code.model";
 
 // --- Database sequelize import ---
 import { sequelize } from "../database/connection";
 import { QueryTypes } from "sequelize";
+
 
 // Retrieves master data (country, department, territory, etc.) with optional pagination based on the `master` type.
 
@@ -168,6 +175,48 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           //console.log("i am here ");
         }
         break;
+      case "uom":
+          {
+            (fetchedData = await Uom.findAll({
+              where: { company_code: requestUser.company_code },
+              ...paginationOptions,
+            })) as unknown[] as IUom[];
+          }
+          break;
+        case "moc":
+          {
+            (fetchedData = await Moc.findAll({
+              where: { company_code: requestUser.company_code },
+              ...paginationOptions,
+            })) as unknown[] as IMoc[];
+          }
+          break;
+        case "moc2":
+          {
+            console.log("i am sagar");
+            (fetchedData = await Moc.findAll({
+              where: { company_code: requestUser.company_code },
+              ...paginationOptions,
+            })) as unknown[] as IMoc2[];
+          }
+          break;
+        case "uoc":
+            {
+              (fetchedData = await Moc.findAll({
+                where: { company_code: requestUser.company_code },
+                ...paginationOptions,
+              })) as unknown[] as IMoc2[];
+            }
+            break;
+          case "harmonize":
+            {
+              console.log("i am sagar");
+              (fetchedData = await Harmonize.findAll({
+                where: { company_code: requestUser.company_code },
+                ...paginationOptions,
+              })) as unknown[] as IHarmonize[];
+            }
+            break;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
