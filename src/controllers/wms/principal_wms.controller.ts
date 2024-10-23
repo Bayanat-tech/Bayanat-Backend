@@ -4,9 +4,9 @@ import constants from "../../helpers/constants";
 import { IFiles, RequestWithUser } from "../../interfaces/cmmon.interface";
 import PrincipalContactDetl from "../../models/wms/principal_contact_details_wms.model";
 import Principal from "../../models/wms/principal_wms.model";
-import { principalSchema } from "../../validation/wms/gm.validation";
 import Files from "../../models/files.model";
 import { sequelize } from "../../database/connection";
+import { principalSchema } from "../../validation/wms/gm.validation";
 
 export const createPrincipal = async (req: RequestWithUser, res: Response) => {
   try {

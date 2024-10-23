@@ -51,5 +51,3 @@ moc2.init(
 );
 
 export default moc2;
-
-

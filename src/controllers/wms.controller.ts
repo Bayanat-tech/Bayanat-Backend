@@ -11,6 +11,11 @@ import { IFlowmaster } from "../interfaces/Security/Security.interfae";
 import { IRolemaster } from "../interfaces/Security/Security.interfae";
 import { ICostmaster } from "../interfaces/Purchaseflow/Purucahseflow.interface";
 import { ILocation } from "../interfaces/wms/location_wms.interface";
+import { ISupplier } from "../interfaces/wms/supplier_wms.interface";
+import { IBrand } from "../interfaces/wms/gm_wms.interface";
+import { IGroup } from "../interfaces/wms/gm_wms.interface";
+import { IManufacture } from "../interfaces/wms/gm_wms.interface";
+import { IActivityGroup } from "../interfaces/wms/activitygroup_wms.interface";
 import { IUom } from "../interfaces/wms/gm_wms.interface";
 import { IMoc } from "../interfaces/wms/gm_wms.interface";
 import { IHarmonize } from "../interfaces/wms/harmonize.interface";
@@ -26,6 +31,11 @@ import Territory from "../models/wms/territory_wms.model";
 import Salesman from "../models/wms/salesman_wms.model";
 import Site from "../models/wms/site_wms.model";
 import Storage from "../models/wms/storage_wms.model";
+import Supplier from "../models/wms/supplier_wms.model";
+import Brand from "../models/wms/brand_wms.model";
+import Group from "../models/wms/productgroup_wms.model";
+import Manufacture from "../models/wms/manufacture_wms.model";
+
 import Uom from "../models/wms/uom_wms.model";
 import Moc from "../models/wms/moc_wms.model";
 import Harmonize from "../models/wms/harmonize_code.model";
@@ -41,7 +51,7 @@ import { Op, QueryTypes } from "sequelize";
 import PrincipalWmsView from "../models/wms/principal_wms.view.model";
 import Principal from "../models/wms/principal_wms.model";
 import activitygroup from "../models/wms/activitygroup_wms.model";
-import { IActivityGroup } from "../interfaces/wms/activitygroup_wms.interface";
+
 import { activitysubgroupSchema } from "../validation/wms/gm.validation";
 import { IActivitysubgroup } from "../interfaces/wms/activity_subgroup_wms.interface";
 
@@ -68,14 +78,60 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as ICountry[];
         }
         break;
+
+      case "manufacturer":
+        {
+          //console.log("i am here /");
+          (fetchedData = await Manufacture.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IManufacture[];
+        }
+        break;
+
+      case "group":
+        {
+          //console.log("test group");
+          (fetchedData = await Group.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IGroup[];
+        }
+        break;
+
+      case "brand":
+        {
+          //console.log("i am here ");
+          (fetchedData = await Brand.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IBrand[];
+        }
+        break;
+
       case "department":
         {
+          ///console.log("i am here  dept");
           (fetchedData = await Department.findAll({
             where: { company_code: requestUser.company_code },
             ...paginationOptions,
           })) as unknown[] as IDepartment[];
+          ///console.log("i am here shiv dept", fetchedData);
         }
         break;
+
+      case "supplier":
+        {
+          //console.log("i am here ");
+
+          (fetchedData = await Supplier.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as ISupplier[];
+          console.log(fetchedData);
+        }
+        break;
+
       case "principal": {
         fetchedData = await PrincipalWmsView.findAll({
           where: {
@@ -331,6 +387,7 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
           });
         }
         break;
+
       case "territory":
         {
           await Territory.destroy({
@@ -351,6 +408,7 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
           });
         }
         break;
+
       case "salesman":
         {
           await Salesman.destroy({

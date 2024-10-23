@@ -3,43 +3,45 @@ import { Op } from "sequelize";
 import constants from "../../helpers/constants";
 import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
-import Harmonize from "../../models/wms/harmonize_code.model";
-import { harmonizeSchema } from "../../validation/wms/gm.validation";
+import Brand from "../../models/wms/brand_wms.model";
+import { brandSchema } from "../../validation/wms/gm.validation";
 
-export const createHarmonize = async (req: RequestWithUser, res: Response) => {
+export const createBrand = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = harmonizeSchema(req.body);
+    console.log("est", requestUser);
+
+    const { error } = brandSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { harm_code, company_code } = req.body;
+    const { brand_code, company_code } = req.body;
 
-    const harmonize = await Harmonize.findOne({
+    const brand = await Brand.findOne({
       where: {
-        [Op.and]: [{ company_code: company_code }, { harm_code: harm_code }],
+        [Op.and]: [{ company_code: company_code }, { brand_code: brand_code }],
       },
     });
 
-    if (harmonize) {
+    if (brand) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.HARMONIZE_WMS.HARMONIZE_ALREADY_EXISTS,
+        message: constants.MESSAGES.BRAND_WMS.BRAND_ALREADY_EXISTS,
       });
       return;
     }
-    const createHarmonize = await Harmonize.create({
+    const createBrand = await Brand.create({
       company_code,
       created_by: requestUser.loginid,
       updated_by: requestUser.loginid,
 
       ...req.body,
     });
-    if (!createHarmonize) {
+    if (!createBrand) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while creating company" });
@@ -47,7 +49,7 @@ export const createHarmonize = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.HARMONIZE_WMS.HARMONIZE_CREATED_SUCCESSFULLY,
+      message: constants.MESSAGES.BRAND_WMS.BRAND_CREATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -57,33 +59,33 @@ export const createHarmonize = async (req: RequestWithUser, res: Response) => {
     return;
   }
 };
-export const updateHarmonize = async (req: RequestWithUser, res: Response) => {
+export const updateBrand = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = harmonizeSchema(req.body);
+    const { error } = brandSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { harm_code, company_code } = req.body;
+    const { brand_code, company_code } = req.body;
 
-    const harmonize = await Harmonize.findOne({
+    const brand = await Brand.findOne({
       where: {
-        [Op.and]: [{ company_code: company_code }, { harm_code: harm_code }],
+        [Op.and]: [{ company_code: company_code }, { brand_code: brand_code }],
       },
     });
 
-    if (!harmonize) {
+    if (!brand) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.HARMONIZE_WMS.HARMONIZE_DOES_NOT_EXISTS,
+        message: constants.MESSAGES.BRAND_WMS.BRAND_DOES_NOT_EXISTS,
       });
       return;
     }
-    const createHarmonize = await Harmonize.update(
+    const createBrand = await Brand.update(
       {
         company_code,
         created_by: requestUser.loginid,
@@ -93,11 +95,14 @@ export const updateHarmonize = async (req: RequestWithUser, res: Response) => {
       },
       {
         where: {
-          [Op.and]: [{ company_code: company_code }, { harm_code: harm_code }],
+          [Op.and]: [
+            { company_code: company_code },
+            { brand_code: brand_code },
+          ],
         },
       }
     );
-    if (!createHarmonize) {
+    if (!createBrand) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while updating company" });
@@ -105,7 +110,7 @@ export const updateHarmonize = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.HARMONIZE_WMS.HARMONIZE_UPDATED_SUCCESSFULLY,
+      message: constants.MESSAGES.BRAND_WMS.BRAND_UPDATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -122,13 +127,13 @@ export const deleteCountries = async (req: RequestWithUser, res: Response) => {
     if (!req.body.length) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.HARMONIZE_WMS.SELECT_AT_LEAST_ONE_HARMONIZE,
+        message: constants.MESSAGES.BRAND_WMS.SELECT_AT_LEAST_ONE_BRAND,
       });
       return;
     }
-    const countriesDeleteResponse = await Harmonize.destroy({
+    const countriesDeleteResponse = await Brand.destroy({
       where: {
-        harm_code: countriesCode,
+        brand_code: countriesCode,
       },
     });
     if (countriesDeleteResponse === 0) {
@@ -140,7 +145,7 @@ export const deleteCountries = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.HARMONIZE_WMS.HARMONIZE_DELETED_SUCCESSFULLY,
+      message: constants.MESSAGES.BRAND_WMS.BRAND_DELETED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {

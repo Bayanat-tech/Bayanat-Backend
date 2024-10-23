@@ -1,25 +1,30 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
-import { IUom } from "../../interfaces/wms/gm_wms.interface";
+import { IManufacture } from "../../interfaces/wms/gm_wms.interface";
 
-class Uom extends Model<IUom> {}
+class Manufacture extends Model<IManufacture> {}
 
-Uom.init(
+Manufacture.init(
   {
-    uom_code: {
-      type: DataTypes.STRING(7),
+    manu_code: {
+      type: DataTypes.STRING(20),
       allowNull: false,
       primaryKey: true,
     },
-    uom_name: {
-      type: DataTypes.STRING(50),
+    manu_name: {
+      type: DataTypes.STRING(255),
       allowNull: false,
     },
     company_code: {
       type: DataTypes.STRING(20),
       allowNull: false,
     },
+    prin_code: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+
     // updated_at: {
     //   type: DataTypes.DATE,
     //   allowNull: false,
@@ -39,11 +44,11 @@ Uom.init(
   },
   {
     sequelize,
-    modelName: "Uom",
-    tableName: constants.TABLE.MS_UOM,
+    modelName: "Manufacture",
+    tableName: constants.TABLE.MS_MANUFACTURER,
     createdAt: "created_at",
     updatedAt: "updated_at",
   }
 );
 
-export default Uom;
+export default Manufacture;

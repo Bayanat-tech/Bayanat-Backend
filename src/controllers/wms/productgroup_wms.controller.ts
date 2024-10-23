@@ -3,43 +3,43 @@ import { Op } from "sequelize";
 import constants from "../../helpers/constants";
 import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
-import Harmonize from "../../models/wms/harmonize_code.model";
-import { harmonizeSchema } from "../../validation/wms/gm.validation";
+import Group from "../../models/wms/productgroup_wms.model";
+import { groupSchema } from "../../validation/wms/gm.validation";
 
-export const createHarmonize = async (req: RequestWithUser, res: Response) => {
+export const createGroup = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = harmonizeSchema(req.body);
+    const { error } = groupSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { harm_code, company_code } = req.body;
+    const { group_code, company_code } = req.body;
 
-    const harmonize = await Harmonize.findOne({
+    const group = await Group.findOne({
       where: {
-        [Op.and]: [{ company_code: company_code }, { harm_code: harm_code }],
+        [Op.and]: [{ company_code: company_code }, { group_code: group_code }],
       },
     });
 
-    if (harmonize) {
+    if (group) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.HARMONIZE_WMS.HARMONIZE_ALREADY_EXISTS,
+        message: constants.MESSAGES.GROUP_WMS.GROUP_ALREADY_EXISTS,
       });
       return;
     }
-    const createHarmonize = await Harmonize.create({
+    const createGroup = await Group.create({
       company_code,
       created_by: requestUser.loginid,
       updated_by: requestUser.loginid,
 
       ...req.body,
     });
-    if (!createHarmonize) {
+    if (!createGroup) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while creating company" });
@@ -47,7 +47,7 @@ export const createHarmonize = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.HARMONIZE_WMS.HARMONIZE_CREATED_SUCCESSFULLY,
+      message: constants.MESSAGES.GROUP_WMS.GROUP_CREATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -57,33 +57,33 @@ export const createHarmonize = async (req: RequestWithUser, res: Response) => {
     return;
   }
 };
-export const updateHarmonize = async (req: RequestWithUser, res: Response) => {
+export const updateGroup = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = harmonizeSchema(req.body);
+    const { error } = groupSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { harm_code, company_code } = req.body;
+    const { group_code, company_code } = req.body;
 
-    const harmonize = await Harmonize.findOne({
+    const group = await Group.findOne({
       where: {
-        [Op.and]: [{ company_code: company_code }, { harm_code: harm_code }],
+        [Op.and]: [{ company_code: company_code }, { group_code: group_code }],
       },
     });
 
-    if (!harmonize) {
+    if (!group) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.HARMONIZE_WMS.HARMONIZE_DOES_NOT_EXISTS,
+        message: constants.MESSAGES.GROUP_WMS.GROUP_DOES_NOT_EXISTS,
       });
       return;
     }
-    const createHarmonize = await Harmonize.update(
+    const createGroup = await Group.update(
       {
         company_code,
         created_by: requestUser.loginid,
@@ -93,11 +93,14 @@ export const updateHarmonize = async (req: RequestWithUser, res: Response) => {
       },
       {
         where: {
-          [Op.and]: [{ company_code: company_code }, { harm_code: harm_code }],
+          [Op.and]: [
+            { company_code: company_code },
+            { group_code: group_code },
+          ],
         },
       }
     );
-    if (!createHarmonize) {
+    if (!createGroup) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while updating company" });
@@ -105,7 +108,7 @@ export const updateHarmonize = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.HARMONIZE_WMS.HARMONIZE_UPDATED_SUCCESSFULLY,
+      message: constants.MESSAGES.GROUP_WMS.GROUP_UPDATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -117,18 +120,18 @@ export const updateHarmonize = async (req: RequestWithUser, res: Response) => {
 };
 export const deleteCountries = async (req: RequestWithUser, res: Response) => {
   try {
-    const countriesCode = req.body;
+    const groupiesCode = req.body;
 
     if (!req.body.length) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.HARMONIZE_WMS.SELECT_AT_LEAST_ONE_HARMONIZE,
+        message: constants.MESSAGES.GROUP_WMS.SELECT_AT_LEAST_ONE_GROUP,
       });
       return;
     }
-    const countriesDeleteResponse = await Harmonize.destroy({
+    const countriesDeleteResponse = await Group.destroy({
       where: {
-        harm_code: countriesCode,
+        group_code: groupiesCode,
       },
     });
     if (countriesDeleteResponse === 0) {
@@ -140,7 +143,7 @@ export const deleteCountries = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.HARMONIZE_WMS.HARMONIZE_DELETED_SUCCESSFULLY,
+      message: constants.MESSAGES.GROUP_WMS.GROUP_DELETED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
