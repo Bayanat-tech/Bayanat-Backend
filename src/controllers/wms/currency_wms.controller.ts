@@ -1,16 +1,12 @@
 import { Response } from "express";
 import { Op } from "sequelize";
 import constants from "../../helpers/constants";
-<<<<<<< HEAD
-=======
 import { RequestWithUser } from "../../interfaces/cmmon.interface";
->>>>>>> qa
 import { IUser } from "../../interfaces/user.interface";
 //import Department from "../../models/wms/department_wms.model";
 import Currency from "../../models/wms/currency_wms.model";
 //import { departmentSchema } from "../../validation/wms/gm.validation";
 import { currencySchema } from "../../validation/wms/gm.validation";
-import { RequestWithUser } from "../../interfaces/cmmon.interface";
 
 export const createcurrency = async (req: RequestWithUser, res: Response) => {
   try {

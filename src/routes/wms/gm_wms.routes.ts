@@ -76,11 +76,6 @@ import { createActivitysubgroup } from "../../controllers/wms/activity_subgroup_
 import {
   createActivityBillingDataByCompanyAndPrincipal,
   updateActivityBillingDataByCompanyAndPrincipal,
-} from "../../controllers/wms/activity_wms.controller";
-
-import {
-  createActivityBillingDataByCompanyAndPrincipal,
-  updateActivityBillingDataByCompanyAndPrincipal,
   copyBillingActivity,
 } from "../../controllers/wms/activity_wms.controller";
 const router = express.Router();

@@ -21,9 +21,9 @@ Harmonize.init(
       allowNull: true,
     },
     unit: {
-        type: DataTypes.STRING(5),
-        allowNull: true,
-      },
+      type: DataTypes.STRING(5),
+      allowNull: true,
+    },
     company_code: {
       type: DataTypes.STRING(20),
       allowNull: false,
@@ -63,5 +63,3 @@ Harmonize.init(
 );
 
 export default Harmonize;
-
-

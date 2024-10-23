@@ -51,5 +51,3 @@ Moc.init(
 );
 
 export default Moc;
-
-

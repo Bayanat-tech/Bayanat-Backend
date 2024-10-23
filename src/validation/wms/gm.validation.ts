@@ -1,6 +1,5 @@
 import Joi from "joi";
 import { IIndustrysector } from "../../interfaces/wms/industrysector_wms.interface";
-<<<<<<< HEAD
 import {
   IPrincipalContactDetlWMs,
   IPrincipalWms,
@@ -14,26 +13,19 @@ import {
   IGroup,
   IBrand,
   IManufacture,
+  IUom,
+  IMoc,
+  IMoc2,
+  IUoc,
 } from "../../interfaces/wms/gm_wms.interface";
-import { ICurrency } from "../../interfaces/wms/currency_wms.interface";
-import { ILocation } from "../../interfaces/wms/location_wms.interface";
 import { ISupplier } from "../../interfaces/wms/supplier_wms.interface";
-import { IActivityGroup } from "../../interfaces/wms/activitygroup_wms.interface";
 //import { IBrand } from "../../interfaces/wms/gm_wms.interface";
-
-=======
-import { ICountry,IDepartment,ISalesman,IUom,IMoc, IMoc2, IUoc} from "../../interfaces/wms/gm_wms.interface";
 import { ICurrency } from "../../interfaces/wms/currency_wms.interface";
 import { ILocation } from "../../interfaces/wms/location_wms.interface";
 import { IHarmonize } from "../../interfaces/wms/harmonize.interface";
-
-import { IActivity } from "../../interfaces/wms/activity_wms.interface";
-import {IPrincipalContactDetlWMs,IPrincipalWms,} from "../../interfaces/wms/principal_wms.interface";
 //import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
 import { IActivityGroup } from "../../interfaces/wms/activitygroup_wms.interface";
 import { IActivitysubgroup } from "../../interfaces/wms/activity_subgroup_wms.interface";
->>>>>>> qa
-//import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
 
 export const countrySchema = (data: ICountry) => {
   const schema = Joi.object().keys({
@@ -214,7 +206,6 @@ export const currencySchema = (data: ICurrency) => {
   return schema.validate(data);
 };
 
-<<<<<<< HEAD
 export const supplierSchema = (data: ISupplier) => {
   const schema = Joi.object().keys({
     company_code: Joi.string().required(),
@@ -260,7 +251,6 @@ export const supplierSchema = (data: ISupplier) => {
   });
   return schema.validate(data);
 };
-=======
 export const uomSchema = (data: IUom) => {
   const schema = Joi.object().keys({
     company_code: Joi.string().required(),
@@ -302,8 +292,8 @@ export const harmonizeSchema = (data: IHarmonize) => {
     company_code: Joi.string().required(),
     harm_code: Joi.string().required(),
     harm_desc: Joi.string().required(),
-    uom:Joi.string().allow(""),
-    permit_reqd:Joi.string().allow(""),
+    uom: Joi.string().allow(""),
+    permit_reqd: Joi.string().allow(""),
     unit: Joi.string().allow(""),
   });
   return schema.validate(data);
@@ -314,14 +304,13 @@ export const activitysubgroupSchema = (data: IActivitysubgroup) => {
     company_code: Joi.string().required(),
     activity_subgroup_code: Joi.string().required(),
     act_subgroup_name: Joi.string().required(),
-    mandatory_flag:Joi.string().allow(""),
-    act_group_code:Joi.string().allow(""),
+    mandatory_flag: Joi.string().allow(""),
+    act_group_code: Joi.string().allow(""),
     validate_flag: Joi.string().allow(""),
   });
   return schema.validate(data);
 };
 
->>>>>>> qa
 export const principalSchema = (
   data: IPrincipalWms & IPrincipalContactDetlWMs
 ) => {

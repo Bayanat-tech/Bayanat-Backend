@@ -4,9 +4,15 @@ import constants from "../../helpers/constants";
 import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
 import Activitysubgroup from "../../models/wms/activity_subgroup.model";
-import { activitygroupSchema, activitysubgroupSchema } from "../../validation/wms/gm.validation";
+import {
+  activitygroupSchema,
+  activitysubgroupSchema,
+} from "../../validation/wms/gm.validation";
 
-export const createActivitysubgroup = async (req: RequestWithUser, res: Response) => {
+export const createActivitysubgroup = async (
+  req: RequestWithUser,
+  res: Response
+) => {
   try {
     const requestUser: IUser = req.user;
 
@@ -60,7 +66,10 @@ export const createActivitysubgroup = async (req: RequestWithUser, res: Response
     return;
   }
 };
-export const updateActivitysubgroup = async (req: RequestWithUser, res: Response) => {
+export const updateActivitysubgroup = async (
+  req: RequestWithUser,
+  res: Response
+) => {
   try {
     const requestUser: IUser = req.user;
 
@@ -85,7 +94,9 @@ export const updateActivitysubgroup = async (req: RequestWithUser, res: Response
     if (!country) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.ACTIVITY_SUBGROUP_WMS.ACTIVITY_SUBGROUP_DOES_NOT_EXISTS,
+        message:
+          constants.MESSAGES.ACTIVITY_SUBGROUP_WMS
+            .ACTIVITY_SUBGROUP_DOES_NOT_EXISTS,
       });
       return;
     }
@@ -113,7 +124,9 @@ export const updateActivitysubgroup = async (req: RequestWithUser, res: Response
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.ACTIVITY_SUBGROUP_WMS.ACTIVITY_SUBGROUP_DELETED_SUCCESSFULLY,
+      message:
+        constants.MESSAGES.ACTIVITY_SUBGROUP_WMS
+          .ACTIVITY_SUBGROUP_DELETED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -130,7 +143,9 @@ export const deleteCountries = async (req: RequestWithUser, res: Response) => {
     if (!req.body.length) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.ACTIVITY_SUBGROUP_WMS.ACTIVITY_SUBGROUP_AT_LEAST_ONE_ACTIVITY_GROUP,
+        message:
+          constants.MESSAGES.ACTIVITY_SUBGROUP_WMS
+            .ACTIVITY_SUBGROUP_AT_LEAST_ONE_ACTIVITY_GROUP,
       });
       return;
     }
@@ -148,7 +163,9 @@ export const deleteCountries = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.ACTIVITY_SUBGROUP_WMS.ACTIVITY_SUBGROUP_DELETED_SUCCESSFULLY,
+      message:
+        constants.MESSAGES.ACTIVITY_SUBGROUP_WMS
+          .ACTIVITY_SUBGROUP_DELETED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {

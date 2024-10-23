@@ -47,5 +47,3 @@ Uom.init(
 );
 
 export default Uom;
-
-

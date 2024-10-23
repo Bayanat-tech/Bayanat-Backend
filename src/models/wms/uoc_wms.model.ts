@@ -51,5 +51,3 @@ Uoc.init(
 );
 
 export default Uoc;
-
-
