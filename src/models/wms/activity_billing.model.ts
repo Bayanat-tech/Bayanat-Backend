@@ -3,7 +3,7 @@ import { IActivityBilling } from "../../interfaces/wms/activity_billing_wms.inte
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
 
-class ActivityBilling extends Model<IActivityBilling> {};
+class ActivityBilling extends Model<IActivityBilling> {}
 
 ActivityBilling.init(
   {
@@ -113,6 +113,5 @@ ActivityBilling.init(
     updatedAt: "updated_at",
   }
 );
-
 
 export default ActivityBilling;

@@ -14,6 +14,8 @@ import { ILocation } from "../interfaces/wms/location_wms.interface";
 import { IUom } from "../interfaces/wms/gm_wms.interface";
 import { IMoc } from "../interfaces/wms/gm_wms.interface";
 import { IHarmonize } from "../interfaces/wms/harmonize.interface";
+import { IActivity } from "../interfaces/wms/activity_wms.interface";
+import { IActivityUoc } from "../interfaces/wms/activity_uoc_wms.interface";
 
 // Importing models for WMS master data
 import Country from "../models/wms/country_wms.model";
@@ -29,6 +31,9 @@ import Moc from "../models/wms/moc_wms.model";
 import Harmonize from "../models/wms/harmonize_code.model";
 import Activitysubgroup from "../models/wms/activity_subgroup.model";
 
+import ActivityBillingTable from "../models/wms/activity_billing_table_wms";
+import Activity from "../models/wms/activity_wms.model";
+import ActivityUoc from "../models/wms/activity_uoc.model";
 
 // --- Database sequelize import ---
 import { sequelize } from "../database/connection";
@@ -40,9 +45,7 @@ import { IActivityGroup } from "../interfaces/wms/activitygroup_wms.interface";
 import { activitysubgroupSchema } from "../validation/wms/gm.validation";
 import { IActivitysubgroup } from "../interfaces/wms/activity_subgroup_wms.interface";
 
-
 // Retrieves master data (country, department, territory, etc.) with optional pagination based on the `master` type.
-
 export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
   try {
     const { master } = req.params;
@@ -170,7 +173,7 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as IActivityGroup[];
         }
         break;
-        case "activitysubgroup":
+      case "activitysubgroup":
         {
           (fetchedData = await Activitysubgroup.findAll({
             where: { company_code: requestUser.company_code },
@@ -179,81 +182,43 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
         }
         break;
 
-
-        case "activity_billing":
-          {
-            let activityBillingData: any[] = [];
-            if (principalCode) {
-              const query = `
-                SELECT
-                  *
-                FROM
-                  VW_GEN_ACTIVITY_BILLING_DATA
-                WHERE 
-                  COMPANY_CODE = :company_code
-                  AND PRIN_CODE = :principal_code
-                  AND USER_ID = :user_id
-              `;
-              
-              activityBillingData = await sequelize.query(query, {
-                replacements: {
-                  company_code: requestUser.company_code,
-                  principal_code: principalCode,
-                  user_id: requestUser.loginid
-                },
-                type: QueryTypes.SELECT,
-              });
-            } else {
-              const query = `
-                SELECT
-                  P.PRIN_NAME,
-                  B.ACT_CODE,
-                  A.ACTIVITY,
-                  A.ACTIVITY_GROUP_CODE,
-                  B.JOBTYPE
-                FROM
-                  MS_PRINCIPAL P
-                JOIN
-                  MS_ACTIVITY_BILLING B ON P.PRIN_CODE = B.PRIN_CODE
-                JOIN
-                  MS_ACTIVITY A ON B.ACT_CODE = A.ACTIVITY_CODE
-                WHERE
-                  P.COMPANY_CODE = :company_code
-              `;
-          
-              activityBillingData = await sequelize.query(query, {
-                replacements: {
-                  company_code: requestUser.company_code
-                },
-                type: QueryTypes.SELECT,
-              });
-            }
-            // Assigning the fetched data
-            fetchedData = activityBillingData;
-          }          
-        break;
-      case "activity":
+      case "billingactivity":
         {
-          console.log("Enter in activity", master);
-          const query = `
-                SELECT
-                  A.ACTIVITY_CODE,
-                  A.ACTIVITY,
-                  A.ACTIVITY_GROUP_CODE
-                FROM
-                  MS_ACTIVITY A
-                WHERE
-                  A.COMPANY_CODE = :company_code
-              `;
-             const activityData = await sequelize.query(query, {
-                replacements: {
-                  company_code: requestUser.company_code
-                },
-                type: QueryTypes.SELECT,
-              });
-              fetchedData = activityData;
+          if (principalCode) {
+            fetchedData = await ActivityBillingTable.findAll({
+              where: {
+                company_code: requestUser.company_code,
+                prin_code: principalCode,
+                user_id: requestUser.loginid,
+              },
+              ...paginationOptions,
+            });
+          } else {
+            fetchedData = await ActivityBillingTable.findAll({
+              where: {
+                company_code: requestUser.company_code,
+                user_id: requestUser.loginid,
+              },
+              ...paginationOptions,
+            });
+          }
         }
         break;
+
+      case "activity": {
+        console.log("Enter in activity", master);
+
+        // Fetching data using the Activity model
+        fetchedData = (await Activity.findAll({
+          attributes: ["activity_code", "activity", "activity_group_code"],
+          where: {
+            company_code: requestUser.company_code,
+          },
+          ...paginationOptions,
+        })) as unknown[] as IActivity[];
+
+        break;
+      }
       case "location":
         {
           (fetchedData = await Location.findAll({
@@ -263,69 +228,43 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
         }
         break;
       case "uom":
-          {
-            (fetchedData = await Uom.findAll({
-              where: { company_code: requestUser.company_code },
-              ...paginationOptions,
-            })) as unknown[] as IUom[];
-          }
-          break;
-        case "moc":
-          {
-            (fetchedData = await Moc.findAll({
-              where: { company_code: requestUser.company_code },
-              ...paginationOptions,
-            })) as unknown[] as IMoc[];
-          }
-          break;
-        case "moc2":
-          {
-            console.log("i am sagar");
-            (fetchedData = await Moc.findAll({
-              where: { company_code: requestUser.company_code },
-              ...paginationOptions,
-            })) as unknown[] as IMoc2[];
-          }
-          break;
-        case "uoc":
-            {
-              (fetchedData = await Moc.findAll({
-                where: { company_code: requestUser.company_code },
-                ...paginationOptions,
-              })) as unknown[] as IMoc2[];
-            }
-            break;
-          case "harmonize":
-            {
-              console.log("i am sagar");
-              (fetchedData = await Harmonize.findAll({
-                where: { company_code: requestUser.company_code },
-                ...paginationOptions,
-              })) as unknown[] as IHarmonize[];
-            }
-            break;
-        
-      {
-        const query = `
-            SELECT
-              mau.company_code,  
-              mau.charge_type,  
-              mau.charge_code,  
-              mau.description,  
-              mau.activity_group_code  
-            FROM
-              MS_ACTIVITY_UOC mau
-            WHERE
-              COALESCE(mau.CHARGE_TYPE, ' ') = :charge_type
-        AND mau.COMPANY_CODE = :company_code;
-          `;
-          const activityData = await sequelize.query(query, {
-            replacements: {charge_type:master, company_code: requestUser.company_code },
-            type: QueryTypes.SELECT,
-          });
-          fetchedData = activityData;
-      }
-     break;
+        {
+          (fetchedData = await Uom.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IUom[];
+        }
+        break;
+      case "harmonize":
+        {
+          console.log("i am sagar");
+          (fetchedData = await Harmonize.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IHarmonize[];
+        }
+        break;
+
+      case "uoc":
+      case "moc1":
+      case "moc2":
+        {
+          fetchedData = (await ActivityUoc.findAll({
+            attributes: [
+              "company_code",
+              "charge_type",
+              "charge_code",
+              "description",
+              "activity_group_code",
+            ],
+            where: {
+              company_code: requestUser.company_code,
+              charge_type: master ? master : " ",
+            },
+            ...paginationOptions,
+          })) as IActivityUoc[];
+        }
+        break;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
@@ -372,7 +311,7 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
         }
         break;
       case "activitygroup":
-      {
+        {
           await activitygroup.destroy({
             where: {
               company_code: requestUser.company_code,

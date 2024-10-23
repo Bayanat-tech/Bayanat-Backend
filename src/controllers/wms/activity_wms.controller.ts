@@ -70,7 +70,6 @@ export const updateActivityBillingDataByCompanyAndPrincipal = async (req: Reques
 export const copyBillingActivity = async (req: RequestWithUser, res: Response) => {
   try {
     const { from, to,  } = req.body; 
-    console.log("Enter this procedure--->", from);
     const requestUser: IUser = req.user;
     // Calling the stored procedure
     const result = await sequelize.query(
