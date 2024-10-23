@@ -25,7 +25,7 @@ router.use(
   gmPfRouter
 );
 
-router.delete(
+router.post(
   "/:master",
   passport.authenticate("jwt", { session: false }),
   deletepfMaster
