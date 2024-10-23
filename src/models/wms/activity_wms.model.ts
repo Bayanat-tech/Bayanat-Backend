@@ -1,9 +1,9 @@
 import { DataTypes, Model } from "sequelize";
-import {IActivity} from "../../interfaces/wms/activity_wms.interface"
+import { IActivity } from "../../interfaces/wms/activity_wms.interface";
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
 
-class Activity extends Model<IActivity> {};
+class Activity extends Model<IActivity> {}
 
 Activity.init(
   {
@@ -112,12 +112,12 @@ Activity.init(
       type: DataTypes.STRING(50),
       allowNull: true,
     },
-   
+
     updated_by: {
       type: DataTypes.STRING(50),
       allowNull: false,
     },
-    
+
     created_by: {
       type: DataTypes.STRING(50),
       allowNull: false,

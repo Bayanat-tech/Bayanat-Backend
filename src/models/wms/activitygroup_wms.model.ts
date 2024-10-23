@@ -12,7 +12,7 @@ activitygroup.init(
       allowNull: false,
       primaryKey: true,
     },
-    act_group_name: {
+    act_subgroup_name: {
       type: DataTypes.STRING(50),
       allowNull: true,
     },

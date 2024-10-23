@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { Op } from "sequelize";
 import constants from "../../helpers/constants";
-import { RequestWithUser } from "../../interfaces/cmmon.interfacte";
+import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
 //import Department from "../../models/wms/department_wms.model";
 import Currency from "../../models/wms/currency_wms.model";
