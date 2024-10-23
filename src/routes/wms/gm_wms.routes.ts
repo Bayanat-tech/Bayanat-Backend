@@ -70,6 +70,7 @@ import {
   createHarmonize,
   updateHarmonize,
 } from "../../controllers/wms/harmonize_wms.controller";
+import { checkPassword } from "../../middleware/checkPassword";
 //import { createActivityBillingDataByCompanyAndPrincipal, updateActivityBillingDataByCompanyAndPrincipal } from "../../controllers/wms/activity_wms.controller";
 import { createActivitysubgroup } from "../../controllers/wms/activity_subgroup_wms.controller";
 
@@ -163,16 +164,18 @@ router.post("/activitygroup/delete", deleteActivityGroup);
 // -------- Activity Billing Data -------
 router.post(
   "/activity_billing/:principalCode",
+  checkPassword,
   createActivityBillingDataByCompanyAndPrincipal
 );
 router.put(
   "/activity_billing/:principalCode/:activityCode",
+  checkPassword,
   updateActivityBillingDataByCompanyAndPrincipal
 );
+router.post("/copy_billing_activity", checkPassword, copyBillingActivity);
 
 //-------------Activity Sub Group------------
 router.post("activitysubgroup", createActivitysubgroup);
 router.put("activitysubgroup", updateActivityGroup);
 
-router.post("/copy_billing_activity", copyBillingActivity);
 export default router;

@@ -4,29 +4,29 @@ import {
   IPrincipalContactDetlWMs,
   IPrincipalWms,
 } from "../../interfaces/wms/principal_wms.interface";
-import { IActivity } from "../../interfaces/wms/activity_wms.interface";
 
 import {
-  ICountry,
-  IDepartment,
-  ISalesman,
   IGroup,
   IBrand,
   IManufacture,
+  ICountry,
+  IDepartment,
+  ISalesman,
   IUom,
   IMoc,
   IMoc2,
   IUoc,
 } from "../../interfaces/wms/gm_wms.interface";
-import { ISupplier } from "../../interfaces/wms/supplier_wms.interface";
-//import { IBrand } from "../../interfaces/wms/gm_wms.interface";
 import { ICurrency } from "../../interfaces/wms/currency_wms.interface";
 import { ILocation } from "../../interfaces/wms/location_wms.interface";
 import { IHarmonize } from "../../interfaces/wms/harmonize.interface";
+
 //import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
 import { IActivityGroup } from "../../interfaces/wms/activitygroup_wms.interface";
 import { IActivitysubgroup } from "../../interfaces/wms/activity_subgroup_wms.interface";
-
+//import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
+import { IActivityBilling } from "../../interfaces/wms/activity_billing_wms.interface";
+import { ISupplier } from "../../interfaces/wms/supplier_wms.interface";
 export const countrySchema = (data: ICountry) => {
   const schema = Joi.object().keys({
     company_code: Joi.string().required(),
@@ -406,5 +406,11 @@ export const principalSchema = (
     automate_activity: Joi.string().allow(""),
   });
 
+  return schema.validate(data);
+};
+
+// ---------------Activity Billing--------------
+export const activityBillingSchema = (data: IActivityBilling) => {
+  const schema = Joi.object().keys({});
   return schema.validate(data);
 };
