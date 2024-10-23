@@ -4,6 +4,11 @@ import { sequelize } from "../../database/connection";
 import { IUser } from "../../interfaces/user.interface";
 import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import ActivityBilling from "../../models/wms/activity_billing.model";
+import {
+  activityBillingSchema,
+  callProcedureSchema,
+} from "../../validation/wms/gm.validation";
+import constants from "../../helpers/constants";
 
 // Create Activity Controller
 export const createActivityBillingDataByCompanyAndPrincipal = async (
@@ -12,14 +17,21 @@ export const createActivityBillingDataByCompanyAndPrincipal = async (
 ) => {
   try {
     const { companyCode, principalCode } = req.params;
-    const { billing_amount, job_type, cost, uoc, moc1, moc2, act_code } =
-      req.body;
+
+    const { error } = activityBillingSchema(req.body);
+    if (error) {
+      res
+        .status(constants.STATUS_CODES.BAD_REQUEST)
+        .json({ success: false, message: error.message });
+      return;
+    }
+    const { bill_amount, jobtype, cost, uoc, moc1, moc2, act_code } = req.body;
     // Create a new record in the activity_billing table
     const newActivityBilling = await ActivityBilling.create({
       company_code: companyCode,
       prin_code: principalCode,
-      bill_amount: billing_amount,
-      jobtype: job_type,
+      bill_amount: bill_amount,
+      jobtype: jobtype,
       cost: cost,
       uoc: uoc,
       moc1: moc1,
@@ -48,15 +60,19 @@ export const updateActivityBillingDataByCompanyAndPrincipal = async (
 ) => {
   try {
     const { principalCode, activityCode } = req.params;
-    const { billing_amount, job_type, cost, uoc, moc1, moc2 } = req.body;
-    console.log(
-      `principal code: ${principalCode}, activity code: ${activityCode}`
-    );
+    const { error } = activityBillingSchema(req.body);
+    if (error) {
+      res
+        .status(constants.STATUS_CODES.BAD_REQUEST)
+        .json({ success: false, message: error.message });
+      return;
+    }
+    const { bill_amount, jobtype, cost, uoc, moc1, moc2 } = req.body;
     // Find and update the record in the activity_billing table
     const updatedActivityBilling = await ActivityBilling.update(
       {
-        bill_amount: billing_amount,
-        jobtype: job_type,
+        bill_amount: bill_amount,
+        jobtype: jobtype,
         cost: cost,
         uoc: uoc,
         moc1: moc1,
@@ -84,8 +100,15 @@ export const copyBillingActivity = async (
   res: Response
 ) => {
   try {
-    const { from, to } = req.body;
     const requestUser: IUser = req.user;
+    const { error } = callProcedureSchema(req.body);
+    if (error) {
+      res
+        .status(constants.STATUS_CODES.BAD_REQUEST)
+        .json({ success: false, message: error.message });
+      return;
+    }
+    const { from, to } = req.body;
     // Calling the stored procedure
     const result = await sequelize.query(
       `CALL SP_WM_COPY_BILLING_ACTVY(:vs_comp_code, :vs_prin_from, :vs_prin_to, :vs_user)`,

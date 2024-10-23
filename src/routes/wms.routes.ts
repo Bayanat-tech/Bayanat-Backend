@@ -19,20 +19,6 @@ router.use(
   gmWmsRouter
 );
 
-router.get(
-  "/:master",
-  passport.authenticate("jwt", { session: false }),
-  checkUserAuthorization,
-  getWmsMaster
-);
-
-router.use(
-  "/gm",
-  passport.authenticate("jwt", { session: false }),
-  checkUserAuthorization,
-  gmWmsRouter
-);
-
 router.post(
   "/:master",
   passport.authenticate("jwt", { session: false }),

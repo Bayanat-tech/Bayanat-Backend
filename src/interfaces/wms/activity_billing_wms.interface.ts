@@ -1,4 +1,5 @@
 export interface IActivityBilling {
+  activityPassword?: string;
   prin_code?: string;
   act_code?: string;
   wip_code?: string;

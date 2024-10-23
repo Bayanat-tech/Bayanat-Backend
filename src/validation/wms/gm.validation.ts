@@ -411,6 +411,45 @@ export const principalSchema = (
 
 // ---------------Activity Billing--------------
 export const activityBillingSchema = (data: IActivityBilling) => {
-  const schema = Joi.object().keys({});
+  const schema = Joi.object().keys({
+    activityPassword: Joi.string(),
+    prin_code: Joi.string(),
+    act_code: Joi.string(),
+    from: Joi.string().allow(null),
+    to: Joi.string().allow(null),
+    wip_code: Joi.string(),
+    cost: Joi.number().required(),
+    income_code: Joi.string(),
+    bill_amount: Joi.number(),
+    jobtype: Joi.string().required(),
+    company_code: Joi.string(),
+    freeze_flag: Joi.string().length(1),
+    mandatory_flag: Joi.string().length(1),
+    validate_flag: Joi.string().length(1),
+    uoc: Joi.string().required(),
+    moc: Joi.number(),
+    moc1: Joi.string().required(),
+    moc2: Joi.string().required(),
+    cust_code: Joi.string(),
+    start_point: Joi.string(),
+    end_point: Joi.string(),
+    customer_type: Joi.string(),
+    vtype_code: Joi.string(),
+    serial_no: Joi.number(),
+    serial_no2: Joi.number(),
+    updated_by: Joi.string(),
+    created_by: Joi.string(),
+  });
+
+  return schema.validate(data);
+};
+// Calll Procedure
+export const callProcedureSchema = (data: string) => {
+  const schema = Joi.object().keys({
+    activityPassword: Joi.string(),
+    from: Joi.string().required(),
+    to: Joi.string().required(),
+  });
+
   return schema.validate(data);
 };
