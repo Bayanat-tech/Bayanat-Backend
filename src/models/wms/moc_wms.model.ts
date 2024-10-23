@@ -18,7 +18,7 @@ Moc.init(
     },
     charge_type: {
       type: DataTypes.STRING(4),
-      allowNull: false,
+       allowNull: true,
     },
     company_code: {
       type: DataTypes.STRING(20),
@@ -32,7 +32,7 @@ Moc.init(
       type: DataTypes.STRING(50),
       allowNull: false,
     },
-    created_by: {
+    created_by: { 
       type: DataTypes.STRING(20),
       allowNull: false,
     },
@@ -51,3 +51,5 @@ Moc.init(
 );
 
 export default Moc;
+
+

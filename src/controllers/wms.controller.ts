@@ -2,7 +2,7 @@ import { Response } from "express";
 import constants from "../helpers/constants";
 import { RequestWithUser } from "../interfaces/cmmon.interface";
 import { IUser } from "../interfaces/user.interface";
-import { ICountry, IMoc2 } from "../interfaces/wms/gm_wms.interface";
+import { ICountry, IMoc2, IUoc } from "../interfaces/wms/gm_wms.interface";
 import { IDepartment } from "../interfaces/wms/department_wms.interface";
 import { ITerritory } from "../interfaces/wms/territory_wms.interface";
 import { ICurrency } from "../interfaces/wms/currency_wms.interface";
@@ -54,6 +54,8 @@ import activitygroup from "../models/wms/activitygroup_wms.model";
 
 import { activitysubgroupSchema } from "../validation/wms/gm.validation";
 import { IActivitysubgroup } from "../interfaces/wms/activity_subgroup_wms.interface";
+import moc2 from "../models/wms/moc2_wms.model";
+import Uoc from "../models/wms/uoc_wms.model";
 
 // Retrieves master data (country, department, territory, etc.) with optional pagination based on the `master` type.
 export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
@@ -302,7 +304,24 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
         break;
 
       case "uoc":
+        {
+          console.log("i am sagar");
+          (fetchedData = await Uoc.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IUoc[];
+        }
+        break;
+
       case "moc1":
+        {
+          console.log("i am sagar");
+          (fetchedData = await Moc.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IMoc[];
+        }
+        break;
       case "moc2":
         {
           fetchedData = (await ActivityUoc.findAll({
