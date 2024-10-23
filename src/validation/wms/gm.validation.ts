@@ -15,6 +15,7 @@ import {
 import { ICurrency } from "../../interfaces/wms/currency_wms.interface";
 import { ILocation } from "../../interfaces/wms/location_wms.interface";
 import { IActivityGroup } from "../../interfaces/wms/activitygroup_wms.interface";
+import { ILine } from "../../interfaces/wms/line_wms.interface";
 //import { IDepartment } from "../../interfaces/wms/gm_wms.interface";
 
 export const countrySchema = (data: ICountry) => {
@@ -143,6 +144,20 @@ export const activitygroupSchema = (data: IActivityGroup) => {
   });
   return schema.validate(data);
 };
+
+export const lineSchema = (data: ILine) => {
+  const schema = Joi.object().keys({
+    company_code: Joi.string().required(),
+    line_code: Joi.string().required(),
+    line_name: Joi.string().required(),
+    updated_at: Joi.date().allow(""),
+    updated_by: Joi.string().allow(""),
+    created_by: Joi.string().allow(""),
+    created_at: Joi.date().allow(""),
+  });
+  return schema.validate(data);
+};
+
 export const currencySchema = (data: ICurrency) => {
   const schema = Joi.object().keys({
     curr_code: Joi.string().required(),

@@ -12,6 +12,12 @@ import {
 } from "../../controllers/wms/activitygroup_wms.controller";
 
 import {
+  createLine,
+  deleteLine,
+  updateLine,
+} from "../../controllers/wms/line_wms.controller";
+
+import {
   createdepartment,
   updatedepartment,
 } from "../../controllers/wms/department_wms.controller";
@@ -40,7 +46,10 @@ import {
   updatelocation,
 } from "../../controllers/wms/location_wms.controller";
 
-import { createActivityBillingDataByCompanyAndPrincipal, updateActivityBillingDataByCompanyAndPrincipal } from "../../controllers/wms/activity_wms.controller";
+import {
+  createActivityBillingDataByCompanyAndPrincipal,
+  updateActivityBillingDataByCompanyAndPrincipal,
+} from "../../controllers/wms/activity_wms.controller";
 const router = express.Router();
 
 //-------------country------------
@@ -72,8 +81,20 @@ router.put("/salesman", updateSalesman);
 router.post("/activitygroup", createActivityGroup);
 router.put("/activitygroup", updateActivityGroup);
 router.post("/activitygroup/delete", deleteActivityGroup);
+
+//-------------Line------------
+router.post("/line", createLine);
+router.put("/line", updateLine);
+router.post("/line/delete", deleteLine);
+
 // -------- Activity Billing Data -------
-router.post("/activity_billing/:principalCode", createActivityBillingDataByCompanyAndPrincipal);
-router.put("/activity_billing/:principalCode/:activityCode", updateActivityBillingDataByCompanyAndPrincipal);
+router.post(
+  "/activity_billing/:principalCode",
+  createActivityBillingDataByCompanyAndPrincipal
+);
+router.put(
+  "/activity_billing/:principalCode/:activityCode",
+  updateActivityBillingDataByCompanyAndPrincipal
+);
 
 export default router;

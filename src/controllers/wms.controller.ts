@@ -12,6 +12,7 @@ import { IRolemaster } from "../interfaces/Security/Security.interfae";
 import { ICostmaster } from "../interfaces/Purchaseflow/Purucahseflow.interface";
 import { ILocation } from "../interfaces/wms/location_wms.interface";
 import { IActivityGroup } from "../interfaces/wms/activitygroup_wms.interface";
+import { ILine } from "../interfaces/wms/line_wms.interface";
 
 // Importing models for WMS master data
 import Country from "../models/wms/country_wms.model";
@@ -23,6 +24,7 @@ import Salesman from "../models/wms/salesman_wms.model";
 import Site from "../models/wms/site_wms.model";
 import Storage from "../models/wms/storage_wms.model";
 import activitygroup from "../models/wms/activitygroup_wms.model";
+import line from "../models/wms/line_wms.model";
 
 // --- Database sequelize import ---
 import { sequelize } from "../database/connection";
@@ -160,11 +162,20 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
         }
         break;
 
-        case "activity_billing":
-          {
-            let activityBillingData: any[] = [];
-            if (principalCode) {
-              const query = `
+      case "line":
+        {
+          (fetchedData = await line.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as ILine[];
+        }
+        break;
+
+      case "activity_billing":
+        {
+          let activityBillingData: any[] = [];
+          if (principalCode) {
+            const query = `
                 SELECT
                   *
                 FROM
@@ -174,17 +185,17 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
                   AND PRIN_CODE = :principal_code
                   AND USER_ID = :user_id
               `;
-              
-              activityBillingData = await sequelize.query(query, {
-                replacements: {
-                  company_code: requestUser.company_code,
-                  principal_code: principalCode,
-                  user_id: requestUser.loginid
-                },
-                type: QueryTypes.SELECT,
-              });
-            } else {
-              const query = `
+
+            activityBillingData = await sequelize.query(query, {
+              replacements: {
+                company_code: requestUser.company_code,
+                principal_code: principalCode,
+                user_id: requestUser.loginid,
+              },
+              type: QueryTypes.SELECT,
+            });
+          } else {
+            const query = `
                 SELECT
                   P.PRIN_NAME,
                   B.ACT_CODE,
@@ -200,17 +211,17 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
                 WHERE
                   P.COMPANY_CODE = :company_code
               `;
-          
-              activityBillingData = await sequelize.query(query, {
-                replacements: {
-                  company_code: requestUser.company_code
-                },
-                type: QueryTypes.SELECT,
-              });
-            }
-            // Assigning the fetched data
-            fetchedData = activityBillingData;
-          }          
+
+            activityBillingData = await sequelize.query(query, {
+              replacements: {
+                company_code: requestUser.company_code,
+              },
+              type: QueryTypes.SELECT,
+            });
+          }
+          // Assigning the fetched data
+          fetchedData = activityBillingData;
+        }
         break;
       case "activity":
         {
@@ -225,13 +236,13 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
                 WHERE
                   A.COMPANY_CODE = :company_code
               `;
-             const activityData = await sequelize.query(query, {
-                replacements: {
-                  company_code: requestUser.company_code
-                },
-                type: QueryTypes.SELECT,
-              });
-              fetchedData = activityData;
+          const activityData = await sequelize.query(query, {
+            replacements: {
+              company_code: requestUser.company_code,
+            },
+            type: QueryTypes.SELECT,
+          });
+          fetchedData = activityData;
         }
         break;
       case "location":
@@ -242,13 +253,12 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as ILocation[];
         }
         break;
-      
-      case "uoc" :
+
+      case "uoc":
       case "moc1":
       case "moc2":
-        
-      {
-        const query = `
+        {
+          const query = `
             SELECT
               mau.company_code,  
               mau.charge_type,  
@@ -262,12 +272,15 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
         AND mau.COMPANY_CODE = :company_code;
           `;
           const activityData = await sequelize.query(query, {
-            replacements: {charge_type:master, company_code: requestUser.company_code },
+            replacements: {
+              charge_type: master,
+              company_code: requestUser.company_code,
+            },
             type: QueryTypes.SELECT,
           });
           fetchedData = activityData;
-      }
-     break;
+        }
+        break;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
@@ -314,7 +327,7 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
         }
         break;
       case "activitygroup":
-      {
+        {
           await activitygroup.destroy({
             where: {
               company_code: requestUser.company_code,
@@ -323,7 +336,18 @@ export const deleteWmsMaster = async (req: RequestWithUser, res: Response) => {
           });
         }
         break;
+
+      case "line":
+        {
+          await line.destroy({
+            where: {
+              company_code: requestUser.company_code,
+              line_code: ids,
+            },
+          });
+        }
         break;
+
       case "department":
         {
           await Department.destroy({

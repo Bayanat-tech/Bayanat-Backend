@@ -3,60 +3,51 @@ import { Op } from "sequelize";
 import constants from "../../helpers/constants";
 import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
-import activitygroup from "../../models/wms/activitygroup_wms.model";
-import { activitygroupSchema } from "../../validation/wms/gm.validation";
+import line from "../../models/wms/line_wms.model";
+import { lineSchema } from "../../validation/wms/gm.validation";
 
-export const createActivityGroup = async (
-  req: RequestWithUser,
-  res: Response
-) => {
+export const createLine = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = activitygroupSchema(req.body);
+    const { error } = lineSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { activity_group_code, company_code } = req.body;
+    const { line_code, company_code } = req.body;
 
-    const Activitygroup = await activitygroup.findOne({
+    const Line = await line.findOne({
       where: {
-        [Op.and]: [
-          { company_code: company_code },
-          { activity_group_code: activity_group_code },
-        ],
+        [Op.and]: [{ company_code: company_code }, { line_code: line_code }],
       },
     });
 
-    if (Activitygroup) {
+    if (Line) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message:
-          constants.MESSAGES.ACTIVITY_GROUP_WMS.ACTIVITY_GROUP_ALREADY_EXISTS,
+        message: constants.MESSAGES.LINE_WMS.LINE_ALREADY_EXISTS,
       });
       return;
     }
-    const createActivityGroup = await activitygroup.create({
+    const createLine = await line.create({
       company_code,
       created_by: requestUser.loginid,
       updated_by: requestUser.loginid,
 
       ...req.body,
     });
-    if (!createActivityGroup) {
+    if (!createLine) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
-        .json({ success: false, message: "Error while creating Activity" });
+        .json({ success: false, message: "Error while creating Line" });
       return;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message:
-        constants.MESSAGES.ACTIVITY_GROUP_WMS
-          .ACTIVITY_GROUP_CREATED_SUCCESSFULLY,
+      message: constants.MESSAGES.LINE_WMS.LINE_CREATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -66,40 +57,33 @@ export const createActivityGroup = async (
     return;
   }
 };
-export const updateActivityGroup = async (
-  req: RequestWithUser,
-  res: Response
-) => {
+export const updateLine = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = activitygroupSchema(req.body);
+    const { error } = lineSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { activity_group_code, company_code } = req.body;
+    const { line_code, company_code } = req.body;
 
-    const Activitygroup = await activitygroup.findOne({
+    const Line = await line.findOne({
       where: {
-        [Op.and]: [
-          { company_code: company_code },
-          { activity_group_code: activity_group_code },
-        ],
+        [Op.and]: [{ company_code: company_code }, { line_code: line_code }],
       },
     });
 
-    if (!Activitygroup) {
+    if (!Line) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message:
-          constants.MESSAGES.ACTIVITY_GROUP_WMS.ACTIVITY_GROUP_DOES_NOT_EXISTS,
+        message: constants.MESSAGES.LINE_WMS.LINE_DOES_NOT_EXISTS,
       });
       return;
     }
-    const createActivityGroup = await activitygroup.update(
+    const createLine = await line.update(
       {
         company_code,
         created_by: requestUser.loginid,
@@ -109,24 +93,19 @@ export const updateActivityGroup = async (
       },
       {
         where: {
-          [Op.and]: [
-            { company_code: company_code },
-            { activity_group_code: activity_group_code },
-          ],
+          [Op.and]: [{ company_code: company_code }, { line_code: line_code }],
         },
       }
     );
-    if (!createActivityGroup) {
+    if (!createLine) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
-        .json({ success: false, message: "Error while updating Activity" });
+        .json({ success: false, message: "Error while updating Line" });
       return;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message:
-        constants.MESSAGES.ACTIVITY_GROUP_WMS
-          .ACTIVITY_GROUP_UPDATED_SUCCESSFULLY,
+      message: constants.MESSAGES.LINE_WMS.LINE_UPDATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -136,39 +115,32 @@ export const updateActivityGroup = async (
     return;
   }
 };
-export const deleteActivityGroup = async (
-  req: RequestWithUser,
-  res: Response
-) => {
+export const deleteLine = async (req: RequestWithUser, res: Response) => {
   try {
-    const activitygroupCode = req.body;
+    const lineCode = req.body;
 
     if (!req.body.length) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message:
-          constants.MESSAGES.ACTIVITY_GROUP_WMS
-            .SELECT_AT_LEAST_ONE_ACTIVITY_GROUP,
+        message: constants.MESSAGES.LINE_WMS.SELECT_AT_LEAST_ONE_ACTIVITY_GROUP,
       });
       return;
     }
-    const activitygroupDeleteResponse = await activitygroup.destroy({
+    const lineDeleteResponse = await line.destroy({
       where: {
-        activity_group_code: activitygroupCode,
+        line_code: lineCode,
       },
     });
-    if (activitygroupDeleteResponse === 0) {
+    if (lineDeleteResponse === 0) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: activitygroupDeleteResponse,
+        message: lineDeleteResponse,
       });
       return;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message:
-        constants.MESSAGES.ACTIVITY_GROUP_WMS
-          .ACTIVITY_GROUP_DELETED_SUCCESSFULLY,
+      message: constants.MESSAGES.LINE_WMS.LINE_DELETED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
