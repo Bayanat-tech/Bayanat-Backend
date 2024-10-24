@@ -3,9 +3,10 @@ import { IActivityUoc } from "../../interfaces/wms/activity_uoc_wms.interface";
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
 
-class ActivityUoc extends Model<IActivityUoc>{};
+class ActivityUoc extends Model<IActivityUoc> {}
 
-ActivityUoc.init({
+ActivityUoc.init(
+  {
     company_code: {
       type: DataTypes.STRING(10),
       allowNull: true,
@@ -33,15 +34,15 @@ ActivityUoc.init({
     updated_by: {
       type: DataTypes.STRING(50),
       allowNull: false,
-}
-},
-{
+    },
+  },
+  {
     sequelize,
     modelName: "ActivityUoc",
     tableName: constants.TABLE.MS_ACTIVITY_UOC,
     createdAt: "created_at",
     updatedAt: "updated_at",
-}
-)
+  }
+);
 
 export default ActivityUoc;
