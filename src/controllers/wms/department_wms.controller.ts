@@ -8,7 +8,7 @@ import { departmentSchema } from "../../validation/wms/gm.validation";
 
 export const createdepartment = async (req: RequestWithUser, res: Response) => {
   try {
-    console.log("data aaya ki nhi in function bakend..", req.body);
+    //console.log("data aaya ki nhi in function bakend..", req.body);
     const requestUser: IUser = req.user;
     const { error } = departmentSchema(req.body);
     if (error) {

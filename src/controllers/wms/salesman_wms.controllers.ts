@@ -17,9 +17,9 @@ export const createSalesman = async (req: RequestWithUser, res: Response) => {
       return;
     }
     const { company_code, salesman_code } = req.body;
-    console.log("body", req.body);
+    //console.log("body", req.body);
 
-    console.log("rsesponse", req.body);
+    //console.log("rsesponse", req.body);
 
     const salesman = await Salesman.findOne({
       where: {

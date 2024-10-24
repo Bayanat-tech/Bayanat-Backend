@@ -10,9 +10,9 @@ import { currencySchema } from "../../validation/wms/gm.validation";
 
 export const createcurrency = async (req: RequestWithUser, res: Response) => {
   try {
-    console.log("data aaya ki nhi in function bakend..yesr", req.body);
+    //console.log("data aaya ki nhi in function bakend..yesr", req.body);
     const requestUser: IUser = req.user;
-    console.log("tt", requestUser);
+    //console.log("tt", requestUser);
     const { error } = currencySchema(req.body);
 
     if (error) {
@@ -21,7 +21,7 @@ export const createcurrency = async (req: RequestWithUser, res: Response) => {
         .json({ success: false, message: error.message });
       return;
     }
-    console.log("called0");
+    //console.log("called0");
 
     const { curr_code, company_code } = req.body;
     const currency = await Currency.findOne({

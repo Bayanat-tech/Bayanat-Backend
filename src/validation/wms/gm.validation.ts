@@ -16,6 +16,7 @@ import {
   IMoc,
   IMoc2,
   IUoc,
+  IAccountsetup,
 } from "../../interfaces/wms/gm_wms.interface";
 import { ICurrency } from "../../interfaces/wms/currency_wms.interface";
 import { ILocation } from "../../interfaces/wms/location_wms.interface";
@@ -35,6 +36,16 @@ export const countrySchema = (data: ICountry) => {
     country_gcc: Joi.string().valid("Y", "N").required(),
     short_desc: Joi.string().allow(null),
     nationality: Joi.string().allow(null),
+  });
+  return schema.validate(data);
+};
+
+export const accountsetupSchema = (data: IAccountsetup) => {
+  const schema = Joi.object().keys({
+    company_code: Joi.string().required(),
+    ac_code: Joi.string().required(),
+    ac_name: Joi.string().required(),
+    bank_name: Joi.string().allow(null),
   });
   return schema.validate(data);
 };

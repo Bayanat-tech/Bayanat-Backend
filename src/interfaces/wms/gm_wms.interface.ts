@@ -11,6 +11,17 @@ export interface ICountry {
   updated_by?: string;
 }
 
+export interface IAccountsetup {
+  ac_code: string;
+  ac_name: string;
+  company_code?: string;
+  bank_name?: string;
+  created_at?: Date;
+  created_by?: string;
+  updated_at?: Date;
+  updated_by?: string;
+}
+
 export interface IManufacture {
   manu_code: string;
   manu_name: string;

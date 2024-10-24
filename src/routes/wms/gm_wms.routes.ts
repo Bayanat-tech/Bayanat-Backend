@@ -6,6 +6,11 @@ import {
 } from "../../controllers/wms/country_wms.controller";
 
 import {
+  createAccountsetup,
+  updateAccountsetup,
+} from "../../controllers/wms/accountsetup_wms.controller";
+
+import {
   createManufacture,
   updateManufacture,
 } from "../../controllers/wms/manufacture_wms.controller";
@@ -87,6 +92,13 @@ router.post("/country", createCountry);
 router.put("/country", updateCountry);
 
 router.post("/country/delete", deleteCountries);
+
+//-------------AC_SETUP------------
+
+router.post("/accountsetup", createAccountsetup);
+router.put("/accountsetup", updateAccountsetup);
+
+//router.post("/accountsetup/delete", deleteAccountsetup);
 
 //-------------country------------
 

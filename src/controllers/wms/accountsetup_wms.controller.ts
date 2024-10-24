@@ -3,45 +3,47 @@ import { Op } from "sequelize";
 import constants from "../../helpers/constants";
 import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
-import Brand from "../../models/wms/brand_wms.model";
-import { brandSchema } from "../../validation/wms/gm.validation";
+import Accountsetup from "../../models/wms/accountsetup_wms.model";
 
-export const createBrand = async (req: RequestWithUser, res: Response) => {
+import { accountsetupSchema } from "../../validation/wms/gm.validation";
+
+export const createAccountsetup = async (
+  req: RequestWithUser,
+  res: Response
+) => {
   try {
     const requestUser: IUser = req.user;
 
-    //console.log("est", requestUser);
-
-    const { error } = brandSchema(req.body);
+    const { error } = accountsetupSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { brand_code, company_code } = req.body;
+    const { ac_code, company_code } = req.body;
 
-    const brand = await Brand.findOne({
+    const accountsetup = await Accountsetup.findOne({
       where: {
-        [Op.and]: [{ company_code: company_code }, { brand_code: brand_code }],
+        [Op.and]: [{ company_code: company_code }, { ac_code: ac_code }],
       },
     });
 
-    if (brand) {
+    if (accountsetup) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.BRAND_WMS.BRAND_ALREADY_EXISTS,
+        message: constants.MESSAGES.AC_SETUP_WMS.AC_SETUP_ALREADY_EXISTS,
       });
       return;
     }
-    const createBrand = await Brand.create({
+    const createAccountsetup = await Accountsetup.create({
       company_code,
       created_by: requestUser.loginid,
       updated_by: requestUser.loginid,
 
       ...req.body,
     });
-    if (!createBrand) {
+    if (!createAccountsetup) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while creating company" });
@@ -49,7 +51,7 @@ export const createBrand = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.BRAND_WMS.BRAND_CREATED_SUCCESSFULLY,
+      message: constants.MESSAGES.AC_SETUP_WMS.AC_SETUP_CREATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -59,50 +61,49 @@ export const createBrand = async (req: RequestWithUser, res: Response) => {
     return;
   }
 };
-export const updateBrand = async (req: RequestWithUser, res: Response) => {
+export const updateAccountsetup = async (
+  req: RequestWithUser,
+  res: Response
+) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = brandSchema(req.body);
+    const { error } = accountsetupSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { brand_code, company_code } = req.body;
+    const { ac_code, company_code } = req.body;
 
-    const brand = await Brand.findOne({
+    const accountsetup = await Accountsetup.findOne({
       where: {
-        [Op.and]: [{ company_code: company_code }, { brand_code: brand_code }],
+        [Op.and]: [{ company_code: company_code }, { ac_code: ac_code }],
       },
     });
 
-    if (!brand) {
+    if (!accountsetup) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.BRAND_WMS.BRAND_DOES_NOT_EXISTS,
+        message: constants.MESSAGES.AC_SETUP_WMS.AC_SETUP_DOES_NOT_EXISTS,
       });
       return;
     }
-    const createBrand = await Brand.update(
+    const createAccountsetup = await Accountsetup.update(
       {
         company_code,
-        created_by: requestUser.loginid,
         updated_by: requestUser.loginid,
 
         ...req.body,
       },
       {
         where: {
-          [Op.and]: [
-            { company_code: company_code },
-            { brand_code: brand_code },
-          ],
+          [Op.and]: [{ company_code: company_code }, { ac_code: ac_code }],
         },
       }
     );
-    if (!createBrand) {
+    if (!createAccountsetup) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while updating company" });
@@ -110,7 +111,7 @@ export const updateBrand = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.BRAND_WMS.BRAND_UPDATED_SUCCESSFULLY,
+      message: constants.MESSAGES.AC_SETUP_WMS.AC_SETUP_UPDATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -120,32 +121,35 @@ export const updateBrand = async (req: RequestWithUser, res: Response) => {
     return;
   }
 };
-export const deleteCountries = async (req: RequestWithUser, res: Response) => {
+export const deleteAccountsetupes = async (
+  req: RequestWithUser,
+  res: Response
+) => {
   try {
-    const countriesCode = req.body;
+    const accountsetupesCode = req.body;
 
     if (!req.body.length) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.BRAND_WMS.SELECT_AT_LEAST_ONE_BRAND,
+        message: constants.MESSAGES.AC_SETUP_WMS.SELECT_AT_LEAST_ONE_AC_SETUP,
       });
       return;
     }
-    const countriesDeleteResponse = await Brand.destroy({
+    const accountsetupesDeleteResponse = await Accountsetup.destroy({
       where: {
-        brand_code: countriesCode,
+        ac_code: accountsetupesCode,
       },
     });
-    if (countriesDeleteResponse === 0) {
+    if (accountsetupesDeleteResponse === 0) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: countriesDeleteResponse,
+        message: accountsetupesDeleteResponse,
       });
       return;
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.BRAND_WMS.BRAND_DELETED_SUCCESSFULLY,
+      message: constants.MESSAGES.AC_SETUP_WMS.AC_SETUP_DELETED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {

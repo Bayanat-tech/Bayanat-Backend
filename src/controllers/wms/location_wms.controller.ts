@@ -41,8 +41,8 @@ export const createlocation = async (req: RequestWithUser, res: Response) => {
     }
 
     // Log the values to the console
-    console.log("Location Code:", location_code);
-    console.log("Location Description:", loc_desc);
+    // console.log("Location Code:", location_code);
+    //console.log("Location Description:", loc_desc);
 
     const createlocation = await Location.create({
       ...req.body,

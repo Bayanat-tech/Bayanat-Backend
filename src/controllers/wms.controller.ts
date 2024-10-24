@@ -21,6 +21,7 @@ import { IMoc } from "../interfaces/wms/gm_wms.interface";
 import { IHarmonize } from "../interfaces/wms/harmonize.interface";
 import { IActivity } from "../interfaces/wms/activity_wms.interface";
 import { IActivityUoc } from "../interfaces/wms/activity_uoc_wms.interface";
+import { IAccountsetup } from "../interfaces/wms/gm_wms.interface";
 
 // Importing models for WMS master data
 import Country from "../models/wms/country_wms.model";
@@ -35,12 +36,12 @@ import Supplier from "../models/wms/supplier_wms.model";
 import Brand from "../models/wms/brand_wms.model";
 import Group from "../models/wms/productgroup_wms.model";
 import Manufacture from "../models/wms/manufacture_wms.model";
+import Accountsetup from "../models/wms/accountsetup_wms.model";
 
 import Uom from "../models/wms/uom_wms.model";
 import Moc from "../models/wms/moc_wms.model";
 import Harmonize from "../models/wms/harmonize_code.model";
 import Activitysubgroup from "../models/wms/activity_subgroup.model";
-
 import ActivityBillingTable from "../models/wms/activity_billing_table_wms";
 import Activity from "../models/wms/activity_wms.model";
 import ActivityUoc from "../models/wms/activity_uoc.model";
@@ -78,6 +79,16 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
             where: { company_code: requestUser.company_code },
             ...paginationOptions,
           })) as unknown[] as ICountry[];
+        }
+        break;
+
+      case "accountsetup":
+        {
+          console.log("i am here testing");
+          (fetchedData = await Accountsetup.findAll({
+            where: { company_code: requestUser.company_code },
+            ...paginationOptions,
+          })) as unknown[] as IAccountsetup[];
         }
         break;
 
