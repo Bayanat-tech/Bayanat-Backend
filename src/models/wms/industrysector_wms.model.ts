@@ -32,19 +32,19 @@ industrysector.init(
       type: DataTypes.STRING(20),
       allowNull: false,
     },
-     created_at: {
+    created_at: {
       type: DataTypes.DATE,
-       allowNull: false,
-     },
-	updated_at: {
+      allowNull: false,
+    },
+    updated_at: {
       type: DataTypes.DATE,
-       allowNull: false,
-     }
+      allowNull: false,
+    },
   },
   {
     sequelize,
     modelName: "Industrysector",
-    tableName: constants.TABLE.MS_INDUSTRY_SECTOR, 
+    tableName: constants.TABLE.MS_INDUSTRY_SECTOR,
     createdAt: "created_at",
     updatedAt: "updated_at",
   }

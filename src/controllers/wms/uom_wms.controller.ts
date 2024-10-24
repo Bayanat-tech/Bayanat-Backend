@@ -21,10 +21,7 @@ export const createUom = async (req: RequestWithUser, res: Response) => {
 
     const uom = await Uom.findOne({
       where: {
-        [Op.and]: [
-          { company_code: company_code },
-          { uom_code: uom_code },
-        ],
+        [Op.and]: [{ company_code: company_code }, { uom_code: uom_code }],
       },
     });
 
@@ -75,10 +72,7 @@ export const updateUom = async (req: RequestWithUser, res: Response) => {
 
     const uom = await Uom.findOne({
       where: {
-        [Op.and]: [
-          { company_code: company_code },
-          { uom_code: uom_code },
-        ],
+        [Op.and]: [{ company_code: company_code }, { uom_code: uom_code }],
       },
     });
 
@@ -99,10 +93,7 @@ export const updateUom = async (req: RequestWithUser, res: Response) => {
       },
       {
         where: {
-          [Op.and]: [
-            { company_code: company_code },
-            { uom_code: uom_code },
-          ],
+          [Op.and]: [{ company_code: company_code }, { uom_code: uom_code }],
         },
       }
     );

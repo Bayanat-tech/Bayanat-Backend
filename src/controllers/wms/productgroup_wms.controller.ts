@@ -3,52 +3,43 @@ import { Op } from "sequelize";
 import constants from "../../helpers/constants";
 import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
-import Activitysubgroup from "../../models/wms/activity_subgroup.model";
-import {
-  activitygroupSchema,
-  activitysubgroupSchema,
-} from "../../validation/wms/gm.validation";
+import Group from "../../models/wms/productgroup_wms.model";
+import { groupSchema } from "../../validation/wms/gm.validation";
 
-export const createActivitysubgroup = async (
-  req: RequestWithUser,
-  res: Response
-) => {
+export const createGroup = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = activitysubgroupSchema(req.body);
+    const { error } = groupSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { activity_subgroup_code, company_code } = req.body;
+    const { group_code, company_code } = req.body;
 
-    const activitysubgroup = await Activitysubgroup.findOne({
+    const group = await Group.findOne({
       where: {
-        [Op.and]: [
-          { company_code: company_code },
-          { activity_subgroup_code: activity_subgroup_code },
-        ],
+        [Op.and]: [{ company_code: company_code }, { group_code: group_code }],
       },
     });
 
-    if (activitysubgroup) {
+    if (group) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.ACTIVITY_SUBGROUP_WMS.ACTIVITY_SUBGROUP_ALREADY_EXISTS,
+        message: constants.MESSAGES.GROUP_WMS.GROUP_ALREADY_EXISTS,
       });
       return;
     }
-    const createCountry = await Activitysubgroup.create({
+    const createGroup = await Group.create({
       company_code,
       created_by: requestUser.loginid,
       updated_by: requestUser.loginid,
 
       ...req.body,
     });
-    if (!createCountry) {
+    if (!createGroup) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while creating company" });
@@ -56,7 +47,7 @@ export const createActivitysubgroup = async (
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.ACTIVITY_SUBGROUP_WMS.ACTIVITY_SUBGROUP_CREATED_SUCCESSFULLY,
+      message: constants.MESSAGES.GROUP_WMS.GROUP_CREATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -66,43 +57,36 @@ export const createActivitysubgroup = async (
     return;
   }
 };
-export const updateActivitysubgroup = async (
-  req: RequestWithUser,
-  res: Response
-) => {
+export const updateGroup = async (req: RequestWithUser, res: Response) => {
   try {
     const requestUser: IUser = req.user;
 
-    const { error } = activitysubgroupSchema(req.body);
+    const { error } = groupSchema(req.body);
     if (error) {
       res
         .status(constants.STATUS_CODES.BAD_REQUEST)
         .json({ success: false, message: error.message });
       return;
     }
-    const { activity_subgroup_code, company_code } = req.body;
+    const { group_code, company_code } = req.body;
 
-    const country = await Activitysubgroup.findOne({
+    const group = await Group.findOne({
       where: {
-        [Op.and]: [
-          { company_code: company_code },
-          { activity_subgroup_code: activity_subgroup_code },
-        ],
+        [Op.and]: [{ company_code: company_code }, { group_code: group_code }],
       },
     });
 
-    if (!country) {
+    if (!group) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message:
-          constants.MESSAGES.ACTIVITY_SUBGROUP_WMS
-            .ACTIVITY_SUBGROUP_DOES_NOT_EXISTS,
+        message: constants.MESSAGES.GROUP_WMS.GROUP_DOES_NOT_EXISTS,
       });
       return;
     }
-    const createactivitysubgroup = await Activitysubgroup.update(
+    const createGroup = await Group.update(
       {
         company_code,
+        created_by: requestUser.loginid,
         updated_by: requestUser.loginid,
 
         ...req.body,
@@ -111,12 +95,12 @@ export const updateActivitysubgroup = async (
         where: {
           [Op.and]: [
             { company_code: company_code },
-            { activity_subgroup_code: activity_subgroup_code },
+            { group_code: group_code },
           ],
         },
       }
     );
-    if (!createActivitysubgroup) {
+    if (!createGroup) {
       res
         .status(constants.STATUS_CODES.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: "Error while updating company" });
@@ -124,7 +108,7 @@ export const updateActivitysubgroup = async (
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.ACTIVITY_SUBGROUP_WMS.ACTIVITY_SUBGROUP_UPDATED_SUCCESSFULLY,
+      message: constants.MESSAGES.GROUP_WMS.GROUP_UPDATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -136,20 +120,18 @@ export const updateActivitysubgroup = async (
 };
 export const deleteCountries = async (req: RequestWithUser, res: Response) => {
   try {
-    const countriesCode = req.body;
+    const groupiesCode = req.body;
 
     if (!req.body.length) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message:
-          constants.MESSAGES.ACTIVITY_SUBGROUP_WMS
-            .ACTIVITY_SUBGROUP_AT_LEAST_ONE_ACTIVITY_GROUP,
+        message: constants.MESSAGES.GROUP_WMS.SELECT_AT_LEAST_ONE_GROUP,
       });
       return;
     }
-    const countriesDeleteResponse = await Activitysubgroup.destroy({
+    const countriesDeleteResponse = await Group.destroy({
       where: {
-        activity_subgroup_code: countriesCode,
+        group_code: groupiesCode,
       },
     });
     if (countriesDeleteResponse === 0) {
@@ -161,9 +143,7 @@ export const deleteCountries = async (req: RequestWithUser, res: Response) => {
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message:
-        constants.MESSAGES.ACTIVITY_SUBGROUP_WMS
-          .ACTIVITY_SUBGROUP_DELETED_SUCCESSFULLY,
+      message: constants.MESSAGES.GROUP_WMS.GROUP_DELETED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {

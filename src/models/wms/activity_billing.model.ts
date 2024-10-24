@@ -3,14 +3,13 @@ import { IActivityBilling } from "../../interfaces/wms/activity_billing_wms.inte
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
 
-class ActivityBilling extends Model<IActivityBilling> {};
+class ActivityBilling extends Model<IActivityBilling> {}
 
 ActivityBilling.init(
   {
     prin_code: {
       type: DataTypes.STRING(15),
-      allowNull: true, // Allowing null
-      primaryKey: true, // Assuming PRIN_CODE is the primary key
+      allowNull: true,
     },
     act_code: {
       type: DataTypes.STRING(15),
@@ -22,7 +21,7 @@ ActivityBilling.init(
     },
     cost: {
       type: DataTypes.DECIMAL(15, 2),
-      allowNull: true, // Allowing null
+      allowNull: false,
     },
     income_code: {
       type: DataTypes.STRING(10),
@@ -34,7 +33,7 @@ ActivityBilling.init(
     },
     jobtype: {
       type: DataTypes.STRING(10),
-      allowNull: true, // Already null
+      allowNull: false,
     },
     company_code: {
       type: DataTypes.STRING(10),
@@ -54,7 +53,7 @@ ActivityBilling.init(
     },
     uoc: {
       type: DataTypes.STRING(10),
-      allowNull: true, // Already null
+      allowNull: false,
     },
     moc: {
       type: DataTypes.DECIMAL(10, 2),
@@ -62,19 +61,19 @@ ActivityBilling.init(
     },
     moc1: {
       type: DataTypes.STRING(50),
-      allowNull: true, // Already null
+      allowNull: false,
     },
     moc2: {
       type: DataTypes.STRING(50),
-      allowNull: true, // Already null
+      allowNull: false,
     },
     cust_code: {
       type: DataTypes.STRING(15),
-      allowNull: true, // Already null
+      allowNull: true,
     },
     start_point: {
       type: DataTypes.STRING(50),
-      allowNull: true, // Already null
+      allowNull: true,
     },
     end_point: {
       type: DataTypes.STRING(50),
@@ -113,6 +112,5 @@ ActivityBilling.init(
     updatedAt: "updated_at",
   }
 );
-
-
+ActivityBilling.removeAttribute("id");
 export default ActivityBilling;
