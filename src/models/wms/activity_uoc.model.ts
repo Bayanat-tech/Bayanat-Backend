@@ -1,7 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import { IActivityUoc } from "../../interfaces/wms/activity_uoc_wms.interface";
 import { sequelize } from "../../database/connection";
-import constants from "../../helpers/constants"
+import constants from "../../helpers/constants";
 
 class ActivityUoc extends Model<IActivityUoc>{};
 

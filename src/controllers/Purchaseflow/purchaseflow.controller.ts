@@ -4,8 +4,10 @@ import { RequestWithUser } from "../../interfaces/cmmon.interface";
 import { IUser } from "../../interfaces/user.interface";
 
 import Costmaster from "../../models/Purchaseflow/costmaster_pf.model";
-import Projectmaster from "../../models/Purchaseflow/projectmaster_pf_model";
+
+import VProjectmaster from "../../models/Purchaseflow/projectmaster_pf_view.model";
 import Itemmaster_pf from "../../models/Purchaseflow/itemmaster_pf_model";
+import Divisionmaster from "../../models/Purchaseflow/divisionmaster_pf.model";
 
 import constants from "../../helpers/constants";
 
@@ -13,12 +15,19 @@ import {
   ICostmaster,
   IItemtmaster,
 } from "../../interfaces/Purchaseflow/Purucahseflow.interface";
-import { IProjectmaster } from "../../interfaces/Purchaseflow/Purucahseflow.interface";
+import { IVProjectmaster } from "../../interfaces/Purchaseflow/Purucahseflow.interface";
+import { IDivisionmaster } from "../../interfaces/Purchaseflow/Purucahseflow.interface";
+//import { QueryTypes, Sequelize } from "sequelize";
+//import sequelize from "sequelize";
+//import { sequelize } from "../../database/connection"
+
+import { sequelize } from "../../database/connection";
+import { Op, QueryTypes } from "sequelize";
 
 // This is for Purchase flow module
 export const getPfMaster = async (req: RequestWithUser, res: Response) => {
   try {
-    console.log("Enter in this getPfFunction  function..");
+    console.log("Enter in this getPfFunction today function..");
     const { master } = req.params;
     const requestUser: IUser = req.user;
     const page = Number(req.query.page) || 1;
@@ -26,6 +35,16 @@ export const getPfMaster = async (req: RequestWithUser, res: Response) => {
     const skip = Number(page * limit - limit);
     let fetchedData: unknown[] = [];
     switch (master) {
+      case "division":
+        console.log("inside division");
+        {
+          (fetchedData = await Divisionmaster.findAll({
+            where: { company_code: requestUser.company_code },
+            offset: skip,
+            limit: limit,
+          })) as unknown[] as IDivisionmaster[];
+        }
+        break;
       case "costmaster":
         {
           (fetchedData = await Costmaster.findAll({
@@ -35,13 +54,30 @@ export const getPfMaster = async (req: RequestWithUser, res: Response) => {
           })) as unknown[] as ICostmaster[];
         }
         break;
+
       case "projectmaster":
+        console.log(
+          "Enter in this getPfFunction today function projectmaster.."
+        );
+        /*   let viewdata: any[] = [];
+        const query =
+          "select project_code, project_name, div_name, total_project_cost from VW_MS_PS_PROJECT_MASTER where company_code = :company_code";
+
+        viewdata = await sequelize.query(query, {
+          replacements: {
+            company_code: requestUser.company_code,
+          },
+          type: QueryTypes.SELECT,
+        });
+
+        fetchedData = viewdata;*/
+
         {
-          (fetchedData = await Projectmaster.findAll({
+          (fetchedData = await VProjectmaster.findAll({
             where: { company_code: requestUser.company_code },
             offset: skip,
             limit: limit,
-          })) as unknown[] as IProjectmaster[];
+          })) as unknown[] as IVProjectmaster[];
         }
         break;
       case "itemmaster":

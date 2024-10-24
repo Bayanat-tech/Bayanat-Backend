@@ -3,7 +3,6 @@ import { DataTypes, Model } from "sequelize";
 import { ILocation } from "../../interfaces/wms/location_wms.interface";
 import { sequelize } from "../../database/connection";
 import constants from "../../helpers/constants";
-
 class Location extends Model<ILocation> {}
 
 Location.init(
