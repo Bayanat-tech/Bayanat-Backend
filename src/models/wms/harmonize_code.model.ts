@@ -16,26 +16,26 @@ Harmonize.init(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    uom: {
-      type: DataTypes.STRING(5),
-      allowNull: true,
-    },
-    unit: {
-        type: DataTypes.STRING(5),
-        allowNull: true,
-      },
+    // uom: {
+    //   type: DataTypes.STRING(5),
+    //   allowNull: true,
+    // },
+    // unit: {
+    //     type: DataTypes.STRING(5),
+    //     allowNull: true,
+    //   },
     company_code: {
       type: DataTypes.STRING(20),
       allowNull: false,
     },
-    short_desc: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-    },
-    permit_reqd: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-    },
+    // short_desc: {
+    //   type: DataTypes.STRING(255),
+    //   allowNull: true,
+    // },
+    // permit_reqd: {
+    //   type: DataTypes.STRING(255),
+    //   allowNull: true,
+    // },
     // updated_at: {
     //   type: DataTypes.DATE,
     //   allowNull: false,

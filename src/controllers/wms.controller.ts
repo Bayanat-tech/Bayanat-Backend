@@ -304,7 +304,16 @@ export const getWmsMaster = async (req: RequestWithUser, res: Response) => {
               })) as unknown[] as IHarmonize[];
             }
             break;
-        
+            // add activitysubgroup
+            // case "activitysubgroup":
+            // {
+            //   console.log("i am sagar");
+            //   (fetchedData = await Activitysubgroup.findAll({
+            //     where: { company_code: requestUser.company_code },
+            //     ...paginationOptions,
+            //   })) as unknown[] as Activitysubgroup[];
+            // }
+            // break; 
       {
         const query = `
             SELECT

@@ -45,7 +45,7 @@ import { createMoc,updateMoc } from "../../controllers/wms/moc_wms.controller";
 import { createUoc, updateUoc } from "../../controllers/wms/uoc_wms.controller";
 import { createHarmonize, updateHarmonize } from "../../controllers/wms/harmonize_wms.controller";
 //import { createActivityBillingDataByCompanyAndPrincipal, updateActivityBillingDataByCompanyAndPrincipal } from "../../controllers/wms/activity_wms.controller";
-import { createActivitysubgroup } from "../../controllers/wms/activity_subgroup_wms.controller";
+import { createActivitysubgroup, updateActivitysubgroup } from "../../controllers/wms/activity_subgroup_wms.controller";
 
 import { createActivityBillingDataByCompanyAndPrincipal, updateActivityBillingDataByCompanyAndPrincipal, copyBillingActivity } from "../../controllers/wms/activity_wms.controller";
 const router = express.Router();
@@ -89,8 +89,8 @@ router.put("/moc2",updateMoc2);
 
 
 //--------UOC
-//router.post("/uoc",createUoc);
-//router.put("/uoc",updateUoc);
+router.post("/uoc",createUoc);
+router.put("/uoc",updateUoc);
 
 //--------HARMONIZE
 router.post("/harmonize",createHarmonize);
@@ -105,8 +105,8 @@ router.post("/activity_billing/:principalCode", createActivityBillingDataByCompa
 router.put("/activity_billing/:principalCode/:activityCode", updateActivityBillingDataByCompanyAndPrincipal);
 
 //-------------Activity Sub Group------------
-router.post("activitysubgroup",createActivitysubgroup);
-router.put("activitysubgroup",updateActivityGroup);
+router.post("/activitysubgroup",createActivitysubgroup);
+router.put("/activitysubgroup",updateActivitysubgroup);
 
 router.post("/copy_billing_activity", copyBillingActivity)
 export default router;

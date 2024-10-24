@@ -16,22 +16,22 @@ Activitysubgroup.init(
       type: DataTypes.STRING(50),
       allowNull: false,
     },
-    mandatory_flag: {
-      type: DataTypes.STRING(1),
-      allowNull: true,
-    },
+    // mandatory_flag: {
+    //   type: DataTypes.STRING(1),
+    //   allowNull: true,
+    // },
     company_code: {
       type: DataTypes.STRING(20),
       allowNull: false,
     },
     act_group_code: {
       type: DataTypes.STRING(5),
-      allowNull: true,
+      allowNull: false,
     },
-    validate_flag: {
-      type: DataTypes.STRING(1),
-      allowNull: true,
-    },
+    // validate_flag: {
+    //   type: DataTypes.STRING(1),
+    //   allowNull: true,
+    // },
     // updated_at: {
     //   type: DataTypes.DATE,
     //   allowNull: false,

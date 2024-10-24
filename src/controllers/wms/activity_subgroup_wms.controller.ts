@@ -31,7 +31,7 @@ export const createActivitysubgroup = async (req: RequestWithUser, res: Response
     if (activitysubgroup) {
       res.status(constants.STATUS_CODES.BAD_REQUEST).json({
         success: false,
-        message: constants.MESSAGES.COUNTRY_WMS.COUNTRY_ALREADY_EXISTS,
+        message: constants.MESSAGES.ACTIVITY_SUBGROUP_WMS.ACTIVITY_SUBGROUP_ALREADY_EXISTS,
       });
       return;
     }
@@ -50,7 +50,7 @@ export const createActivitysubgroup = async (req: RequestWithUser, res: Response
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.COUNTRY_WMS.COUNTRY_CREATED_SUCCESSFULLY,
+      message: constants.MESSAGES.ACTIVITY_SUBGROUP_WMS.ACTIVITY_SUBGROUP_CREATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {
@@ -113,7 +113,7 @@ export const updateActivitysubgroup = async (req: RequestWithUser, res: Response
     }
     res.status(constants.STATUS_CODES.OK).json({
       success: true,
-      message: constants.MESSAGES.ACTIVITY_SUBGROUP_WMS.ACTIVITY_SUBGROUP_DELETED_SUCCESSFULLY,
+      message: constants.MESSAGES.ACTIVITY_SUBGROUP_WMS.ACTIVITY_SUBGROUP_UPDATED_SUCCESSFULLY,
     });
     return;
   } catch (error: any) {

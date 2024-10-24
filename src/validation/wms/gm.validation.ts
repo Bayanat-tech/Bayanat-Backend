@@ -165,6 +165,8 @@ export const mocSchema = (data: IMoc) => {
     company_code: Joi.string().required(),
     charge_code: Joi.string().required(),
     description: Joi.string().required(),
+    charge_type: Joi.string().required(),
+    activity_group_code:Joi.string().required(),
   });
   return schema.validate(data);
 };
@@ -174,6 +176,8 @@ export const moc2Schema = (data: IMoc2) => {
     company_code: Joi.string().required(),
     charge_code: Joi.string().required(),
     description: Joi.string().required(),
+    charge_type: Joi.string().required(),
+    activity_group_code:Joi.string().required(),
   });
   return schema.validate(data);
 };
@@ -183,6 +187,8 @@ export const uocSchema = (data: IUoc) => {
     company_code: Joi.string().required(),
     charge_code: Joi.string().required(),
     description: Joi.string().required(),
+    charge_type: Joi.string().required(),
+    activity_group_code:Joi.string().required(),
   });
   return schema.validate(data);
 };
@@ -192,9 +198,6 @@ export const harmonizeSchema = (data: IHarmonize) => {
     company_code: Joi.string().required(),
     harm_code: Joi.string().required(),
     harm_desc: Joi.string().required(),
-    uom:Joi.string().allow(""),
-    permit_reqd:Joi.string().allow(""),
-    unit: Joi.string().allow(""),
   });
   return schema.validate(data);
 };
@@ -204,9 +207,9 @@ export const activitysubgroupSchema = (data: IActivitysubgroup) => {
     company_code: Joi.string().required(),
     activity_subgroup_code: Joi.string().required(),
     act_subgroup_name: Joi.string().required(),
-    mandatory_flag:Joi.string().allow(""),
-    act_group_code:Joi.string().allow(""),
-    validate_flag: Joi.string().allow(""),
+    //mandatory_flag:Joi.string().allow(""),
+    act_group_code:Joi.string().required(),
+    //validate_flag: Joi.string().allow(""),
   });
   return schema.validate(data);
 };
