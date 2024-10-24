@@ -12,7 +12,6 @@ Harmonize.init(
       allowNull: false,
       primaryKey: true,
     },
-
     harm_desc: {
       type: DataTypes.STRING(255),
       allowNull: false,
@@ -29,10 +28,10 @@ Harmonize.init(
       type: DataTypes.STRING(20),
       allowNull: false,
     },
-    short_desc: "",
-    uom: "",
-    permit_reqd: "",
-    unit: ""
+    // created_at: {
+    //   type: DataTypes.DATE,
+    //   allowNull: false,
+    // },
   },
   {
     sequelize,

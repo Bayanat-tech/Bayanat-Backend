@@ -21,7 +21,10 @@ export const createHarmonize = async (req: RequestWithUser, res: Response) => {
 
     const harmonize = await Harmonize.findOne({
       where: {
-        [Op.and]: [{ company_code: company_code }, { harm_code: harm_code }],
+        [Op.and]: [
+          { company_code: company_code },
+          { harm_code: harm_code },
+        ],
       },
     });
 
@@ -72,7 +75,10 @@ export const updateHarmonize = async (req: RequestWithUser, res: Response) => {
 
     const harmonize = await Harmonize.findOne({
       where: {
-        [Op.and]: [{ company_code: company_code }, { harm_code: harm_code }],
+        [Op.and]: [
+          { company_code: company_code },
+          { harm_code: harm_code },
+        ],
       },
     });
 
@@ -93,7 +99,10 @@ export const updateHarmonize = async (req: RequestWithUser, res: Response) => {
       },
       {
         where: {
-          [Op.and]: [{ company_code: company_code }, { harm_code: harm_code }],
+          [Op.and]: [
+            { company_code: company_code },
+            { harm_code: harm_code },
+          ],
         },
       }
     );

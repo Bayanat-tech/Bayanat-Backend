@@ -298,9 +298,6 @@ export const harmonizeSchema = (data: IHarmonize) => {
     company_code: Joi.string().required(),
     harm_code: Joi.string().required(),
     harm_desc: Joi.string().required(),
-    uom: Joi.string().allow(""),
-    permit_reqd: Joi.string().allow(""),
-    unit: Joi.string().allow(""),
   });
   return schema.validate(data);
 };
